@@ -13,6 +13,6 @@ public class ProgressionManager : SingletonMonobehaviour<ProgressionManager>
 
     private void LoadProgress()
     {
-        _wallet.AddCoins(999999);
+        _wallet.AddDollars(999999);
     }
 }

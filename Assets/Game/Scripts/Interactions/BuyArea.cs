@@ -7,11 +7,15 @@ public abstract class BuyArea : InteractableArea
     [SerializeField] private int _valueToSpend;
     [SerializeField] private int _spendPerQuadSecond;
 
+    private const float SPEND_RATE = 0.25f;
+
     private int _spended;
     private bool _isSuccessed;
     private IEnumerator _coroutine;
 
+    public int ValueToSpend => _valueToSpend;
     public int ValueLeft => _valueToSpend - _spended;
+    public float SpendRate => SPEND_RATE;
 
     protected override void ContactWithPlayer(Collider other)
     {
@@ -39,7 +43,7 @@ public abstract class BuyArea : InteractableArea
         
         while (!isFinished)
         {
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(SPEND_RATE);
 
             var spendPerSecond = _spendPerQuadSecond;
             if (_spended + spendPerSecond > _valueToSpend)

@@ -1,35 +1,40 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Player))]
 public class PlayerController : MonoBehaviour
 {
     private Player _player;
-    private Vector3 _joystickDirection;
+    private Camera _camera;
+    private Vector3 _moveDirection;
+    private const float gravity = 9.81f;
 
     private void Start()
     {
         _player = GetComponent<Player>();
+        _camera = Camera.main;
     }
 
     private void FixedUpdate()
     {
-        HandleMovementInput();
-
-        HandleAimInput();
+        ApplyMovementInput();
+        AppltAimInput();
+        ApplyGravity();
     }
 
-    private void HandleMovementInput()
+    private void ApplyMovementInput()
     {
         float horizontalMovement = UIEvents.JoystickInput.x;
         float verticalMovement = UIEvents.JoystickInput.y;
 
-        var direction = new Vector3(horizontalMovement, 0, verticalMovement);
+        var moveDirectionY = verticalMovement * new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z);
+        var moveDirectionX = horizontalMovement * new Vector3(_camera.transform.right.x, 0, _camera.transform.right.z);
 
-        if (direction != Vector3.zero)
+        _moveDirection = moveDirectionX + moveDirectionY;   
+
+        if (_moveDirection != Vector3.zero)
         {
-            _joystickDirection = direction;
-
-            _player.CharacterController.Move(_joystickDirection * _player.SO.Speed * Time.fixedDeltaTime);
+            _player.CharacterController.Move(_moveDirection * _player.SO.Speed * Time.fixedDeltaTime);
 
             _player.AnimationController.SetWalk();
         }
@@ -39,10 +44,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void HandleAimInput()
+    private void AppltAimInput()
     {
-        if (_joystickDirection == Vector3.zero) return;
+        if (_moveDirection == Vector3.zero) return;
 
-        _player.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_joystickDirection), Time.fixedDeltaTime * _player.SO.RotationSpeed);
+        _player.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_moveDirection), Time.fixedDeltaTime * _player.SO.RotationSpeed);
+    }
+
+    private void ApplyGravity()
+    {
+        if (!_player.CharacterController.isGrounded)
+        {
+            _player.CharacterController.Move(Vector3.down * gravity * Time.fixedDeltaTime);
+        }
     }
 }

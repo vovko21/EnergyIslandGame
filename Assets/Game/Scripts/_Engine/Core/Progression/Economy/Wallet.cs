@@ -1,31 +1,31 @@
-using UnityEngine;
-
 public class Wallet
 {
-    private int _coins;
+    private int _dollars;
+    private int _energy;
+    private int _diamands;
 
-    public int Coins => _coins;
+    public int Dollars => _dollars;
 
-    public bool TrySpend(int coins)
+    public bool TrySpend(int dollars)
     {
-        if(_coins - coins < 0)
+        if (_dollars - dollars < 0)
         {
             return false;
         }
 
-        _coins -= coins;
+        _dollars -= dollars;
 
         return true;
     }
 
-    public void AddCoins(int coins)
+    public void AddDollars(int dollars)
     {
-        if(coins <= 0)
+        if (dollars <= 0)
         {
             return;
         }
 
-        _coins += coins;
+        _dollars += dollars;
     }
 
 }

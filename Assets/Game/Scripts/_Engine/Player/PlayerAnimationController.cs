@@ -23,4 +23,23 @@ public class PlayerAnimationController : MonoBehaviour
 
         _animator.SetBool("isWalking", true);
     }
+
+    public void SetCarrying(bool carry)
+    {
+        if (_animator == null)
+        {
+            return;
+        }
+
+        if(carry)
+        {
+            _animator.SetLayerWeight(1, 1);
+        }
+        else
+        {
+            _animator.SetLayerWeight(1, 0);
+        }
+
+        _animator.SetBool("isWalking", false);
+    }
 }
