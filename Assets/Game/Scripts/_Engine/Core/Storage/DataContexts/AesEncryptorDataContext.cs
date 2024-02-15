@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class AesEncryptorDataContext : DataContext
@@ -12,19 +11,19 @@ public class AesEncryptorDataContext : DataContext
     private string Key = "aGRvbmRnaHRzZG11eXRyOw=="; // must be a valid base64 format from string in 16 char
     private string IV = "bWNiZGdzcGVnZGhmbmdqZA==";
 
-    public override async Task SaveAsync()
+    public override async System.Threading.Tasks.Task SaveAsync()
     {
         using FileStream stream = File.Create(_filepath);
         await EncryptAsync(stream);
     }
 
-    public override async Task LoadAsync()
+    public override async System.Threading.Tasks.Task LoadAsync()
     {
         if (!File.Exists(_filepath)) return;
         await DecryptAsync();
     }
 
-    public async Task EncryptAsync(FileStream stream)
+    public async System.Threading.Tasks.Task EncryptAsync(FileStream stream)
     {
         using Aes aesProvider = Aes.Create();
 
@@ -48,7 +47,7 @@ public class AesEncryptorDataContext : DataContext
         await cryptoStream.WriteAsync(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(_data)));
     }
 
-    public async Task DecryptAsync()
+    public async System.Threading.Tasks.Task DecryptAsync()
     {
         byte[] fileBytes = File.ReadAllBytes(_filepath);
         using Aes aesProvider = Aes.Create();

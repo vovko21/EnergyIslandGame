@@ -1,12 +1,11 @@
 using System.IO;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public sealed class JsonDataContext : DataContext
 {
     private string _filepath = Application.persistentDataPath + "/data.json";
 
-    public override async Task LoadAsync()
+    public override async System.Threading.Tasks.Task LoadAsync()
     {
         if (!File.Exists(_filepath)) return;
         using var reader = new StreamReader(_filepath);
@@ -14,7 +13,7 @@ public sealed class JsonDataContext : DataContext
         JsonUtility.FromJsonOverwrite(json, _data);
     }
 
-    public override async Task SaveAsync()
+    public override async System.Threading.Tasks.Task SaveAsync()
     {
         var json = JsonUtility.ToJson(_data);
         using var writer = new StreamWriter(_filepath);

@@ -4,8 +4,10 @@ public class ProgressionManager : SingletonMonobehaviour<ProgressionManager>
 
     public Wallet Wallet => _wallet;
 
-    private void Start()
+    private void Awake()
     {
+        base.Awake();
+
         _wallet = new Wallet();
 
         LoadProgress();
@@ -13,6 +15,6 @@ public class ProgressionManager : SingletonMonobehaviour<ProgressionManager>
 
     private void LoadProgress()
     {
-        _wallet.AddDollars(999999);
+        _wallet.AddDollars(120);
     }
 }

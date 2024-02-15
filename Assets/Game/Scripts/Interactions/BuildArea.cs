@@ -3,12 +3,18 @@ using UnityEngine;
 public class BuildArea : BuyArea
 {
     [Header("Building parametrs")]
-    [SerializeField] private GameObject _buildingPrefab;
-    [SerializeField] private Transform _buildingPosition;
-    
+    [SerializeField] private GameObject _building;
+    [SerializeField] private GameObject _triggerArea;
+
+    private void Start()
+    {
+        _building.SetActive(false);
+    }
+
     protected override void OnBuyed()
     {
-        Instantiate(_buildingPrefab, _buildingPosition.position, Quaternion.identity);
-        Destroy(this.gameObject);
+        _building.SetActive(true);
+
+        Destroy(_triggerArea);
     }
 }

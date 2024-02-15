@@ -39,7 +39,5 @@ public class PlayerAnimationController : MonoBehaviour
         {
             _animator.SetLayerWeight(1, 0);
         }
-
-        _animator.SetBool("isWalking", false);
     }
 }

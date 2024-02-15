@@ -70,7 +70,7 @@
 //}
 
 using UnityEngine;
-using System;
+//using System;
 
 public class TimeController : SingletonMonobehaviour<TimeController>
 {
@@ -112,7 +112,6 @@ public class TimeController : SingletonMonobehaviour<TimeController>
         {
             UpdateTime();
             nextUpdateTime = Time.time + (RealDurationOfInGameHour / 60f); // Update every in-game minute
-            Debug.Log(currentMinute); // Output days passed
         }
     }
 
@@ -130,7 +129,7 @@ public class TimeController : SingletonMonobehaviour<TimeController>
         {
             currentDay++;
             currentHour = 0;
-            
+
         }
 
         // UpdateUI(); // You can add a method here to update UI with current time if needed

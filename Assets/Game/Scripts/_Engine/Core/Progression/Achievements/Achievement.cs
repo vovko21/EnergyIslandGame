@@ -10,6 +10,7 @@ public struct AchievementEvent
     }
 
     static AchievementEvent e;
+
     public static void Trigger(Achievement achievement)
     {
         e.Achievement = achievement;
@@ -39,7 +40,7 @@ public class Achievement
     [SerializeField] private int _progressCurrent;
 
     public string Id => _id;
-    public AchievementType Tpe => _type;
+    public AchievementType Type => _type;
     public string Name => _name;
     public string Description => _description;
     public bool IsUnlocked => _isUnlocked;

@@ -1,3 +1,5 @@
+using System;
+
 public class Wallet
 {
     private int _dollars;
@@ -5,6 +7,8 @@ public class Wallet
     private int _diamands;
 
     public int Dollars => _dollars;
+
+    public event Action<int> OnDollarsChanged;
 
     public bool TrySpend(int dollars)
     {
@@ -14,6 +18,8 @@ public class Wallet
         }
 
         _dollars -= dollars;
+
+        OnDollarsChanged?.Invoke(_dollars);
 
         return true;
     }
@@ -26,6 +32,8 @@ public class Wallet
         }
 
         _dollars += dollars;
+
+        OnDollarsChanged?.Invoke(_dollars);
     }
 
 }

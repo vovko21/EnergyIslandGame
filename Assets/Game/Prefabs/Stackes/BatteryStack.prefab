@@ -62,3 +62,4 @@ MonoBehaviour:
   _grid: {fileID: 6562859146124796235}
   _coll: 1
   _row: 1
+  _maxStackCount: 10

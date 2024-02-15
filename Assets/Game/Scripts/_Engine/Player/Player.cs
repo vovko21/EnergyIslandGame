@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     public CarrySystem CarrySystem { get; private set; }
     public PlayerSO SO => _playerSO;
 
-    void Start()
+    void Awake()
     {
         CharacterController = GetComponent<CharacterController>();
         AnimationController = GetComponent<PlayerAnimationController>();
