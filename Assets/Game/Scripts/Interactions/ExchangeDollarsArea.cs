@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ExchangeDollarsArea : InteractableArea
 {
-    [SerializeField] private float _dollarPerEnergy = 0.1f;
+    [SerializeField] private float _energyPrice = 0.1f;
     [SerializeField] private int _changePerQuadSecond = 10;
 
     private const float CHANGE_RATE = 0.25f;
@@ -48,7 +48,7 @@ public class ExchangeDollarsArea : InteractableArea
 
             player.CarrySystem.UpdateEnergyStack(energyToExchange);
 
-            ProgressionManager.Instance.Wallet.AddDollars((int)(_changePerQuadSecond * _dollarPerEnergy));
+            ProgressionManager.Instance.Wallet.AddDollars((int)(_changePerQuadSecond * _energyPrice));
 
             if (energyToExchange <= 0)
             {

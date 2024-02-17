@@ -24,5 +24,4 @@ public class GameTask : MonoBehaviour
         _description = description;
         _progressTarget = progressTarget;
     }
-
 }

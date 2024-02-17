@@ -4,12 +4,15 @@ public class ProgressionManager : SingletonMonobehaviour<ProgressionManager>
 
     public Wallet Wallet => _wallet;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
 
         _wallet = new Wallet();
+    }
 
+    private void Start()
+    {
         LoadProgress();
     }
 

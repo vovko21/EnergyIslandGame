@@ -12,14 +12,26 @@ public class ResourceStack : MonoBehaviour
     [SerializeField] private int _colls;
     [SerializeField] private int _rows;
     [SerializeField] private int _maxObjectsCount;
+    [SerializeField] private bool _spawnOnStart;
 
     private List<GameObject> _resources = new List<GameObject>();
     private int _height;
-    [SerializeField] private int _stuckValue;
+    #region ReadOnly
+#if UNITY_EDITOR
+    [ReadOnly]
+        [SerializeField]
+#endif
+    #endregion
+    private int _stuckValue;
 
     public int StuckValue => _stuckValue;
     public int MaxStuckValue => _maxObjectsCount * _valuePerObject;
     public bool IsMax => _resources.Count == _maxObjectsCount;
+
+    private void Start()
+    {
+        if(_spawnOnStart) SpawnStack();
+    }
 
     public void Initialize(int maxStackCount)
     {
@@ -92,7 +104,7 @@ public class ResourceStack : MonoBehaviour
                     }
 
                     var position = _grid.GetCellCenterWorld(new Vector3Int(x, y, z));
-                    _resources.Add(Instantiate(_prefab, position, Quaternion.identity, this.transform));
+                    _resources.Add(Instantiate(_prefab, position, _prefab.transform.rotation, this.transform));
 
                     objectCountToSpawn--;
                 }

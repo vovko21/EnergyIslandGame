@@ -41,7 +41,7 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6862051526725431386}
   m_Enabled: 1
-  m_CellSize: {x: 0.6, y: 0.1, z: 0.3}
+  m_CellSize: {x: 0.3, y: 0.2, z: 0.6}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
@@ -60,5 +60,8 @@ MonoBehaviour:
   _prefab: {fileID: 5837913982212664898, guid: 1aff862e78956014781e80122aad6724, type: 3}
   _valuePerObject: 10
   _grid: {fileID: 8983120422927510529}
-  _coll: 3
-  _row: 4
+  _colls: 5
+  _rows: 3
+  _maxObjectsCount: 105
+  _spawnOnStart: 1
+  _stuckValue: 250000

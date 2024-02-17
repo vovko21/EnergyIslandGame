@@ -21,8 +21,12 @@ public class StorageService : SingletonMonobehaviour<StorageService>
 
     public IReadOnlyList<ResourceData> Resources => _dataContext.Data.Resources;
 
-    private void Start()
+    public bool Initialized => _dataContext.Data.Initialized;
+
+    protected override void Awake()
     {
+        base.Awake();
+
         _dataContext = new AesEncryptorDataContext();
         _unitOfWork = new UnitOfWork(_dataContext);
     }

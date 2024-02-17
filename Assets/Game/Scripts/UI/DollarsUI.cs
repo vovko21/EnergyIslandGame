@@ -9,7 +9,7 @@ public class DollarsUI : MonoBehaviour
     {
         ProgressionManager.Instance.Wallet.OnDollarsChanged += OnDollarsChanged;
 
-        _textMeshPro.text = ProgressionManager.Instance.Wallet.Dollars.ToString();
+        OnDollarsChanged(ProgressionManager.Instance.Wallet.Dollars);
     }
 
     private void OnDisable()
@@ -17,8 +17,20 @@ public class DollarsUI : MonoBehaviour
         ProgressionManager.Instance.Wallet.OnDollarsChanged -= OnDollarsChanged;
     }
 
-    private void OnDollarsChanged(int obj)
+    private void OnDollarsChanged(int value)
     {
-        _textMeshPro.text = obj.ToString();
+        string[] suffixes = { "", "K", "M", "B", "T" };
+
+        int suffixIndex = 0;
+        float num = value;
+        while (Mathf.Abs(num) >= 1000 && suffixIndex < suffixes.Length - 1)
+        {
+            num /= 1000;
+            suffixIndex++;
+        }
+
+        string formattedNumber = $"{num:0.##}{suffixes[suffixIndex]}";
+
+        _textMeshPro.text = formattedNumber;
     }
 }

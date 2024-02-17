@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TimeManager : MonoBehaviour
+public class TimeManager : SingletonMonobehaviour<TimeManager>
 {
     [Header("Date time settings")]
     [SerializeField][Range(1, 28)] private int _dateInMonth;
@@ -9,23 +9,27 @@ public class TimeManager : MonoBehaviour
     [SerializeField][Range(1, 24)] private int _hour;
     [SerializeField][Range(0, 59)] private int _minuts;
 
-    private DateTime _dateTime;
+    private InGameDateTime _currentDateTime;
 
     [Header("Tick settings")]
     [SerializeField] private int _tickMinutesIncrease = 10;
     [SerializeField] private float _timeBetweenTicks = 1;
     private float _currentTimeBetweenTicks = 0;
 
-    public event System.Action<DateTime> OnDateTimeChanged;
+    public event System.Action<InGameDateTime> OnDateTimeChanged;
 
-    private void Awake()
+    public InGameDateTime CurrentDateTime => _currentDateTime;
+
+    protected override void Awake()
     {
-        _dateTime = new DateTime(_dateInMonth, _season - 1, _year, _hour, _tickMinutesIncrease * 10);
+        base.Awake();
+
+        _currentDateTime = new InGameDateTime(_dateInMonth, _season - 1, _year, _hour, _tickMinutesIncrease * 10);
     }
 
     private void Start()
     {
-        OnDateTimeChanged?.Invoke(_dateTime);
+        OnDateTimeChanged?.Invoke(_currentDateTime);
     }
 
     private void Update()
@@ -46,16 +50,14 @@ public class TimeManager : MonoBehaviour
 
     private void AdvanceTime()
     {
-        _dateTime.AdvanceMinutes(_tickMinutesIncrease);
+        _currentDateTime.AdvanceMinutes(_tickMinutesIncrease);
 
-        OnDateTimeChanged?.Invoke(_dateTime);
-
-        Debug.Log(_dateTime);
+        OnDateTimeChanged?.Invoke(_currentDateTime);
     }
 }
 
 [System.Serializable]
-public struct DateTime
+public struct InGameDateTime
 {
     #region Fields
     private Days _day;
@@ -83,8 +85,15 @@ public struct DateTime
     public int CurrentWeek => _totalNumWeeks % 16 == 0 ? 16 : _totalNumWeeks % 16;
     #endregion
 
+    #region Events
+    public event System.Action<InGameDateTime> OnHourChanged;
+    public event System.Action<InGameDateTime> OnDayChanged;
+    public event System.Action<InGameDateTime> OnSeasonChanged;
+    public event System.Action<InGameDateTime> OnYearChanged;
+    #endregion
+
     #region Constructors
-    public DateTime(int date, int season, int year, int hour, int minute)
+    public InGameDateTime(int date, int season, int year, int hour, int minute)
     {
         _day = (Days)(date % 7);
         if (_day == 0) _day = (Days)7;
@@ -97,6 +106,11 @@ public struct DateTime
 
         _totalNumDays = date + (28 * (int)_season) + (112 * (year - 1));
         _totalNumWeeks = 1 + _totalNumDays / 7;
+
+        OnHourChanged = null;
+        OnDayChanged = null;
+        OnSeasonChanged = null;
+        OnYearChanged = null;
     }
     #endregion
 
@@ -125,6 +139,8 @@ public struct DateTime
         {
             _hour++;
         }
+
+        OnHourChanged?.Invoke(this);
     }
 
     private void AdvanceDay()
@@ -146,6 +162,8 @@ public struct DateTime
         }
 
         _totalNumDays++;
+
+        OnDayChanged?.Invoke(this);
     }
 
     private void AdvanceSeason()
@@ -159,12 +177,16 @@ public struct DateTime
         {
             _season++;
         }
+
+        OnSeasonChanged?.Invoke(this);
     }
 
     private void AdvanceYear()
     {
         _date = 1;
         _year++;
+
+        OnYearChanged?.Invoke(this);
     }
     #endregion
 
@@ -199,33 +221,33 @@ public struct DateTime
 
     #region Key Dates
 
-    public DateTime NewYearsDay(int year)
+    public InGameDateTime NewYearsDay(int year)
     {
         if (year == 0) year = 1;
-        return new DateTime(1, 0, year, 6, 0);
+        return new InGameDateTime(1, 0, year, 6, 0);
     }
 
-    public DateTime SummerSolstice(int year)
+    public InGameDateTime SummerSolstice(int year)
     {
         if (year == 0) year = 1;
-        return new DateTime(28, 1, year, 6, 0);
+        return new InGameDateTime(28, 1, year, 6, 0);
     }
 
-    public DateTime PumpkinHarvest(int year)
+    public InGameDateTime PumpkinHarvest(int year)
     {
         if (year == 0) year = 1;
-        return new DateTime(28, 2, year, 6, 0);
+        return new InGameDateTime(28, 2, year, 6, 0);
     }
 
     #endregion
 
     #region Start of season
-    public DateTime StartOfSeason(int season, int year)
+    public InGameDateTime StartOfSeason(int season, int year)
     {
         season = Mathf.Clamp(season, 0, 3);
         if (year == 0) year = 1;
 
-        return new DateTime(1, season, year, 6, 0);
+        return new InGameDateTime(1, season, year, 6, 0);
     }
     #endregion
 

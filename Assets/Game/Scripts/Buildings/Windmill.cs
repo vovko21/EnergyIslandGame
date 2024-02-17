@@ -6,11 +6,28 @@ public class Windmill : ProductionBuilding, IInteractable
     [SerializeField] private int _maxSupply;
     [SerializeField] private int _minGatherAmount;
 
+    private InGameDateTime _lastProducedTime;
+
     public int MaxSupply => _maxSupply;
 
     private void OnEnable()
     {
-        InvokeRepeating(nameof(OnHourPassed), TimeController.Instance.RealDurationOfInGameHour, TimeController.Instance.RealDurationOfInGameHour);
+        _lastProducedTime = TimeManager.Instance.CurrentDateTime;
+        TimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
+    }
+
+    private void OnDisable()
+    {
+        TimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
+    }
+
+    private void OnDateTimeChanged(InGameDateTime dateTime)
+    {
+        if(_lastProducedTime.Hour != dateTime.Hour)
+        {
+            OnHourPassed();
+            _lastProducedTime = dateTime;
+        }
     }
 
     private void OnHourPassed()

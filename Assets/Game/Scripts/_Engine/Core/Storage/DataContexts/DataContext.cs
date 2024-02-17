@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+
 [Serializable]
 public abstract class DataContext
 {
     protected GameData _data = new GameData();
+
     public GameData Data => _data;
 
     public abstract System.Threading.Tasks.Task LoadAsync();

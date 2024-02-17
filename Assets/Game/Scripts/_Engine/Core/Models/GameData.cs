@@ -5,4 +5,6 @@ using System.Collections.Generic;
 public class GameData
 {
     public List<ResourceData> Resources = new List<ResourceData>();
+
+    public bool Initialized;
 }
