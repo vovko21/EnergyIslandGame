@@ -6,6 +6,11 @@ public class SceneSetup : MonoBehaviour
     [Header("First Load Setup")]
     [SerializeField] private UserInterface _ui;
     [SerializeField] private MoveByPoints _boat;
+    [SerializeField] private int _startMoney;
+
+    [Header("Player Setup")]
+    [SerializeField] private Transform _player;
+    [SerializeField] private Transform _spawnPoint;
 
     private async void Start()
     {
@@ -13,7 +18,23 @@ public class SceneSetup : MonoBehaviour
 
         if (!StorageService.Instance.Initialized)
         {
+            ProgressionManager.Instance.Wallet.AddDollars(_startMoney);
+
             StartCoroutine(FirstLoadCutscene());
+        }
+        else
+        {
+            ProgressionManager.Instance.InitializeData();
+
+            _player.gameObject.SetActive(false);
+
+            _player.transform.position = _spawnPoint.position;
+
+            _player.gameObject.SetActive(true);
+
+            _ui.ShowUI();
+
+            _ui.FadeOut();
         }
     }
 

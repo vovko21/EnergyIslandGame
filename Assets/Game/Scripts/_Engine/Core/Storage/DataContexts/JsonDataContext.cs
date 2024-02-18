@@ -15,7 +15,6 @@ public sealed class JsonDataContext : DataContext
 
     public override async System.Threading.Tasks.Task SaveAsync()
     {
-        _data.Initialized = true;
         var json = JsonUtility.ToJson(_data);
         using var writer = new StreamWriter(_filepath);
         await writer.WriteAsync(json);

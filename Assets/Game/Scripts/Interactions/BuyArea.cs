@@ -5,9 +5,9 @@ public abstract class BuyArea : InteractableArea
 {
     [Header("Price parameters")]
     [SerializeField] private int _valueToSpend;
-    [SerializeField] private int _spendPerQuadSecond;
+    [SerializeField] private int _spendPerTick;
 
-    private const float SPEND_RATE = 0.25f;
+    private const float SPEND_RATE = 0.1f;
 
     private int _spended;
     private bool _isSuccessed;
@@ -43,36 +43,38 @@ public abstract class BuyArea : InteractableArea
         
         while (!isFinished)
         {
-            yield return new WaitForSeconds(SPEND_RATE);
-
-            var spendPerSecond = _spendPerQuadSecond;
-            if (_spended + spendPerSecond > _valueToSpend)
+            if (_spended >= _valueToSpend)
             {
-                spendPerSecond = _valueToSpend - _spended;
+                isFinished = true;
+                _isSuccessed = true;
             }
 
-            var success = ProgressionManager.Instance.Wallet.TrySpend(spendPerSecond);
+            yield return new WaitForSeconds(SPEND_RATE);
 
-            _spended += spendPerSecond;
+            var spendPerTick = _spendPerTick;
+            if (_spended + spendPerTick > _valueToSpend)
+            {
+                spendPerTick = _valueToSpend - _spended;
+            }
+
+            var success = ProgressionManager.Instance.Wallet.TrySpend(spendPerTick);
 
             if (!success)
             {
                 isFinished = true;
                 _isSuccessed = false;
             }
-
-            if (_spended >= _valueToSpend)
+            else
             {
-                isFinished = true;
-                _isSuccessed = true;
+                _spended += spendPerTick;
             }
         }
 
         if (_isSuccessed)
         {
-            OnBuyed();
+            OnBought();
         }
     }
 
-    protected abstract void OnBuyed();
+    protected abstract void OnBought();
 }

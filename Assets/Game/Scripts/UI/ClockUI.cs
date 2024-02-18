@@ -8,7 +8,7 @@ public class ClockUI : MonoBehaviour
 
     private float _startingRotation;
 
-    private void Start()
+    private void OnEnable()
     {
         _startingRotation = _clockFace.localEulerAngles.z;
         TimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;

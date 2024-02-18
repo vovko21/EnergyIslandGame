@@ -18,11 +18,6 @@ public class PlayerUI : MonoBehaviour
         _textMeshPro.gameObject.SetActive(false);
     }
 
-    private void OnDisable()
-    {
-        _player.CarrySystem.OnChange -= OnCarryChange;
-    }
-
     private void LateUpdate()
     {
         if(!_isTextActive)

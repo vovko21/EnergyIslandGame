@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public struct ReadOnlyResource
 {
@@ -20,7 +21,6 @@ public class StorageService : SingletonMonobehaviour<StorageService>
     private UnitOfWork _unitOfWork;
 
     public IReadOnlyList<ResourceData> Resources => _dataContext.Data.Resources;
-
     public bool Initialized => _dataContext.Data.Initialized;
 
     protected override void Awake()
@@ -31,23 +31,26 @@ public class StorageService : SingletonMonobehaviour<StorageService>
         _unitOfWork = new UnitOfWork(_dataContext);
     }
 
-    public ReadOnlyResource AddResource(int value, ResourceType type)
+    public ReadOnlyResource AddOrUpdateResource(int value, ResourceType type)
     {
-        var data = new ResourceData() { value = value, type = type };
-        _unitOfWork.ResourcesRepository.Add(data);
+        var data = _unitOfWork.ResourcesRepository.GetById(type.ToString());
+        if(data == null)
+        {
+            data = new ResourceData() { value = value, type = type };
+            _unitOfWork.ResourcesRepository.Add(data);     
+        }
+        else
+        {
+            data = new ResourceData() { id = type.ToString(), value = value, type = type };
+            _unitOfWork.ResourcesRepository.Modify(data);
+        }
 
         return new ReadOnlyResource(data.id, value, type);
     }
 
-    public void ModifyResource(ReadOnlyResource resource)
+    public bool DeleteResource(ResourceType type)
     {
-        var data = new ResourceData() { id = resource.id, value = resource.value, type = resource.type };
-        _unitOfWork.ResourcesRepository.Modify(data);
-    }
-
-    public bool DeleteResource(string id)
-    {
-        return _unitOfWork.ResourcesRepository.Delete(id);
+        return _unitOfWork.ResourcesRepository.Delete(type.ToString());
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
@@ -55,8 +58,12 @@ public class StorageService : SingletonMonobehaviour<StorageService>
         await _unitOfWork.LoadAsync();
     }
 
-    public async System.Threading.Tasks.Task SaveAsync()
+    private async void OnApplicationQuit()
     {
+        Debug.Log("Save");
+
+        AddOrUpdateResource(ProgressionManager.Instance.Wallet.Dollars, ResourceType.Dollars);
+
         await _unitOfWork.SaveAsync();
     }
 }

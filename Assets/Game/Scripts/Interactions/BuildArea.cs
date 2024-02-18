@@ -11,7 +11,7 @@ public class BuildArea : BuyArea
         _building.SetActive(false);
     }
 
-    protected override void OnBuyed()
+    protected override void OnBought()
     {
         _building.SetActive(true);
 

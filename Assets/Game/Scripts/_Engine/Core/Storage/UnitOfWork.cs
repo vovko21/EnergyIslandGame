@@ -18,6 +18,11 @@ public class UnitOfWork
 
     public async System.Threading.Tasks.Task SaveAsync()
     {
+        if(!_dataContext.Data.Initialized)
+        {
+            _dataContext.Data.Initialized = true;
+        }
+
         await _dataContext.SaveAsync();
     }
 }

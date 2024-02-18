@@ -3,8 +3,6 @@ using System;
 public class Wallet
 {
     private int _dollars;
-    private int _energy;
-    private int _diamands;
 
     public int Dollars => _dollars;
 
@@ -35,5 +33,4 @@ public class Wallet
 
         OnDollarsChanged?.Invoke(_dollars);
     }
-
 }

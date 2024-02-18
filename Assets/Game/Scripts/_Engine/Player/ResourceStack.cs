@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,6 +28,8 @@ public class ResourceStack : MonoBehaviour
     public int StuckValue => _stuckValue;
     public int MaxStuckValue => _maxObjectsCount * _valuePerObject;
     public bool IsMax => _resources.Count == _maxObjectsCount;
+
+    public event Action OnStuckChange;
 
     private void Start()
     {
@@ -58,6 +61,8 @@ public class ResourceStack : MonoBehaviour
 
         _stuckValue += stuckValue;
 
+        OnStuckChange?.Invoke();
+
         SpawnStack();
 
         return 0;
@@ -71,6 +76,8 @@ public class ResourceStack : MonoBehaviour
         }
 
         _stuckValue = newStackValue;
+
+        OnStuckChange?.Invoke();
 
         SpawnStack();
 
@@ -117,55 +124,13 @@ public class ResourceStack : MonoBehaviour
         }
     }
 
-    //public bool TryStack(int stuckValue)
-    //{
-    //    ClearStack();
-
-    //    _stuckValue = stuckValue;
-
-    //    int objectCountToSpawn = _stuckValue / _valuePerObject;
-    //    objectCountToSpawn = Mathf.Clamp(objectCountToSpawn, 0, _maxStackCount);
-
-    //    if (objectCountToSpawn <= 0)
-    //    {
-    //        return false;
-    //    }
-
-    //    _height = 1;
-    //    bool finished = false;
-    //    for (int y = 0; y < _height; y++)
-    //    {
-    //        for (int z = 0; z < _rows; z++)
-    //        {
-    //            for (int x = 0; x < _colls; x++)
-    //            {
-    //                if (objectCountToSpawn <= 0)
-    //                {
-    //                    finished = true;
-    //                    break;
-    //                }
-
-    //                var position = _grid.GetCellCenterWorld(new Vector3Int(x, y, z));
-    //                _resources.Add(Instantiate(_prefab, position, Quaternion.identity, this.transform));
-
-    //                objectCountToSpawn--;
-    //            }
-    //        }
-
-    //        if(!finished)
-    //        {
-    //            _height++;
-    //        }
-    //    }
-
-    //    return true;
-    //}
-
     public void ClearStack()
     {
         DestroySpawnedStack();
 
         _stuckValue = 0;
+
+        OnStuckChange?.Invoke();
     }
 
     private void DestroySpawnedStack()

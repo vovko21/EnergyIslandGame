@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class StockMarket : MonoBehaviour
+public class StockMarket : SingletonMonobehaviour<StockMarket>
 {
     [Header("EnergyPrice")]
     #region ReadOnly
@@ -89,11 +89,11 @@ public class StockMarket : MonoBehaviour
 
         if (IsLocalTrendPositive(trend))
         {
-            SetEnergyPrive(_energyPrice + offset);
+            SetEnergyPrice(_energyPrice + offset);
         }
         else
         {
-            SetEnergyPrive(_energyPrice - offset);
+            SetEnergyPrice(_energyPrice - offset);
         }
     }
 
@@ -127,7 +127,7 @@ public class StockMarket : MonoBehaviour
         return true;
     }
 
-    private void SetEnergyPrive(float newPrice)
+    private void SetEnergyPrice(float newPrice)
     {
         _energyPrice = Mathf.Clamp(newPrice, _energyMinPrice, _energyMaxPrice);
     }

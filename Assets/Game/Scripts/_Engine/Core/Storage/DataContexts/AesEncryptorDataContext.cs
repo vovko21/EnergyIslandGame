@@ -13,9 +13,20 @@ public class AesEncryptorDataContext : DataContext
 
     public override async System.Threading.Tasks.Task SaveAsync()
     {
-        using FileStream stream = File.Create(_filepath);
-        _data.Initialized = true;
-        await EncryptAsync(stream);
+        if (!File.Exists(_filepath))
+        {
+            using (FileStream stream = File.Create(_filepath))
+            {
+                await EncryptAsync(stream);
+            }
+        }
+        else
+        {
+            using (FileStream stream = File.OpenWrite(_filepath))
+            {
+                await EncryptAsync(stream);
+            }
+        }
     }
 
     public override async System.Threading.Tasks.Task LoadAsync()

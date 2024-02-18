@@ -5,7 +5,7 @@ public class DollarsUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textMeshPro;
 
-    private void Start()
+    private void OnEnable()
     {
         ProgressionManager.Instance.Wallet.OnDollarsChanged += OnDollarsChanged;
 
@@ -20,7 +20,7 @@ public class DollarsUI : MonoBehaviour
     private void OnDollarsChanged(int value)
     {
         string[] suffixes = { "", "K", "M", "B", "T" };
-
+        
         int suffixIndex = 0;
         float num = value;
         while (Mathf.Abs(num) >= 1000 && suffixIndex < suffixes.Length - 1)

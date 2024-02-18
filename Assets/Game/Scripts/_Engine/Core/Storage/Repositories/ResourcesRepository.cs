@@ -8,7 +8,7 @@ public class ResourcesRepository : Repository<ResourceData>
 
     public override ResourceData Add(ResourceData entity)
     {
-        entity.id = _context.Data.Resources.Count.ToString();
+        entity.id = entity.type.ToString();
         _context.Data.Resources.Add(entity);
         return entity;
     }
