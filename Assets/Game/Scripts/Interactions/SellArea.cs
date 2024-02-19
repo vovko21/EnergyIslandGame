@@ -5,11 +5,11 @@ public class SellArea : ProgressArea
     [Header("Sell settings")]
     [SerializeField] private ResourceStack _stack;
 
-    protected override void ContactWithPlayer(Collider other)
+    protected override void ContactWithPlayer(Player player)
     {
         if(_stack.StuckValue > 0)
         {
-            base.ContactWithPlayer(other);
+            base.ContactWithPlayer(player);
         }
     }
 

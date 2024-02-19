@@ -12,19 +12,21 @@ public class TimeManager : SingletonMonobehaviour<TimeManager>
     private InGameDateTime _currentDateTime;
 
     [Header("Tick settings")]
-    [SerializeField] private int _tickMinutesIncrease = 10;
+    [SerializeField] private int _minutesPerTick = 10;
     [SerializeField] private float _timeBetweenTicks = 1;
     private float _currentTimeBetweenTicks = 0;
 
     public event System.Action<InGameDateTime> OnDateTimeChanged;
 
     public InGameDateTime CurrentDateTime => _currentDateTime;
+    public int MinutesPerTick => _minutesPerTick;
+    public float TimeBetweenTicks => _timeBetweenTicks;
 
     protected override void Awake()
     {
         base.Awake();
 
-        _currentDateTime = new InGameDateTime(_dateInMonth, _season - 1, _year, _hour, _tickMinutesIncrease * 10);
+        _currentDateTime = new InGameDateTime(_dateInMonth, _season - 1, _year, _hour, _minutesPerTick * 10);
     }
 
     private void Start()
@@ -50,7 +52,7 @@ public class TimeManager : SingletonMonobehaviour<TimeManager>
 
     private void AdvanceTime()
     {
-        _currentDateTime.AdvanceMinutes(_tickMinutesIncrease);
+        _currentDateTime.AdvanceMinutes(_minutesPerTick);
 
         OnDateTimeChanged?.Invoke(_currentDateTime);
     }

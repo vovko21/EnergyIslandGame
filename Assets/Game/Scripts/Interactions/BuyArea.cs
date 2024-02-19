@@ -17,7 +17,7 @@ public abstract class BuyArea : InteractableArea
     public int ValueLeft => _valueToSpend - _spended;
     public float SpendRate => SPEND_RATE;
 
-    protected override void ContactWithPlayer(Collider other)
+    protected override void ContactWithPlayer(Player other)
     {
         if (_isSuccessed) return;
 
@@ -29,7 +29,7 @@ public abstract class BuyArea : InteractableArea
         }
     }
 
-    protected override void PlayerExit(Collider other)
+    protected override void PlayerExit(Player other)
     {
         if (_coroutine == null) return;
 

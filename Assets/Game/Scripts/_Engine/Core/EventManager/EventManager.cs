@@ -18,20 +18,20 @@ public struct GameEvent
 
 public static class EventManager
 {
-    private static Dictionary<Type, List<EventListenerBase>> _subscribersList;
+    private static Dictionary<Type, List<IEventListenerBase>> _subscribersList;
 
     static EventManager()
     {
-        _subscribersList = new Dictionary<Type, List<EventListenerBase>>();
+        _subscribersList = new Dictionary<Type, List<IEventListenerBase>>();
     }
 
-    public static void AddListener<Event>(EventListener<Event> listener) where Event : struct
+    public static void AddListener<Event>(IEventListener<Event> listener) where Event : struct
     {
         Type eventType = typeof(Event);
 
         if (!_subscribersList.ContainsKey(eventType))
         {
-            _subscribersList[eventType] = new List<EventListenerBase>();
+            _subscribersList[eventType] = new List<IEventListenerBase>();
         }
 
         if (!SubscriptionExists(eventType, listener))
@@ -40,7 +40,7 @@ public static class EventManager
         }
     }
 
-    public static void RemoveListener<Event>(EventListener<Event> listener) where Event : struct
+    public static void RemoveListener<Event>(IEventListener<Event> listener) where Event : struct
     {
         Type eventType = typeof(Event);
 
@@ -49,7 +49,7 @@ public static class EventManager
             return;
         }
 
-        List<EventListenerBase> subscriberList = _subscribersList[eventType];
+        List<IEventListenerBase> subscriberList = _subscribersList[eventType];
 
         for (int i = subscriberList.Count - 1; i >= 0; i--)
         {
@@ -69,19 +69,19 @@ public static class EventManager
 
     public static void TriggerEvent<Event>(Event newEvent) where Event : struct
     {
-        List<EventListenerBase> list;
+        List<IEventListenerBase> list;
         if (!_subscribersList.TryGetValue(typeof(Event), out list))
             return;
 
         for (int i = list.Count - 1; i >= 0; i--)
         {
-            (list[i] as EventListener<Event>).OnEvent(newEvent);
+            (list[i] as IEventListener<Event>).OnEvent(newEvent);
         }
     }
 
-    private static bool SubscriptionExists(Type type, EventListenerBase receiver)
+    private static bool SubscriptionExists(Type type, IEventListenerBase receiver)
     {
-        List<EventListenerBase> receivers;
+        List<IEventListenerBase> receivers;
 
         if (!_subscribersList.TryGetValue(type, out receivers)) return false;
 
@@ -104,20 +104,20 @@ public static class EventRegister
 {
     public delegate void Delegate<T>(T eventType);
 
-    public static void StartListeningEvent<EventType>(this EventListener<EventType> caller) where EventType : struct
+    public static void StartListeningEvent<EventType>(this IEventListener<EventType> caller) where EventType : struct
     {
         EventManager.AddListener<EventType>(caller);
     }
 
-    public static void StopListeningEvent<EventType>(this EventListener<EventType> caller) where EventType : struct
+    public static void StopListeningEvent<EventType>(this IEventListener<EventType> caller) where EventType : struct
     {
         EventManager.RemoveListener<EventType>(caller);
     }
 }
 
-public interface EventListenerBase { };
+public interface IEventListenerBase { };
 
-public interface EventListener<T> : EventListenerBase
+public interface IEventListener<T> : IEventListenerBase
 {
     void OnEvent(T eventType);
 }

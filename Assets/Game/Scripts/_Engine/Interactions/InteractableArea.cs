@@ -4,17 +4,23 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public abstract class InteractableArea : MonoBehaviour
 {
-    protected bool _isPlayerIn;
+    protected bool _isCharacterIn;
 
-    public event Action<bool> OnPlayerTrigger;
+    public event Action<bool> OnCharacterTrigger;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(Constants.PLAYER_TAG))
         {
-            _isPlayerIn = true;
-            ContactWithPlayer(other);
-            OnPlayerTrigger?.Invoke(_isPlayerIn);
+            _isCharacterIn = true;
+            ContactWithPlayer(other.GetComponent<Player>());
+            OnCharacterTrigger?.Invoke(_isCharacterIn);
+        }
+        if(other.CompareTag(Constants.WORKER_TAG))
+        {
+            _isCharacterIn = true;
+            ContactWithWorker(other.GetComponent<Worker>());
+            OnCharacterTrigger?.Invoke(_isCharacterIn);
         }
     }
 
@@ -22,12 +28,21 @@ public abstract class InteractableArea : MonoBehaviour
     {
         if (other.CompareTag(Constants.PLAYER_TAG))
         {
-            _isPlayerIn = false;
-            PlayerExit(other);
-            OnPlayerTrigger?.Invoke(_isPlayerIn);
+            _isCharacterIn = false;
+            PlayerExit(other.GetComponent<Player>());
+            OnCharacterTrigger?.Invoke(_isCharacterIn);
+        }
+        if (other.CompareTag(Constants.WORKER_TAG))
+        {
+            _isCharacterIn = false;
+            WorkerExit(other.GetComponent<Worker>());
+            OnCharacterTrigger?.Invoke(_isCharacterIn);
         }
     }
 
-    protected abstract void ContactWithPlayer(Collider other);
-    protected abstract void PlayerExit(Collider other);
+    protected virtual void ContactWithPlayer(Player player) { }
+    protected virtual void PlayerExit(Player player) { }
+
+    protected virtual void ContactWithWorker(Worker worker) { }
+    protected virtual void WorkerExit(Worker worker) { }
 }

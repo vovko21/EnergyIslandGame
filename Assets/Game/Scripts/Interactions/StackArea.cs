@@ -6,34 +6,53 @@ public class StackArea : InteractableArea
     [SerializeField] private ResourceStack _energyStack;
     [SerializeField] private int _stackPerTick = 10;
 
-    private const float RATE = 0.25f;
-    private IEnumerator _coroutine;
+    private const float RATE = 0.1f;
+    private IEnumerator _playerCoroutine;
+    private IEnumerator _workerCoroutine;
 
     public float Rate => RATE;
 
-    protected override void ContactWithPlayer(Collider other)
+    protected override void ContactWithPlayer(Player player)
     {
-        if (_coroutine == null)
+        if (_playerCoroutine == null)
         {
-            _coroutine = StartStack(other.GetComponent<Player>());
+            _playerCoroutine = StartStack(player.CarrySystem);
 
-            StartCoroutine(_coroutine);
+            StartCoroutine(_playerCoroutine);
         }
     }
 
-    protected override void PlayerExit(Collider other)
+    protected override void PlayerExit(Player player)
     {
-        if (_coroutine == null) return;
+        if (_playerCoroutine == null) return;
 
-        StopCoroutine(_coroutine);
-        _coroutine = null;
+        StopCoroutine(_playerCoroutine);
+        _playerCoroutine = null;
     }
 
-    private IEnumerator StartStack(Player player)
+    protected override void ContactWithWorker(Worker worker)
+    {
+        if (_workerCoroutine == null)
+        {
+            _workerCoroutine = StartStack(worker.CarrySystem);
+
+            StartCoroutine(_workerCoroutine);
+        }
+    }
+
+    protected override void WorkerExit(Worker worker)
+    {
+        if (_workerCoroutine == null) return;
+
+        StopCoroutine(_workerCoroutine);
+        _workerCoroutine = null;
+    }
+
+    private IEnumerator StartStack(CarrySystem carrySystem)
     {
         bool isFinished = false;
 
-        var energyToStack = player.CarrySystem.StuckValue;
+        var energyToStack = carrySystem.StuckValue;
 
         if (energyToStack <= 0)
         {
@@ -43,17 +62,17 @@ public class StackArea : InteractableArea
         while (!isFinished)
         {
             yield return new WaitForSeconds(RATE);
-
+            
             energyToStack -= _stackPerTick;
 
-            player.CarrySystem.UpdateEnergyStack(energyToStack);
+            carrySystem.UpdateEnergyStack(energyToStack);
 
             _energyStack.AddToStuck(_stackPerTick);
 
             if (energyToStack <= 0)
             {
                 isFinished = true;
-                player.CarrySystem.ClearAll();
+                carrySystem.ClearAll();
             }
         }
     }

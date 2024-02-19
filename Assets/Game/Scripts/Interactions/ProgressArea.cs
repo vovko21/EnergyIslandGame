@@ -12,7 +12,7 @@ public class ProgressArea : InteractableArea
     public float TimeLeft => _timeLeft;
     public float TimeToProgress => _timeToProgress;
 
-    protected override void ContactWithPlayer(Collider other)
+    protected override void ContactWithPlayer(Player player)
     {
         if (_coroutine == null)
         {
@@ -22,7 +22,7 @@ public class ProgressArea : InteractableArea
         }
     }
 
-    protected override void PlayerExit(Collider other)
+    protected override void PlayerExit(Player player)
     {
         if (_coroutine == null) return;
 

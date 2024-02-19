@@ -11,17 +11,17 @@ public class ExchangeDollarsArea : InteractableArea
 
     public float ChangeRate => CHANGE_RATE;
 
-    protected override void ContactWithPlayer(Collider other)
+    protected override void ContactWithPlayer(Player player)
     {
         if (_coroutine == null)
         {
-            _coroutine = StartTakingPrice(other.GetComponent<Player>());
+            _coroutine = StartTakingPrice(player);
 
             StartCoroutine(_coroutine);
         }
     }
 
-    protected override void PlayerExit(Collider other)
+    protected override void PlayerExit(Player player)
     {
         if (_coroutine == null) return;
 
