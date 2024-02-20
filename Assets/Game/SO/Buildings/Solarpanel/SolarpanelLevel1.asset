@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e36ef230eec9394e98e1a3a451984a5, type: 3}
-  m_Name: PlayerData
+  m_Script: {fileID: 11500000, guid: 95ea907f806b91144a1d9c90b8746b87, type: 3}
+  m_Name: SolarpanelLevel1
   m_EditorClassIdentifier: 
-  <Speed>k__BackingField: 6
-  <RotationSpeed>k__BackingField: 12
+  <ProductionPerGameHour>k__BackingField: 15
+  <MaxSupply>k__BackingField: 100

@@ -58,7 +58,7 @@ public class StorageService : SingletonMonobehaviour<StorageService>
         await _unitOfWork.LoadAsync();
     }
 
-    private async void OnApplicationQuit()
+    public async System.Threading.Tasks.Task SaveDataAsync()
     {
         Debug.Log("Save");
 

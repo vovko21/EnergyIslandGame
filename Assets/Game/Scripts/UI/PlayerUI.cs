@@ -16,6 +16,8 @@ public class PlayerUI : MonoBehaviour
         _camera = Camera.main;
 
         _textMeshPro.gameObject.SetActive(false);
+
+        _textMeshPro.transform.LookAt(_camera.transform, Vector3.up);
     }
 
     private void LateUpdate()

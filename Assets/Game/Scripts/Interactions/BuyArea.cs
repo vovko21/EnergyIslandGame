@@ -4,13 +4,13 @@ using UnityEngine;
 public abstract class BuyArea : InteractableArea
 {
     [Header("Price parameters")]
-    [SerializeField] private int _valueToSpend;
-    [SerializeField] private int _spendPerTick;
+    [SerializeField] protected int _valueToSpend;
+    [SerializeField] protected int _spendPerTick;
 
-    private const float SPEND_RATE = 0.1f;
+    protected const float SPEND_RATE = 0.1f;
 
-    private int _spended;
-    private bool _isSuccessed;
+    protected int _spended;
+    protected bool _isSuccessed;
     private IEnumerator _coroutine;
 
     public int ValueToSpend => _valueToSpend;
@@ -19,8 +19,6 @@ public abstract class BuyArea : InteractableArea
 
     protected override void ContactWithPlayer(Player other)
     {
-        if (_isSuccessed) return;
-
         if (_coroutine == null)
         {
             _coroutine = StartTakePrice();
@@ -73,6 +71,8 @@ public abstract class BuyArea : InteractableArea
         if (_isSuccessed)
         {
             OnBought();
+            _isSuccessed = false;
+            _spended = 0;
         }
     }
 

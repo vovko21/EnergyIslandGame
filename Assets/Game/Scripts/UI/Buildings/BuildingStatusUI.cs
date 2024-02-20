@@ -19,6 +19,10 @@ public class BuildingStatusUI : MonoBehaviour
         _timeToProduce = (60f / TimeManager.Instance.MinutesPerTick) * TimeManager.Instance.TimeBetweenTicks;
 
         _maxStatus.SetActive(false);
+
+        var camera = Camera.main;
+
+        transform.LookAt(camera.transform, Vector3.up);
     }
 
     protected virtual void Update()
@@ -26,6 +30,10 @@ public class BuildingStatusUI : MonoBehaviour
         if(_building.Status == BuildingStatus.Producing)
         {
             UpdateProgress();
+        }
+        else
+        {
+            _timePassed = 0;
         }
 
         if (_building.Status == BuildingStatus.MaxedOut)
@@ -48,7 +56,7 @@ public class BuildingStatusUI : MonoBehaviour
 
         if (_timePassed >= _timeToProduce)
         {
-            _timePassed -= _timeToProduce;
+            _timePassed = 0;
         }
     }
 }

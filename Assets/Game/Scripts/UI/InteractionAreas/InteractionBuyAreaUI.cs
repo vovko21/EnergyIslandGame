@@ -54,14 +54,6 @@ public class InteractionBuyAreaUI : InteractionAreaUI
             }
 
             _progressBackground.transform.localPosition = CurrentPosition();
-
-            //float time = 0.25f;
-            //while (time >= 0)
-            //{
-            //    _progressBackground.transform.localPosition = (_progressBackground.transform.localPosition - CurrentPosition()) / time * Time.deltaTime;
-            //    time -= Time.deltaTime;
-            //    yield return null;
-            //}
         }
     }
 

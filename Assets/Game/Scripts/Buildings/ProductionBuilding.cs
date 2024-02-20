@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public struct ProducedEvent
@@ -15,9 +16,14 @@ public enum BuildingStatus
 
 public class ProductionBuilding : MonoBehaviour
 {
-    [Header("Production settings")]
-    [SerializeField] protected int _productionPerGameHour;
-    [SerializeField] protected int _maxSupply;
+    [Header("Stats settings")]
+    [SerializeField] protected List<BuildingSO> _levels;
+
+    [Header("Gather settings")]
+    [SerializeField] protected int _minGatherAmount;
+    [SerializeField] protected Transform _getherPoint;
+
+    [Header("Production Info")]
     #region ReadOnly
 #if UNITY_EDITOR
     [ReadOnly]
@@ -32,19 +38,23 @@ public class ProductionBuilding : MonoBehaviour
 #endif
     #endregion  
     protected BuildingStatus _status;
-
-    [Header("Gather settings")]
-    [SerializeField] protected int _minGatherAmount;
-    [SerializeField] protected Transform _getherPoint;
-
+    #region ReadOnly
+#if UNITY_EDITOR
+    [ReadOnly]
+    [SerializeField]
+#endif
+    #endregion  
+    protected int _currentLevelIndex;
     protected InGameDateTime _lastHourTime;
 
     public int Produced => _produced;
     public int MinGatherAmount => _minGatherAmount;
-    public int MaxSupply => _maxSupply;
     public Transform GatherPoint => _getherPoint;
     public BuildingStatus Status => _status;
-    public InGameDateTime LastHourTime => _lastHourTime;
+    public BuildingSO CurrentStats => _levels[_currentLevelIndex];
+    public bool IsMaxLevel => _levels.Count - 1 == _currentLevelIndex;
+    public int CurrentLevelIndex => _currentLevelIndex;
+    public int LevelsCount => _levels.Count;
 
     private void Awake()
     {
@@ -53,42 +63,60 @@ public class ProductionBuilding : MonoBehaviour
 
     private void OnEnable()
     {
+        if (TimeManager.Instance == null)
+        {
+            return;
+        }
+
         _lastHourTime = TimeManager.Instance.CurrentDateTime;
+        _lastHourTime.AdvanceMinutes(60);
         TimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
     }
 
     private void OnDisable()
     {
+        if (TimeManager.Instance == null)
+        {
+            return;
+        }
+
         TimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
     }
 
     private void OnDateTimeChanged(InGameDateTime dateTime)
     {
-        if (_lastHourTime.Hour != dateTime.Hour)
+        if ((_lastHourTime.Hour + _lastHourTime.Minute / 60f) == (dateTime.Hour + dateTime.Minute / 60f))
         {
-            _lastHourTime = dateTime;
+            _lastHourTime.AdvanceMinutes(60);
             OnHourPassed();
         }
     }
 
     protected virtual void OnHourPassed()
     {
-        if (_produced >= _maxSupply)
+        Produce();
+
+        if (_produced >= CurrentStats.MaxSupply)
         {
             _status = BuildingStatus.MaxedOut;
             return;
         }
-
-        Produce();
     }
 
     protected void Produce()
     {
-        if (_produced >= _maxSupply) return;
+        if (_produced >= CurrentStats.MaxSupply) return;
 
-        _produced += _productionPerGameHour;
+        _produced += CurrentStats.ProductionPerGameHour;
 
         EventManager.TriggerEvent(new ProducedEvent() { building = this });
+    }
+
+    public virtual void Upgrade()
+    {
+        if (IsMaxLevel) return;
+
+        _currentLevelIndex++;
     }
 
     public virtual void Gather(int overflow)

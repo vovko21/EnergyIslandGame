@@ -50,7 +50,7 @@ public class SceneSetup : MonoBehaviour
 
         _boat.StartWay();
 
-        yield return new WaitForSeconds(12);
+        yield return new WaitForSeconds(6);
 
         _ui.FadeIn();
 
@@ -63,5 +63,7 @@ public class SceneSetup : MonoBehaviour
         _ui.ShowUI();
 
         _ui.FadeOut();
+
+        StorageService.Instance.SaveDataAsync();
     }
 }
