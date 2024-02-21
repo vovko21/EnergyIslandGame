@@ -9,30 +9,29 @@ public class UpgradeArea : BuyArea
 
     private void Awake()
     {
-        if(_building.LevelsCount > _prices.Count)
+        if(_building.LevelsCount > _prices.Count + 1)
         {
             Debug.LogError("Building levels count more then upgrade area");
         }
 
-        MaxLevelCheck();
+        if(_building.IsMaxLevel) Destroy(this.gameObject);
 
         _valueToSpend = _prices[0]; 
     }
 
-    protected override void OnBought()
+    protected override void Bought()
     {
-        MaxLevelCheck();
-
         _building.Upgrade();
 
-        _valueToSpend = _prices[_building.CurrentLevelIndex];
-    }
-
-    private void MaxLevelCheck()
-    {
-        if(_building.IsMaxLevel == true)
+        if(!_building.IsMaxLevel)
         {
-            Destroy(gameObject);
+            _valueToSpend = _prices[_building.CurrentLevelIndex];
         }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
+        EventManager.TriggerEvent(new BuildingUpdatedEvent() { productionBuilding = _building, upgraded = true });
     }
 }

@@ -14,10 +14,29 @@ public enum BuildingStatus
     MaxedOut = 3
 }
 
+public class ProductionStats
+{
+    private BuildingStatsSO _stats;
+    private float _coefficient = 1;
+
+    public int ProductionPerGameHour => (int)(_stats.ProductionPerGameHour * _coefficient);
+    public int MaxSupply => _stats.MaxSupply;
+
+    public ProductionStats(BuildingStatsSO stats)
+    {
+        _stats = stats;
+    }
+
+    public void ApplyCoefficient(float coefficient)
+    {
+        _coefficient = coefficient;
+    }
+}
+
 public class ProductionBuilding : MonoBehaviour
 {
     [Header("Stats settings")]
-    [SerializeField] protected List<BuildingSO> _levels;
+    [SerializeField] protected List<BuildingStatsSO> _levels;
 
     [Header("Gather settings")]
     [SerializeField] protected int _minGatherAmount;
@@ -45,13 +64,15 @@ public class ProductionBuilding : MonoBehaviour
 #endif
     #endregion  
     protected int _currentLevelIndex;
-    protected InGameDateTime _lastHourTime;
 
+    protected InGameDateTime _lastHourTime;
+    protected ProductionStats _currentStats;
+
+    public ProductionStats CurrentStats => _currentStats;
     public int Produced => _produced;
     public int MinGatherAmount => _minGatherAmount;
     public Transform GatherPoint => _getherPoint;
     public BuildingStatus Status => _status;
-    public BuildingSO CurrentStats => _levels[_currentLevelIndex];
     public bool IsMaxLevel => _levels.Count - 1 == _currentLevelIndex;
     public int CurrentLevelIndex => _currentLevelIndex;
     public int LevelsCount => _levels.Count;
@@ -59,6 +80,7 @@ public class ProductionBuilding : MonoBehaviour
     private void Awake()
     {
         _status = BuildingStatus.Producing;
+        _currentStats = new ProductionStats(_levels[_currentLevelIndex]);
     }
 
     private void OnEnable()
@@ -117,6 +139,8 @@ public class ProductionBuilding : MonoBehaviour
         if (IsMaxLevel) return;
 
         _currentLevelIndex++;
+
+        _currentStats = new ProductionStats(_levels[_currentLevelIndex]);
     }
 
     public virtual void Gather(int overflow)

@@ -23,6 +23,20 @@ public class InteractionBuyAreaUI : InteractionAreaUI
         _dataText.text = _interactionBuyArea.ValueLeft.ToString();
     }
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        _interactionBuyArea.OnBought += OnBought;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        _interactionBuyArea.OnBought -= OnBought;
+    }
+
     protected override void OnCharacterTrigger(bool inside)
     {
         base.OnCharacterTrigger(inside);
@@ -55,6 +69,13 @@ public class InteractionBuyAreaUI : InteractionAreaUI
 
             _progressBackground.transform.localPosition = CurrentPosition();
         }
+    }
+
+    private void OnBought()
+    {
+        _currentPosition = _startPosition;
+        _dataText.text = _interactionBuyArea.ValueToSpend.ToString();
+        _progressBackground.transform.localPosition = CurrentPosition();
     }
 
     private Vector3 CurrentPosition()

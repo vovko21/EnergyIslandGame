@@ -14,15 +14,18 @@ public class BuildingStatusUI : MonoBehaviour
     protected float _progressFill;
     protected float _timePassed;
 
+    private void OnEnable()
+    {
+        var camera = Camera.main;
+
+        transform.LookAt(camera.transform, Vector3.up);
+    }
+
     protected virtual void Start()
     {
         _timeToProduce = (60f / TimeManager.Instance.MinutesPerTick) * TimeManager.Instance.TimeBetweenTicks;
 
         _maxStatus.SetActive(false);
-
-        var camera = Camera.main;
-
-        transform.LookAt(camera.transform, Vector3.up);
     }
 
     protected virtual void Update()

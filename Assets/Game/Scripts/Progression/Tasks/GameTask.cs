@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GameTask : MonoBehaviour
+public class GameTask
 {
     [Header("Base properties")]
     [SerializeField] private string _name;

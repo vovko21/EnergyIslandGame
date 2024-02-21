@@ -1,10 +1,8 @@
-using System.Collections;
 using UnityEngine;
 
 public class TaskManager : MonoBehaviour
 {
     [SerializeField] private MoveByPoints _target;
-    [SerializeField] private Transform _targetTransform;
 
     private GameTask _currentTask;
     private InGameDateTime _lastTime;

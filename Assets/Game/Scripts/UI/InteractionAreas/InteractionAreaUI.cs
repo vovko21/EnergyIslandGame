@@ -10,7 +10,7 @@ public class InteractionAreaUI : MonoBehaviour
 
     private Vector3 _defaultScale;
 
-    private void Start()
+    private void Awake()
     {
         Initialize(); 
     }
@@ -20,12 +20,12 @@ public class InteractionAreaUI : MonoBehaviour
         _defaultScale = transform.localScale;
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         _interactionArea.OnCharacterTrigger += OnCharacterTrigger;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         _interactionArea.OnCharacterTrigger -= OnCharacterTrigger;
     }

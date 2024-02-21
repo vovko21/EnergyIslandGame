@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ public abstract class BuyArea : InteractableArea
     public int ValueToSpend => _valueToSpend;
     public int ValueLeft => _valueToSpend - _spended;
     public float SpendRate => SPEND_RATE;
+
+    public event Action OnBought;
 
     protected override void ContactWithPlayer(Player other)
     {
@@ -70,11 +73,12 @@ public abstract class BuyArea : InteractableArea
 
         if (_isSuccessed)
         {
-            OnBought();
+            Bought();
+            OnBought?.Invoke();
             _isSuccessed = false;
             _spended = 0;
         }
     }
 
-    protected abstract void OnBought();
+    protected abstract void Bought();
 }

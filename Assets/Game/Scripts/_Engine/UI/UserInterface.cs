@@ -9,15 +9,21 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private float _timeToFade;
 
     public bool IsUIHiden { get; private set; }
+    public bool IsJoystickHidden { get; private set; }
 
     private void Start()
     {
         _canvasGroup.gameObject.SetActive(true);
+
+        CameraController.Instance.OnFollowTargets += OnCameraFollowTargets;
     }
 
     private void Update()
     {
-        UIEvents.JoystickInput = _vareiableJoystick.Direction;
+        if (!IsJoystickHidden)
+        {
+            UIEvents.JoystickInput = _vareiableJoystick.Direction;
+        }       
     }
 
     private IEnumerator StartFadeIn()
@@ -58,6 +64,22 @@ public class UserInterface : MonoBehaviour
                 yield return null;
             }
         }
+    }
+
+    private void OnCameraFollowTargets(bool condition)
+    {
+        if (condition)
+        {
+            _vareiableJoystick.gameObject.SetActive(false);
+            IsJoystickHidden = true;
+        }
+        else
+        {
+            _vareiableJoystick.gameObject.SetActive(true);
+            IsJoystickHidden = false;
+        }
+
+        UIEvents.JoystickInput = Vector2.zero;
     }
 
     public void FadeIn()
