@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TimeManager : SingletonMonobehaviour<TimeManager>
 {
@@ -290,6 +292,18 @@ public struct InGameDateTime
         return $"{adjustedHour.ToString("D2")}:{_minutes.ToString("D2")} {AmPm}";
     }
 
+    #endregion
+
+    #region Operators
+    public static bool operator ==(InGameDateTime a, InGameDateTime b)
+    {
+        return (a.Year == b.Year && a.Date == b.Date && a.Hour == b.Hour && a.Minute == b.Minute);
+    }
+
+    public static bool operator !=(InGameDateTime a, InGameDateTime b)
+    {
+        return !(a.Year == b.Year && a.Date == b.Date && a.Hour == b.Hour && a.Minute == b.Minute);
+    }
     #endregion
 }
 

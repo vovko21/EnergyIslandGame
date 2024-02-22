@@ -25,14 +25,19 @@ public class TaskManager : MonoBehaviour
     {
         if (_lastTime.Hour != dateTime.Hour)
         {
-            _currentTask = GenerateTask();
-
-            _target.StartWay();
-
-            CameraController.Instance.FollowEvent();
+            TriggerEvent();
 
             _lastTime = dateTime;
         }
+    }
+
+    public void TriggerEvent()
+    {
+        _currentTask = GenerateTask();
+
+        _target.StartWay();
+
+        CameraController.Instance.FollowEvent();
     }
 
     private void OnTargetFinished()
@@ -42,7 +47,7 @@ public class TaskManager : MonoBehaviour
 
     private GameTask GenerateTask()
     {
-        var targetProgress = Random.Range(1, 2);
+        var targetProgress = UnityEngine.Random.Range(1, 2);
         return new GameTask("1", "2", targetProgress);
     }
 }

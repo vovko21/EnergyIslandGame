@@ -12,9 +12,9 @@ public class SolarpanelStatusUI : BuildingStatusUI
         _nightStatus.SetActive(false);
     }
 
-    protected override void Update()
+    protected override void OnBuildingStatusChanged(BuildingStatus status)
     {
-        base.Update();
+        base.OnBuildingStatusChanged(status);
 
         if (_building.Status == BuildingStatus.NotProducing)
         {

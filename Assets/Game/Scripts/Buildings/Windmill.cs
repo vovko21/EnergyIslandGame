@@ -7,22 +7,16 @@ public class Windmill : ProductionBuilding
 
     protected override void OnHourPassed()
     {
-        if (_produced >= CurrentStats.MaxSupply)
-        {
-            _status = BuildingStatus.MaxedOut;
-            return;
-        }
-
         if (WeatherSystem.Instance.WindSpeedKmh < _windThreashold)
         {
-            _status = BuildingStatus.NotProducing;
+            Status = BuildingStatus.NotProducing;
         }
         else
         {
-            _status = BuildingStatus.Producing;
+            Status = BuildingStatus.Producing;
         }
 
-        if (_status == BuildingStatus.Producing)
+        if (Status == BuildingStatus.Producing)
         {
             Produce();
         }

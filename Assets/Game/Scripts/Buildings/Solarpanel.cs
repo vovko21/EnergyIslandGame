@@ -2,22 +2,16 @@ public class Solarpanel : ProductionBuilding
 {
     protected override void OnHourPassed()
     {
-        if (_produced >= CurrentStats.MaxSupply)
+        if (_nextHourTime.IsNight())
         {
-            _status = BuildingStatus.MaxedOut;
-            return;
-        }
-
-        if (_lastHourTime.IsNight())
-        {
-            _status = BuildingStatus.NotProducing;
+            Status = BuildingStatus.NotProducing;
         }
         else
         {
-            _status = BuildingStatus.Producing;
+            Status = BuildingStatus.Producing;
         }
 
-        if (_status == BuildingStatus.Producing)
+        if (Status == BuildingStatus.Producing)
         {
             Produce();
         }

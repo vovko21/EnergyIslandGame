@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ProductionPerGameHour>k__BackingField: 30
   <MaxSupply>k__BackingField: 200
+  <MaintainingTime>k__BackingField: 2
