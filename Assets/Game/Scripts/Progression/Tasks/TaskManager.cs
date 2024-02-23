@@ -9,16 +9,16 @@ public class TaskManager : MonoBehaviour
 
     private void Start()
     {
-        _lastTime = TimeManager.Instance.CurrentDateTime;
+        _lastTime = GameTimeManager.Instance.CurrentDateTime;
 
         _target.OnFinished += OnTargetFinished;
-        TimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
+        GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
     }
 
     private void OnDisable()
     {
         _target.OnFinished -= OnTargetFinished;
-        TimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
+        GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
     }
 
     private void OnDateTimeChanged(InGameDateTime dateTime)

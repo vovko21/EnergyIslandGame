@@ -2,17 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct ProducedEvent
-{
-    public ProductionBuilding building;
-}
-
 public enum BuildingStatus
 {
     Producing = 0,
     NotProducing = 1,
     Maintenance = 2,
-    MaxedOut = 3
+    MaxedOut = 3,
+    Broken = 4
 }
 
 public class ProductionStats
@@ -96,24 +92,24 @@ public class ProductionBuilding : MonoBehaviour
 
     private void OnEnable()
     {
-        if (TimeManager.Instance == null)
+        if (GameTimeManager.Instance == null)
         {
             return;
         }
 
-        _nextHourTime = TimeManager.Instance.CurrentDateTime;
+        _nextHourTime = GameTimeManager.Instance.CurrentDateTime;
         _nextHourTime.AdvanceMinutes(60);
-        TimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
+        GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
     }
 
     private void OnDisable()
     {
-        if (TimeManager.Instance == null)
+        if (GameTimeManager.Instance == null)
         {
             return;
         }
 
-        TimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
+        GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
     }
 
     private void Start()
@@ -125,6 +121,7 @@ public class ProductionBuilding : MonoBehaviour
     {
         if (_nextHourTime == dateTime)
         {
+            if (Status == BuildingStatus.Broken) return;
             OnHourPassed();
         }
     }
@@ -150,8 +147,6 @@ public class ProductionBuilding : MonoBehaviour
         _produced += CurrentStats.ProductionPerGameHour;
 
         Status = BuildingStatus.Maintenance;
-
-        EventManager.TriggerEvent(new ProducedEvent() { building = this });
     }
 
     public virtual void Upgrade()
@@ -185,7 +180,19 @@ public class ProductionBuilding : MonoBehaviour
             return;
         }
 
-        _nextHourTime = TimeManager.Instance.CurrentDateTime;
+        _nextHourTime = GameTimeManager.Instance.CurrentDateTime;
+        _nextHourTime.AdvanceMinutes(60);
+        Status = BuildingStatus.Producing;
+    }
+
+    public void Brake()
+    {
+        Status = BuildingStatus.Broken;
+    }
+
+    public void Fix()
+    {
+        _nextHourTime = GameTimeManager.Instance.CurrentDateTime;
         _nextHourTime.AdvanceMinutes(60);
         Status = BuildingStatus.Producing;
     }

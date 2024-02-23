@@ -32,17 +32,17 @@ public class StockMarket : SingletonMonobehaviour<StockMarket>
     private void Start()
     {
         Initialize();
-        TimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
+        GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
     }
 
     private void OnDisable()
     {
-        TimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
+        GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
     }
 
     private void Initialize()
     {
-        _lastDay = TimeManager.Instance.CurrentDateTime;
+        _lastDay = GameTimeManager.Instance.CurrentDateTime;
         _energyPrice = AveragePrice;
     }
 

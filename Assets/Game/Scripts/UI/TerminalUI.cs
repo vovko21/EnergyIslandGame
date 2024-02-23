@@ -9,7 +9,7 @@ public class TerminalUI : MonoBehaviour
 
     private void Start()
     {
-        TimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
+        GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
 
         _resources.OnStuckChange += OnStuckChange;
     }
@@ -28,7 +28,6 @@ public class TerminalUI : MonoBehaviour
 
     private void OnStuckChange()
     {
-        Debug.Log(_resources.StuckValue);
         if (_resources.StuckValue == 0)
         {
             _summaryText.text = $"Summary: 0";

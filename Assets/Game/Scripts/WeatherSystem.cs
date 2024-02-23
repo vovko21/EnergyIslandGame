@@ -74,14 +74,14 @@ public class WeatherSystem : SingletonMonobehaviour<WeatherSystem>
     {
         CalculateTotalWeight();
 
-        _lastTime = TimeManager.Instance.CurrentDateTime;
+        _lastTime = GameTimeManager.Instance.CurrentDateTime;
         _lastTime.AdvanceMinutes(_minutesBetweenWeatherRand);
-        TimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
+        GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
     }
 
     private void OnDisable()
     {
-        TimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
+        GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
     }
 
     private void OnDateTimeChanged(InGameDateTime dateTime)

@@ -11,12 +11,12 @@ public class ClockUI : MonoBehaviour
     private void OnEnable()
     {
         _startingRotation = _clockFace.localEulerAngles.z;
-        TimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
+        GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
     }
 
     private void OnDisable()
     {
-        TimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
+        GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
     }
 
     private void OnDateTimeChanged(InGameDateTime dateTime)

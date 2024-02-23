@@ -8,30 +8,34 @@ public struct BuildInteration
     public List<GameObject> buildAreas;
 }
 
-public class BuildingManager : MonoBehaviour, IEventListener<BuildingUpdatedEvent>
+public class BuildingManager : SingletonMonobehaviour<BuildingManager>, IEventListener<BuildingUpdatedEvent>, IEventListener<GameEvent>
 {
     [SerializeField] private List<BuildInteration> _buildInterations;
 
-    private List<ProductionBuilding> _productionBuildings;
+    private List<ProductionBuilding> _activeBuildings;
 
     private int _currentIterationIndex = 0;
     private int _buildedOnIteration = 0;
 
     public BuildInteration CurrentIteration => _buildInterations[_currentIterationIndex];
+    public List<ProductionBuilding> ActiveBuildings => _activeBuildings;
 
-    private void Awake()
+    protected override void Awake()
     {
-        _productionBuildings = new List<ProductionBuilding>();
+        base.Awake();
+        _activeBuildings = new List<ProductionBuilding>();
     }
 
     private void OnEnable()
     {
-        this.StartListeningEvent();
+        this.StartListeningEvent<BuildingUpdatedEvent>();
+        this.StartListeningEvent<GameEvent>();
     }
 
     private void OnDisable()
     {
-        this.StopListeningEvent();
+        this.StopListeningEvent<BuildingUpdatedEvent>();
+        this.StopListeningEvent<GameEvent>();
     }
 
     private void Start()
@@ -41,11 +45,11 @@ public class BuildingManager : MonoBehaviour, IEventListener<BuildingUpdatedEven
         ActivateCurrentIteration();
     }
 
-    public void NextIteration()
+    private void NextIteration()
     {
         if (_currentIterationIndex + 1 > _buildInterations.Count - 1)
         {
-            this.StopListeningEvent();
+            this.StopListeningEvent<BuildingUpdatedEvent>();
             return;
         }
 
@@ -96,16 +100,34 @@ public class BuildingManager : MonoBehaviour, IEventListener<BuildingUpdatedEven
                 _buildedOnIteration++;
             }
 
-            _productionBuildings.Add(eventType.productionBuilding);
+            _activeBuildings.Add(eventType.productionBuilding);
         }
 
         Debug.Log("TotalProductionRate: " + TotalProductionRate());
     }
 
+    public void OnEvent(GameEvent eventType)
+    {
+        if (eventType.type != GameEventType.BuildingBroken) return;
+
+        if (_activeBuildings.Count == 0) return;
+
+        var random = Random.Range(0, _activeBuildings.Count);
+
+        _activeBuildings[random].Brake();
+
+        var list = new List<Transform>
+        {
+            _activeBuildings[random].transform
+        };
+
+        CameraController.Instance.FollowTransforms(list);
+    }
+
     public int TotalProductionRate()
     {
         int totalProduction = 0;
-        foreach (var building in _productionBuildings)
+        foreach (var building in _activeBuildings)
         {
             totalProduction += building.CurrentStats.ProductionPerGameHour;
         }

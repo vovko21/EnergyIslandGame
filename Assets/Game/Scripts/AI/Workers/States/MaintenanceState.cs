@@ -1,27 +1,31 @@
+using System.Collections;
 using UnityEngine;
 
-public class SellState : IState
+public class MaintenanceState : IState
 {
-    private CarrierWorker _worker;
+    private ServiceWorker _worker;
     private Transform _destination;
+    private float _timeToWait;
 
     private bool _pathSetted = false;
+    private IEnumerator _coroutine;
 
-    public SellState(CarrierWorker worker, Transform destination)
+    public void Initialize(ServiceWorker worker, Transform destination, float timeToWait)
     {
         _worker = worker;
         _destination = destination;
+        _timeToWait = timeToWait;
     }
 
     public void OnEnter()
     {
-        _worker.AnimationController.SetWalk();
-        _worker.Agent.SetDestination(_destination.position);
     }
 
     public void OnExit()
     {
+        _pathSetted = false;
 
+        _coroutine = null;
     }
 
     public void Tick()
@@ -43,19 +47,29 @@ public class SellState : IState
             {
                 if (!_worker.Agent.hasPath || _worker.Agent.velocity.sqrMagnitude == 0f)
                 {
-                    _worker.AnimationController.SetIdle();
-
-                    _pathSetted = false;
-
-                    _worker.NextState();
+                    if (_coroutine == null)
+                    {
+                        _coroutine = WaitCoroutine();
+                        _worker.StartCoroutine(_coroutine);
+                    }
                 }
             }
         }
     }
 
-    public Color GetGizmosColor()
+    private IEnumerator WaitCoroutine()
     {
-        return Color.green;
+        Debug.Log("wait");
+
+        _worker.AnimationController.SetIdle();
+
+        yield return new WaitForSeconds(_timeToWait);
+
+        _worker.NextState();
     }
 
+    public Color GetGizmosColor()
+    {
+        return Color.blue;
+    }
 }

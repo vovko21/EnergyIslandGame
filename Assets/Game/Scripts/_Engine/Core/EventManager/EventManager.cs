@@ -1,20 +1,20 @@
 using System;
 using System.Collections.Generic;
 
-public struct GameEvent
-{
-    public string EventName;
-    public GameEvent(string newName)
-    {
-        EventName = newName;
-    }
-    static GameEvent e;
-    public static void Trigger(string newName)
-    {
-        e.EventName = newName;
-        EventManager.TriggerEvent(e);
-    }
-}
+//public struct GameEvent
+//{
+//    public string EventName;
+//    public GameEvent(string newName)
+//    {
+//        EventName = newName;
+//    }
+//    static GameEvent e;
+//    public static void Trigger(string newName)
+//    {
+//        e.EventName = newName;
+//        EventManager.TriggerEvent(e);
+//    }
+//}
 
 public static class EventManager
 {

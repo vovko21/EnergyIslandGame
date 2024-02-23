@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class TakeProducedState : IState
 {
-    private Worker _worker;
+    private CarrierWorker _worker;
     private Transform _destination;
 
     private bool _pathSetted = false;
 
-    public void Initialize(Worker worker, Transform destination)
+    public void Initialize(CarrierWorker worker, Transform destination)
     {
         _worker = worker;
         _destination = destination;

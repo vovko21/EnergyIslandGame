@@ -22,22 +22,25 @@ public class StackArea : InteractableArea
         }
     }
 
+    protected override void ContactWithWorker(Worker worker)
+    {
+        if (worker is CarrierWorker)
+        {
+            if (_workerCoroutine == null)
+            {
+                _workerCoroutine = StartStack(((CarrierWorker)worker).CarrySystem);
+
+                StartCoroutine(_workerCoroutine);
+            }   
+        }
+    }
+
     protected override void PlayerExit(Player player)
     {
         if (_playerCoroutine == null) return;
 
         StopCoroutine(_playerCoroutine);
         _playerCoroutine = null;
-    }
-
-    protected override void ContactWithWorker(Worker worker)
-    {
-        if (_workerCoroutine == null)
-        {
-            _workerCoroutine = StartStack(worker.CarrySystem);
-
-            StartCoroutine(_workerCoroutine);
-        }
     }
 
     protected override void WorkerExit(Worker worker)

@@ -24,9 +24,12 @@ public class GatherArea : InteractableArea
     {
         if (_productionBuilding.Produced < _productionBuilding.MinGatherAmount) return;
 
-        var overflow = worker.CarrySystem.AddEnergyStack(_productionBuilding.Produced);
+        if(worker is CarrierWorker)
+        {
+            var overflow = ((CarrierWorker)worker).CarrySystem.AddEnergyStack(_productionBuilding.Produced);
 
-        _productionBuilding.Gather(overflow);
+            _productionBuilding.Gather(overflow);
+        }
     }
 
     private void OnStatusChanged(BuildingStatus status)
