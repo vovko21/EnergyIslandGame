@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Windmill : ProductionBuilding
+public class Windmill : RenewableEnergyBuilding
 {
     [Header("Wind setting")]
     [SerializeField] private float _windThreashold;

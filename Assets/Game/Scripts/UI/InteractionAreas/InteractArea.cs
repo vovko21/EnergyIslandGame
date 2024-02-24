@@ -16,7 +16,7 @@ public class InteractArea : InteractableArea
     {
         if(_productionBuilding.Status == BuildingStatus.Maintenance)
         {
-            if (_coroutine == null)
+            if (_coroutine == null && _productionBuilding is RenewableEnergyBuilding)
             {
                 _coroutine = StartMaintenance();
 
@@ -72,7 +72,7 @@ public class InteractArea : InteractableArea
             yield return null;
         }
 
-        _productionBuilding.Maintenanced();
+        ((RenewableEnergyBuilding)_productionBuilding).Maintenanced();
     }
 
     private IEnumerator StartFixing()

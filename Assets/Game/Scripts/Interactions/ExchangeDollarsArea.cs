@@ -46,14 +46,21 @@ public class ExchangeDollarsArea : InteractableArea
 
             energyToExchange -= _changePerQuadSecond;
 
-            player.CarrySystem.UpdateEnergyStack(energyToExchange);
+            var result = player.CarrySystem.UpdateStack(EnergyResourceType.Battery, energyToExchange);
 
-            ProgressionManager.Instance.Wallet.AddDollars((int)(_changePerQuadSecond * _energyPrice));
-
-            if (energyToExchange <= 0)
+            if(result == -1)
             {
                 isFinished = true;
-                player.CarrySystem.ClearAll();
+            }
+            else
+            {
+                ProgressionManager.Instance.Wallet.AddDollars((int)(_changePerQuadSecond * _energyPrice));
+
+                if (energyToExchange <= 0)
+                {
+                    isFinished = true;
+                    player.CarrySystem.ClearStack();
+                }
             }
         }
     }

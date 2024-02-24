@@ -1,4 +1,4 @@
-public class Solarpanel : ProductionBuilding
+public class Solarpanel : RenewableEnergyBuilding
 {
     protected override void OnHourPassed()
     {

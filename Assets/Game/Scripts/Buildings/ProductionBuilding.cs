@@ -4,11 +4,12 @@ using UnityEngine;
 
 public enum BuildingStatus
 {
-    Producing = 0,
-    NotProducing = 1,
-    Maintenance = 2,
-    MaxedOut = 3,
-    Broken = 4
+    None = 0,
+    Producing = 1,
+    NotProducing = 2,
+    Maintenance = 3,
+    MaxedOut = 4,
+    Broken = 5
 }
 
 public class ProductionStats
@@ -19,6 +20,7 @@ public class ProductionStats
     public int ProductionPerGameHour => (int)(_stats.ProductionPerGameHour * _coefficient);
     public int MaxSupply => _stats.MaxSupply;
     public float MaintenanceTime => _stats.MaintainingTime;
+    public int Consumption => _stats.Consumption;
 
     public ProductionStats(BuildingStatsSO stats)
     {
@@ -34,7 +36,7 @@ public class ProductionStats
 public class ProductionBuilding : MonoBehaviour
 {
     [Header("Stats settings")]
-    [SerializeField] protected List<BuildingStatsSO> _levels;
+    [SerializeField] private List<BuildingStatsSO> _levels;
 
     [Header("Gather settings")]
     [SerializeField] protected int _minGatherAmount;
@@ -90,37 +92,25 @@ public class ProductionBuilding : MonoBehaviour
         _currentStats = new ProductionStats(_levels[_currentLevelIndex]);
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
-        if (GameTimeManager.Instance == null)
-        {
-            return;
-        }
-
         _nextHourTime = GameTimeManager.Instance.CurrentDateTime;
         _nextHourTime.AdvanceMinutes(60);
         GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
-    }
 
-    private void OnDisable()
-    {
-        if (GameTimeManager.Instance == null)
-        {
-            return;
-        }
-
-        GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
-    }
-
-    private void Start()
-    {
         Status = BuildingStatus.Producing;
+    }
+
+    protected virtual void OnDisable()
+    {
+        GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
     }
 
     private void OnDateTimeChanged(InGameDateTime dateTime)
     {
         if (_nextHourTime == dateTime)
         {
+            if (Status == BuildingStatus.None) return;
             if (Status == BuildingStatus.Broken) return;
             OnHourPassed();
         }
@@ -140,13 +130,11 @@ public class ProductionBuilding : MonoBehaviour
         }
     }
 
-    protected void Produce()
+    protected virtual void Produce()
     {
         if (_produced >= CurrentStats.MaxSupply) return;
 
         _produced += CurrentStats.ProductionPerGameHour;
-
-        Status = BuildingStatus.Maintenance;
     }
 
     public virtual void Upgrade()
@@ -171,18 +159,6 @@ public class ProductionBuilding : MonoBehaviour
                 _produced = overflow;
             }
         }
-    }
-
-    public void Maintenanced()
-    {
-        if(Status != BuildingStatus.Maintenance)
-        {
-            return;
-        }
-
-        _nextHourTime = GameTimeManager.Instance.CurrentDateTime;
-        _nextHourTime.AdvanceMinutes(60);
-        Status = BuildingStatus.Producing;
     }
 
     public void Brake()

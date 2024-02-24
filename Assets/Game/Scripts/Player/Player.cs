@@ -21,12 +21,12 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        CarrySystem.OnChange += CarrySystem_OnChange;
+        CarrySystem.OnStackChanged += CarrySystem_OnChange;
     }
 
     private void OnDisable()
     {
-        CarrySystem.OnChange -= CarrySystem_OnChange;
+        CarrySystem.OnStackChanged -= CarrySystem_OnChange;
     }
 
     private void CarrySystem_OnChange(CarrySystem system)

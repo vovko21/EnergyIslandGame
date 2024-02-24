@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SolarpanelStatusUI : BuildingStatusUI
+public class SolarpanelStatusUI : RenewableBuildingStatusUI
 {
     [Header("Night status")]
     [SerializeField] private GameObject _nightStatus;

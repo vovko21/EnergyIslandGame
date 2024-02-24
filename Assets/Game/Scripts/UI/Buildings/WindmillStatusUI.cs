@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WindmillStatusUI : BuildingStatusUI
+public class WindmillStatusUI : RenewableBuildingStatusUI
 {
     [Header("Wind status")]
     [SerializeField] private GameObject _windStatus;

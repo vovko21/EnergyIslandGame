@@ -22,12 +22,12 @@ public class CarrierWorker : Worker
 
     protected virtual void OnEnable()
     {
-        CarrySystem.OnChange += CarrySystem_OnChange;
+        CarrySystem.OnStackChanged += CarrySystem_OnChange;
     }
 
     protected virtual void OnDisable()
     {
-        CarrySystem.OnChange -= CarrySystem_OnChange;
+        CarrySystem.OnStackChanged -= CarrySystem_OnChange;
     }
 
     private void Start()

@@ -15,7 +15,12 @@ public class GatherArea : InteractableArea
     {
         if (_productionBuilding.Produced < _productionBuilding.MinGatherAmount) return;
 
-        var overflow = player.CarrySystem.AddEnergyStack(_productionBuilding.Produced);
+        var overflow = player.CarrySystem.AddToStack(EnergyResourceType.Battery, _productionBuilding.Produced);
+
+        if(overflow == -1)
+        {
+            return;
+        }
 
         _productionBuilding.Gather(overflow);
     }
@@ -26,7 +31,12 @@ public class GatherArea : InteractableArea
 
         if(worker is CarrierWorker)
         {
-            var overflow = ((CarrierWorker)worker).CarrySystem.AddEnergyStack(_productionBuilding.Produced);
+            var overflow = ((CarrierWorker)worker).CarrySystem.AddToStack(EnergyResourceType.Battery, _productionBuilding.Produced);
+
+            if (overflow == -1)
+            {
+                return;
+            }
 
             _productionBuilding.Gather(overflow);
         }
@@ -34,7 +44,6 @@ public class GatherArea : InteractableArea
 
     private void OnStatusChanged(BuildingStatus status)
     {
-        Debug.Log(status.ToString());
         if (status == BuildingStatus.Maintenance)
         {
             this.gameObject.SetActive(false);

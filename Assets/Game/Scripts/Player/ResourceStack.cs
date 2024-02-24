@@ -133,6 +133,11 @@ public class ResourceStack : MonoBehaviour
         OnStuckChange?.Invoke();
     }
 
+    public void ChangeItemPrefab(GameObject item)
+    {
+        _prefab = item;
+    }
+
     private void DestroySpawnedStack()
     {
         foreach (var item in _resources)

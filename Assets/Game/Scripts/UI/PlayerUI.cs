@@ -11,7 +11,7 @@ public class PlayerUI : MonoBehaviour
 
     private void Start()
     {
-        _player.CarrySystem.OnChange += OnCarryChange;
+        _player.CarrySystem.OnStackChanged += OnCarryChange;
 
         _camera = Camera.main;
 
@@ -32,7 +32,6 @@ public class PlayerUI : MonoBehaviour
 
     private void OnCarryChange(CarrySystem carrySystem)
     {
-       
         if(carrySystem.IsMax)
         {
             _textMeshPro.gameObject.SetActive(true);
