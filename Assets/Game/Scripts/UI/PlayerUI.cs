@@ -11,7 +11,7 @@ public class PlayerUI : MonoBehaviour
 
     private void Start()
     {
-        _player.CarrySystem.OnStackChanged += OnCarryChange;
+        _player.Hands.OnStackChanged += OnCarryChange;
 
         _camera = Camera.main;
 

@@ -6,7 +6,7 @@ public class BuildingStatusUI : MonoBehaviour
 {
     [Header("Main settings")]
     [SerializeField] protected ProductionBuilding _building;
-    [SerializeField] protected InteractArea _interactArea;
+    [SerializeField] protected InteractWithBuildingArea _interactArea;
 
     [Header("Progress status")]
     [SerializeField] protected Image _progressImage;

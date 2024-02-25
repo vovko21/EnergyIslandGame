@@ -14,7 +14,7 @@ public class EnergyResourcesArea : InteractableArea
             case EnergyResourceType.None:
                 break;
             case EnergyResourceType.Coal:
-                overflow = player.CarrySystem.AddToStack(EnergyResourceType.Coal, _energyResource.resourcesValue);
+                overflow = player.Hands.AddToStack(EnergyResourceType.Coal, _energyResource.resourcesValue);
                 break;
             default:
                 break;

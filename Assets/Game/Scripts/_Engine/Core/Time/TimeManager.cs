@@ -17,7 +17,7 @@ public class TimeManager : SingletonMonobehaviour<TimeManager>
 
     public DateTime LocaDateTime => _localDateTime.AddSeconds(Time.realtimeSinceStartup);
     public DateTime UTCDateTime => _utcDateTime.AddSeconds(Time.realtimeSinceStartup);
-    public bool IsServerTime { get; private set; }
+    public bool IsServerTimeSuccess { get; private set; }
 
     private void Start()
     {
@@ -36,11 +36,11 @@ public class TimeManager : SingletonMonobehaviour<TimeManager>
             _localDateTime = ParseToDateTime(serverDateTime.datetime);
             _utcDateTime = ParseToDateTime(serverDateTime.utc_datetime);
 
-            IsServerTime = true;
+            IsServerTimeSuccess = true;
         }
         else
         {
-            IsServerTime = false;
+            IsServerTimeSuccess = false;
         }
     }
 

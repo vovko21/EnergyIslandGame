@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class InteractArea : InteractableArea
+public class InteractWithBuildingArea : InteractableArea
 {
     [SerializeField] private ProductionBuilding _productionBuilding;
 
@@ -12,7 +12,7 @@ public class InteractArea : InteractableArea
     public event Action OnMaintenceStart;
     public event Action OnFixingStart;
 
-    protected override void ContactWithPlayer(Player other)
+    protected override void ContactWithPlayer(Player player)
     {
         if(_productionBuilding.Status == BuildingStatus.Maintenance)
         {
@@ -25,11 +25,14 @@ public class InteractArea : InteractableArea
         }
         else if(_productionBuilding.Status == BuildingStatus.Broken)
         {
-            if (_coroutine == null)
+            if (player.Hands.CurrentItem?.Type == HandItemType.Wrench)
             {
-                _coroutine = StartFixing();
+                if (_coroutine == null)
+                {
+                    _coroutine = StartFixing();
 
-                StartCoroutine(_coroutine);
+                    StartCoroutine(_coroutine);
+                }
             }
         }
     }

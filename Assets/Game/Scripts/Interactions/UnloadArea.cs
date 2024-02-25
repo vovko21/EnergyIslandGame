@@ -18,7 +18,7 @@ public abstract class UnloadArea : InteractableArea
     {
         if (_playerCoroutine == null)
         {
-            _playerCoroutine = StartStack(player.CarrySystem);
+            _playerCoroutine = StartStack(player.Hands);
 
             StartCoroutine(_playerCoroutine);
         }
@@ -100,6 +100,58 @@ public abstract class UnloadArea : InteractableArea
                 {
                     isFinished = true;
                     carrySystem.ClearStack();
+                }
+            }
+        }
+    }
+
+    private IEnumerator StartStack(Hands hands)
+    {
+        bool isFinished = false;
+
+        var energyToStack = hands.StuckValue;
+
+        if (energyToStack <= 0)
+        {
+            isFinished = true;
+        }
+
+        while (!isFinished)
+        {
+            yield return new WaitForSeconds(RATE);
+
+            energyToStack -= _stackPerTick;
+
+            if (energyToStack == 0)
+            {
+                isFinished = true;
+                hands.ClearStack();
+                break;
+            }
+
+            int result = -1;
+            if (_unloadCurrent == true)
+            {
+                result = hands.UpdateStack(hands.CurrentObject.type, energyToStack);
+            }
+            else
+            {
+                result = hands.UpdateStack(_energyResourceType, energyToStack);
+            }
+
+            if (result == -1)
+            {
+                isFinished = true;
+                break;
+            }
+            else
+            {
+                UnloadTick(_stackPerTick);
+
+                if (energyToStack <= 0)
+                {
+                    isFinished = true;
+                    hands.ClearStack();
                 }
             }
         }

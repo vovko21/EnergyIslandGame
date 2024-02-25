@@ -33,7 +33,7 @@ public class ExchangeDollarsArea : InteractableArea
     {
         bool isFinished = false;
 
-        var energyToExchange = player.CarrySystem.StuckValue;
+        var energyToExchange = player.Hands.StuckValue;
 
         if (energyToExchange <= 0)
         {
@@ -46,7 +46,7 @@ public class ExchangeDollarsArea : InteractableArea
 
             energyToExchange -= _changePerQuadSecond;
 
-            var result = player.CarrySystem.UpdateStack(EnergyResourceType.Battery, energyToExchange);
+            var result = player.Hands.UpdateStack(EnergyResourceType.Battery, energyToExchange);
 
             if(result == -1)
             {
@@ -59,7 +59,7 @@ public class ExchangeDollarsArea : InteractableArea
                 if (energyToExchange <= 0)
                 {
                     isFinished = true;
-                    player.CarrySystem.ClearStack();
+                    player.Hands.ClearStack();
                 }
             }
         }
