@@ -12,14 +12,14 @@ public class RenewableBuildingStatusUI : BuildingStatusUI
     {
         base.OnEnable();
 
-        _interactArea.OnMaintenceStart += OnMaintenceStart;
+        _interactArea.OnMaintenceChanged += OnMaintenceChanged;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
 
-        _interactArea.OnMaintenceStart -= OnMaintenceStart;
+        _interactArea.OnMaintenceChanged -= OnMaintenceChanged;
     }
 
     protected override void Start()
@@ -44,15 +44,21 @@ public class RenewableBuildingStatusUI : BuildingStatusUI
         }
     }
 
-    private void OnMaintenceStart()
+    private void OnMaintenceChanged(bool condition)
     {
-        StartCoroutine(UpdateMaintenance());
+        if(condition)
+        {
+            StartCoroutine(UpdateMaintenance());
+        }
+        else
+        {
+            StopAllCoroutines();
+        }
     }
 
     private IEnumerator UpdateMaintenance()
     {
         bool isFinished = false;
-        _timePassed = 0;
         while (!isFinished)
         {
             _timePassed += Time.deltaTime;

@@ -46,7 +46,7 @@ public class ExchangeDollarsArea : InteractableArea
 
             energyToExchange -= _changePerQuadSecond;
 
-            var result = player.Hands.UpdateStack(EnergyResourceType.Battery, energyToExchange);
+            var result = player.Hands.UpdateStack(EnergyResourceType.Energy, energyToExchange);
 
             if(result == -1)
             {

@@ -37,6 +37,7 @@ public class Inventory : MonoBehaviour
 
     public void DeactivateAll()
     {
+        _currentItem = null;
         foreach (var item in _items)
         {
             item.Deactivate();

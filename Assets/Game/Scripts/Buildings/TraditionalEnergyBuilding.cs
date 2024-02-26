@@ -3,8 +3,8 @@ using UnityEngine;
 public enum EnergyResourceType
 {
     None = 0,
-    Coal = 1,
-    Battery = 2
+    Energy = 1,
+    Coal = 2
 }
 
 [System.Serializable]
@@ -62,7 +62,10 @@ public class TraditionalEnergyBuilding : ProductionBuilding
 
         if (_energyResource.resourcesValue - CurrentStats.Consumption >= 0)
         {
-            Status = BuildingStatus.Producing;
+            if(Status == BuildingStatus.NotProducing)
+            {
+                Status = BuildingStatus.Producing;
+            }
             _nextHourTime = GameTimeManager.Instance.CurrentDateTime;
             _nextHourTime.AdvanceMinutes(60);
         }

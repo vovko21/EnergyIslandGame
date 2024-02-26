@@ -12,6 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95ea907f806b91144a1d9c90b8746b87, type: 3}
   m_Name: SolarpanelLevel1
   m_EditorClassIdentifier: 
-  <ProductionPerGameHour>k__BackingField: 15
-  <MaxSupply>k__BackingField: 100
+  <ProductionPerGameHour>k__BackingField:
+  - <Price>k__BackingField: 0
+    <Value>k__BackingField: 10
+  - <Price>k__BackingField: 100
+    <Value>k__BackingField: 20
+  - <Price>k__BackingField: 500
+    <Value>k__BackingField: 30
+  <MaxSupply>k__BackingField:
+  - <Price>k__BackingField: 0
+    <Value>k__BackingField: 100
+  - <Price>k__BackingField: 150
+    <Value>k__BackingField: 200
+  - <Price>k__BackingField: 700
+    <Value>k__BackingField: 300
+  - <Price>k__BackingField: 1000
+    <Value>k__BackingField: 300
   <MaintainingTime>k__BackingField: 2
+  <Consumption>k__BackingField: 0

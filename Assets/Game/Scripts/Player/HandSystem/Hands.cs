@@ -53,6 +53,11 @@ public class Hands : MonoBehaviour
         return _inventory.TakeItem(itemType);
     }
 
+    public void HideItem()
+    {
+        _inventory.DeactivateAll();
+    }
+
     private void CarrySystem_OnChange(CarrySystem system)
     {
         OnStackChanged?.Invoke(system);

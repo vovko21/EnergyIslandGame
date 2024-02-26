@@ -9,8 +9,8 @@ public class InteractWithBuildingArea : InteractableArea
     private IEnumerator _coroutine;
     private float _timePassed;
 
-    public event Action OnMaintenceStart;
-    public event Action OnFixingStart;
+    public event Action<bool> OnMaintenceChanged;
+    public event Action<bool> OnFixingChanged;
 
     protected override void ContactWithPlayer(Player player)
     {
@@ -52,13 +52,22 @@ public class InteractWithBuildingArea : InteractableArea
     {
         if (_coroutine == null) return;
 
+        if (_productionBuilding.Status == BuildingStatus.Maintenance)
+        {
+            OnMaintenceChanged?.Invoke(false);
+        }
+        else if (_productionBuilding.Status == BuildingStatus.Broken)
+        {
+            OnFixingChanged?.Invoke(false);
+        }
+
         StopCoroutine(_coroutine);
         _coroutine = null;
     }
 
     private IEnumerator StartMaintenance()
     {
-        OnMaintenceStart?.Invoke();
+        OnMaintenceChanged?.Invoke(true);
         bool isFinished = false;
         var timeToMaintenance = _productionBuilding.CurrentStats.MaintenanceTime;
 
@@ -80,7 +89,7 @@ public class InteractWithBuildingArea : InteractableArea
 
     private IEnumerator StartFixing()
     {
-        OnFixingStart?.Invoke();
+        OnFixingChanged?.Invoke(true);
         bool isFinished = false;
         var timeToFix = _productionBuilding.CurrentStats.MaintenanceTime;
 

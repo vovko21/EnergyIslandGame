@@ -15,7 +15,7 @@ public class GatherArea : InteractableArea
     {
         if (_productionBuilding.Produced < _productionBuilding.MinGatherAmount) return;
 
-        var overflow = player.Hands.AddToStack(EnergyResourceType.Battery, _productionBuilding.Produced);
+        var overflow = player.Hands.AddToStack(EnergyResourceType.Energy, _productionBuilding.Produced);
 
         if(overflow == -1)
         {
@@ -31,7 +31,7 @@ public class GatherArea : InteractableArea
 
         if(worker is CarrierWorker)
         {
-            var overflow = ((CarrierWorker)worker).CarrySystem.AddToStack(EnergyResourceType.Battery, _productionBuilding.Produced);
+            var overflow = ((CarrierWorker)worker).CarrySystem.AddToStack(EnergyResourceType.Energy, _productionBuilding.Produced);
 
             if (overflow == -1)
             {

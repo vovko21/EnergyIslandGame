@@ -12,17 +12,28 @@ public enum BuildingStatus
     Broken = 5
 }
 
-public class ProductionStats
+public class BuildingStats
 {
     private BuildingStatsSO _stats;
+
+    private int _productionLevelIndex = 0;
+    private int _maxSupplyLevelIndex = 0;
+
     private float _coefficient = 1;
 
-    public int ProductionPerGameHour => (int)(_stats.ProductionPerGameHour * _coefficient);
-    public int MaxSupply => _stats.MaxSupply;
+    public int ProductionPerGameHour => (int)(CurrentProductionLevel.Value * _coefficient);
+    public int MaxSupply => CurrentSupplyLevel.Value;
     public float MaintenanceTime => _stats.MaintainingTime;
     public int Consumption => _stats.Consumption;
+    public BuildingStat CurrentProductionLevel => _stats.ProductionPerGameHour[_productionLevelIndex];
+    public BuildingStat CurrentSupplyLevel => _stats.MaxSupply[_maxSupplyLevelIndex];
+    public BuildingStat NextProductionLevel => !IsProductionLevelMax ? _stats.ProductionPerGameHour[_productionLevelIndex + 1] : null;
+    public BuildingStat NextSupplyLevel => !IsSupplyLevelMax ? _stats.MaxSupply[_maxSupplyLevelIndex + 1] : null;
 
-    public ProductionStats(BuildingStatsSO stats)
+    public bool IsProductionLevelMax => _productionLevelIndex == _stats.ProductionPerGameHour.Count - 1;
+    public bool IsSupplyLevelMax => _productionLevelIndex == _stats.MaxSupply.Count - 1;
+
+    public BuildingStats(BuildingStatsSO stats)
     {
         _stats = stats;
     }
@@ -31,12 +42,30 @@ public class ProductionStats
     {
         _coefficient = coefficient;
     }
+
+    public bool UpgradeProduction()
+    {
+        if (IsProductionLevelMax) return false;
+
+        _productionLevelIndex++;
+
+        return true;
+    }
+
+    public bool UpgradeSupply()
+    {
+        if (IsSupplyLevelMax) return false;
+
+        _maxSupplyLevelIndex++;
+
+        return true;
+    }
 }
 
 public class ProductionBuilding : MonoBehaviour
 {
     [Header("Stats settings")]
-    [SerializeField] private List<BuildingStatsSO> _levels;
+    [SerializeField] private BuildingStatsSO _stats;
 
     [Header("Gather settings")]
     [SerializeField] protected int _minGatherAmount;
@@ -66,9 +95,9 @@ public class ProductionBuilding : MonoBehaviour
     protected int _currentLevelIndex;
 
     protected InGameDateTime _nextHourTime;
-    protected ProductionStats _currentStats;
+    protected BuildingStats _currentStats;
 
-    public ProductionStats CurrentStats => _currentStats;
+    public BuildingStats CurrentStats => _currentStats;
     public int Produced => _produced;
     public int MinGatherAmount => _minGatherAmount;
     public Transform GatherPoint => _getherPoint;
@@ -81,15 +110,12 @@ public class ProductionBuilding : MonoBehaviour
             OnStatusChanged?.Invoke(_status);
         }
     }
-    public bool IsMaxLevel => _levels.Count - 1 == _currentLevelIndex;
-    public int CurrentLevelIndex => _currentLevelIndex;
-    public int LevelsCount => _levels.Count;
 
     public event Action<BuildingStatus> OnStatusChanged;
 
     private void Awake()
     {
-        _currentStats = new ProductionStats(_levels[_currentLevelIndex]);
+        _currentStats = new BuildingStats(_stats);
     }
 
     protected virtual void OnEnable()
@@ -135,15 +161,6 @@ public class ProductionBuilding : MonoBehaviour
         if (_produced >= CurrentStats.MaxSupply) return;
 
         _produced += CurrentStats.ProductionPerGameHour;
-    }
-
-    public virtual void Upgrade()
-    {
-        if (IsMaxLevel) return;
-
-        _currentLevelIndex++;
-
-        _currentStats = new ProductionStats(_levels[_currentLevelIndex]);
     }
 
     public virtual void Gather(int overflow)

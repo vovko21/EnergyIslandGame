@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
         if (_moveDirection != Vector3.zero)
         {
-            _player.CharacterController.Move(_moveDirection * _player.SO.Speed * Time.fixedDeltaTime);
+            _player.CharacterController.Move(_moveDirection * _player.Stats.Speed * Time.fixedDeltaTime);
 
             _player.AnimationController.SetWalk();
         }
@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_moveDirection == Vector3.zero) return;
 
-        _player.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_moveDirection), Time.fixedDeltaTime * _player.SO.RotationSpeed);
+        _player.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_moveDirection), Time.fixedDeltaTime * _player.Stats.RotationSpeed);
     }
 
     private void ApplyGravity()

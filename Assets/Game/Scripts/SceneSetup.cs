@@ -32,7 +32,7 @@ public class SceneSetup : MonoBehaviour
 
             _player.gameObject.SetActive(true);
 
-            _ui.ShowUI();
+            _ui.Show();
 
             _ui.FadeOut();
         }
@@ -40,7 +40,7 @@ public class SceneSetup : MonoBehaviour
 
     private IEnumerator FirstLoadCutscene()
     {
-        _ui.HideUI();
+        _ui.Hide();
 
         CameraController.Instance.FollowFirstLoadScene();
 
@@ -60,7 +60,7 @@ public class SceneSetup : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-        _ui.ShowUI();
+        _ui.Show();
 
         _ui.FadeOut();
 

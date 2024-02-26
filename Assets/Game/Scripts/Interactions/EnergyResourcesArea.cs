@@ -8,18 +8,20 @@ public class EnergyResourcesArea : InteractableArea
     {
         if (_energyResource.resourcesValue == 0) return;
 
-        int overflow = 0;
-        switch (_energyResource.type)
+        int overflow = player.Hands.AddToStack(_energyResource.type, _energyResource.resourcesValue);
+
+        if(overflow == -1)
         {
-            case EnergyResourceType.None:
-                break;
-            case EnergyResourceType.Coal:
-                overflow = player.Hands.AddToStack(EnergyResourceType.Coal, _energyResource.resourcesValue);
-                break;
-            default:
-                break;
+            return;
         }
 
         _energyResource.resourcesValue = overflow;
+    }
+
+    public void AddValue(int value)
+    {
+        if(value <= 0) return;
+
+        _energyResource.resourcesValue += value;
     }
 }

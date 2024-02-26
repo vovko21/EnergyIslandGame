@@ -27,7 +27,7 @@ public class BuildingStatusUI : MonoBehaviour
     protected virtual void OnEnable()
     {
         _building.OnStatusChanged += OnBuildingStatusChanged;
-        _interactArea.OnFixingStart += OnFixingStart;
+        _interactArea.OnFixingChanged += OnFixingChanged;
 
         var camera = Camera.main;
 
@@ -37,7 +37,7 @@ public class BuildingStatusUI : MonoBehaviour
     protected virtual void OnDisable()
     {
         _building.OnStatusChanged -= OnBuildingStatusChanged;
-        _interactArea.OnFixingStart -= OnFixingStart;
+        _interactArea.OnFixingChanged -= OnFixingChanged;
     }
 
     protected virtual void Start()
@@ -52,6 +52,7 @@ public class BuildingStatusUI : MonoBehaviour
 
     protected virtual void OnBuildingStatusChanged(BuildingStatus status)
     {
+        _timePassed = 0;
         if (_progressCoroutine != null)
         {
             StopCoroutine(_progressCoroutine);
@@ -101,7 +102,6 @@ public class BuildingStatusUI : MonoBehaviour
 
     protected IEnumerator UpdateProgress()
     {
-        _timePassed = 0;
         while (_progressCoroutine != null)
         {
             _timePassed += Time.deltaTime;
@@ -119,15 +119,21 @@ public class BuildingStatusUI : MonoBehaviour
         }
     }
 
-    private void OnFixingStart()
+    private void OnFixingChanged(bool condition)
     {
-        StartCoroutine(UpdateFixing());
+        if (condition)
+        {
+            StartCoroutine(UpdateFixing());     
+        }
+        else
+        {
+            StopAllCoroutines();
+        }
     }
     
     private IEnumerator UpdateFixing()
     {
         bool isFinished = false;
-        _timePassed = 0;
         while (!isFinished)
         {
             _timePassed += Time.deltaTime;

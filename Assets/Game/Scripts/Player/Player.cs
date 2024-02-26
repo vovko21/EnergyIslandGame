@@ -7,13 +7,17 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private PlayerSO _playerSO;
 
-    public PlayerSO SO => _playerSO;
+    private PlayerStats _currentStats;
+
+    public PlayerStats Stats => _currentStats;
     public CharacterController CharacterController { get; private set; }
     public CharacterAnimationController AnimationController { get; private set; }
     public Hands Hands { get; private set; }
 
     private void Awake()
     {
+        _currentStats = new PlayerStats(_playerSO);
+
         CharacterController = GetComponent<CharacterController>();
         AnimationController = GetComponent<CharacterAnimationController>();
         Hands = GetComponent<Hands>();

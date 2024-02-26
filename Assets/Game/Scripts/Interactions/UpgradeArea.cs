@@ -1,37 +1,53 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-public class UpgradeArea : BuyArea
+public class UpgradeArea : InteractableArea
 {
-    [Header("Upgrade settings")]
-    [SerializeField] private ProductionBuilding _building;
-    [SerializeField] private List<int> _prices;
+    [SerializeField] private ProductionBuilding _productionBuilding;
+    [SerializeField] private UserInterface _ui;
 
-    private void Awake()
+    private void OnEnable()
     {
-        if(_building.LevelsCount > _prices.Count + 1)
-        {
-            Debug.LogError("Building levels count more then upgrade area");
-        }
-
-        if(_building.IsMaxLevel) Destroy(this.gameObject);
-
-        _valueToSpend = _prices[0]; 
+        _ui.BottomBar.Upgrades.OnUpgradProductionPress += OnUpgradProduction;
+        _ui.BottomBar.Upgrades.OnUpgradSupplyPress += OnUpgradSupply;
     }
 
-    protected override void Bought()
+    private void OnDisable()
     {
-        _building.Upgrade();
-
-        if(!_building.IsMaxLevel)
-        {
-            _valueToSpend = _prices[_building.CurrentLevelIndex];
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-
-        EventManager.TriggerEvent(new BuildingUpdatedEvent() { productionBuilding = _building, upgraded = true });
+        _ui.BottomBar.Upgrades.OnUpgradProductionPress -= OnUpgradProduction;
+        _ui.BottomBar.Upgrades.OnUpgradSupplyPress -= OnUpgradSupply;
     }
+
+    protected override void ContactWithPlayer(Player player)
+    {
+        _ui.BottomBar.ShowUpgrades(_productionBuilding.CurrentStats);
+    }
+
+    protected override void PlayerExit(Player player)
+    {
+        _ui.BottomBar.HideUpgrades();
+    }
+
+    private void OnUpgradProduction(BuildingStat stat)
+    {
+        if (stat == null) return;
+
+        var result = ProgressionManager.Instance.Wallet.TrySpend(stat.Price);
+
+        if (result)
+        {
+            _productionBuilding.CurrentStats.UpgradeProduction();
+        }
+    }
+
+    private void OnUpgradSupply(BuildingStat stat)
+    {
+        if (stat == null) return;
+
+        var result = ProgressionManager.Instance.Wallet.TrySpend(stat.Price);
+
+        if (result)
+        {
+            _productionBuilding.CurrentStats.UpgradeSupply();
+        }
+    } 
 }

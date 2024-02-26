@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.Networking.UnityWebRequest;
 
 public abstract class UnloadArea : InteractableArea
 {
@@ -113,6 +114,12 @@ public abstract class UnloadArea : InteractableArea
 
         if (energyToStack <= 0)
         {
+            isFinished = true;
+        }
+
+        if (_unloadCurrent == true && hands.CurrentItem != null)
+        {
+            hands.HideItem();
             isFinished = true;
         }
 
