@@ -199,7 +199,7 @@ public struct InGameDateTime
 
     public bool IsNight()
     {
-        return _hour > 18 || _hour < 6;
+        return _hour > 20 || _hour < 6;
     }
 
     public bool IsMorning()

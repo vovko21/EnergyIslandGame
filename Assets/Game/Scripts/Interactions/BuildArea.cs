@@ -1,11 +1,5 @@
 using UnityEngine;
 
-public struct BuildingUpdatedEvent
-{
-    public ProductionBuilding productionBuilding;
-    public bool upgraded;
-}
-
 public class BuildArea : BuyArea
 {
     [Header("Building parametrs")]

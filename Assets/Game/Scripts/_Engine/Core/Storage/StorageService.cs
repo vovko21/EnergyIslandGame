@@ -62,8 +62,16 @@ public class StorageService : SingletonMonobehaviour<StorageService>
     {
         Debug.Log("Save");
 
-        AddOrUpdateResource(ProgressionManager.Instance.Wallet.Dollars, ResourceType.Dollars);
-
         await _unitOfWork.SaveAsync();
+    }
+
+    private async void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            AddOrUpdateResource(ProgressionManager.Instance.Wallet.Dollars, ResourceType.Dollars);
+
+            await SaveDataAsync();
+        }
     }
 }

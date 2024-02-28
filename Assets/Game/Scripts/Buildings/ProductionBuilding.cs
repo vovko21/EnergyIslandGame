@@ -1,6 +1,11 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
+
+public struct BuildingUpdatedEvent
+{
+    public ProductionBuilding productionBuilding;
+    public bool upgraded;
+}
 
 public enum BuildingStatus
 {
@@ -101,8 +106,8 @@ public class ProductionBuilding : MonoBehaviour
     public int Produced => _produced;
     public int MinGatherAmount => _minGatherAmount;
     public Transform GatherPoint => _getherPoint;
-    public BuildingStatus Status 
-    { 
+    public BuildingStatus Status
+    {
         get => _status;
         protected set
         {
@@ -120,6 +125,11 @@ public class ProductionBuilding : MonoBehaviour
 
     protected virtual void OnEnable()
     {
+        if(GameTimeManager.Instance == null)
+        {
+            return;
+        }
+
         _nextHourTime = GameTimeManager.Instance.CurrentDateTime;
         _nextHourTime.AdvanceMinutes(60);
         GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;

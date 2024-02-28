@@ -12,11 +12,6 @@ public class UpgradeItemUI : MonoBehaviour
     public BuildingStat BuildingStat => _buildingStat;
     public Button BuyButton => _buyButton;
 
-    private void DisplayText()
-    {
-        _text.text = _buildingStat.Price + " " + _buildingStat.Value.ToString();
-    }
-
     public void Initialize(BuildingStat buildingStat)
     {
         _buildingStat = buildingStat;
@@ -29,5 +24,10 @@ public class UpgradeItemUI : MonoBehaviour
         {
             DisplayText();
         }
+    }
+
+    private void DisplayText()
+    {
+        _text.text = _buildingStat.Price + " " + _buildingStat.Value.ToString();
     }
 }

@@ -7,14 +7,14 @@ public class UpgradeArea : InteractableArea
 
     private void OnEnable()
     {
-        _ui.BottomBar.Upgrades.OnUpgradProductionPress += OnUpgradProduction;
-        _ui.BottomBar.Upgrades.OnUpgradSupplyPress += OnUpgradSupply;
+        _ui.BottomBar.Upgrades.OnUpgradeProductionPress += OnUpgradProduction;
+        _ui.BottomBar.Upgrades.OnUpgradeSupplyPress += OnUpgradSupply;
     }
 
     private void OnDisable()
     {
-        _ui.BottomBar.Upgrades.OnUpgradProductionPress -= OnUpgradProduction;
-        _ui.BottomBar.Upgrades.OnUpgradSupplyPress -= OnUpgradSupply;
+        _ui.BottomBar.Upgrades.OnUpgradeProductionPress -= OnUpgradProduction;
+        _ui.BottomBar.Upgrades.OnUpgradeSupplyPress -= OnUpgradSupply;
     }
 
     protected override void ContactWithPlayer(Player player)
@@ -36,6 +36,8 @@ public class UpgradeArea : InteractableArea
         if (result)
         {
             _productionBuilding.CurrentStats.UpgradeProduction();
+
+            EventManager.TriggerEvent(new BuildingUpdatedEvent() { productionBuilding = _productionBuilding, upgraded = true });
         }
     }
 
@@ -48,6 +50,8 @@ public class UpgradeArea : InteractableArea
         if (result)
         {
             _productionBuilding.CurrentStats.UpgradeSupply();
+
+            EventManager.TriggerEvent(new BuildingUpdatedEvent() { productionBuilding = _productionBuilding, upgraded = true });
         }
     } 
 }
