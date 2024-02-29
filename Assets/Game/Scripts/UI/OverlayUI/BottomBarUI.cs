@@ -18,7 +18,7 @@ public class BottomBarUI : MonoBehaviour
     {
         foreach (var item in _orderItems)
         {
-            item.BuyButton.onClick.AddListener(() => BuyOrder(item));
+            item.BuyButton.onClick.AddListener(() => OnBuyOrder(item));
         }
     }
 
@@ -57,8 +57,20 @@ public class BottomBarUI : MonoBehaviour
         _buildingUpgrades.gameObject.SetActive(false);
     }
 
-    public void BuyOrder(OrderItemUI item)
+    //Events
+
+    public void OnBuyOrder(OrderItemUI item)
     {
         OnBuyPress?.Invoke(item.OrderSO);
+    }
+
+    public void OnButtonClose_Upgrades()
+    {
+        HideUpgrades();
+    }
+
+    public void OnButtonClose_Orders()
+    {
+        HideOrders();
     }
 }

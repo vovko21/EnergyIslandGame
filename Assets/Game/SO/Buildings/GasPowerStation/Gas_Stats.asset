@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ea907f806b91144a1d9c90b8746b87, type: 3}
+  m_Name: Gas_Stats
+  m_EditorClassIdentifier: 
+  <ProductionPerGameHour>k__BackingField:
+  - <Price>k__BackingField: 100
+    <Value>k__BackingField: 0
+  - <Price>k__BackingField: 120
+    <Value>k__BackingField: 1250
+  - <Price>k__BackingField: 200
+    <Value>k__BackingField: 2500
+  <MaxSupply>k__BackingField:
+  - <Price>k__BackingField: 0
+    <Value>k__BackingField: 700
+  - <Price>k__BackingField: 1100
+    <Value>k__BackingField: 900
+  - <Price>k__BackingField: 1100
+    <Value>k__BackingField: 1200
+  <MaintainingTime>k__BackingField: 3
+  <Consumption>k__BackingField: 20

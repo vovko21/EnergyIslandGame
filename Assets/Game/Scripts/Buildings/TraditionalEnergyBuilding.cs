@@ -4,7 +4,9 @@ public enum EnergyResourceType
 {
     None = 0,
     Energy = 1,
-    Coal = 2
+    Coal = 2,
+    Gas = 3,
+    Uran = 4
 }
 
 [System.Serializable]

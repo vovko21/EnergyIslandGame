@@ -10,23 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95ea907f806b91144a1d9c90b8746b87, type: 3}
-  m_Name: SolarpanelLevel1
+  m_Name: Nuclear_Stats
   m_EditorClassIdentifier: 
   <ProductionPerGameHour>k__BackingField:
   - <Price>k__BackingField: 0
-    <Value>k__BackingField: 10
-  - <Price>k__BackingField: 100
-    <Value>k__BackingField: 20
-  - <Price>k__BackingField: 500
-    <Value>k__BackingField: 30
+    <Value>k__BackingField: 1000
+  - <Price>k__BackingField: 150000
+    <Value>k__BackingField: 1500
+  - <Price>k__BackingField: 200000
+    <Value>k__BackingField: 2000
   <MaxSupply>k__BackingField:
   - <Price>k__BackingField: 0
-    <Value>k__BackingField: 100
-  - <Price>k__BackingField: 150
-    <Value>k__BackingField: 200
-  - <Price>k__BackingField: 700
-    <Value>k__BackingField: 300
-  - <Price>k__BackingField: 1000
-    <Value>k__BackingField: 300
-  <MaintainingTime>k__BackingField: 2
-  <Consumption>k__BackingField: 0
+    <Value>k__BackingField: 50000
+  - <Price>k__BackingField: 100000
+    <Value>k__BackingField: 70000
+  - <Price>k__BackingField: 20000
+    <Value>k__BackingField: 100000
+  <MaintainingTime>k__BackingField: 5
+  <Consumption>k__BackingField: 100

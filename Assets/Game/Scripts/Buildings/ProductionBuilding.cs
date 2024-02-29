@@ -36,7 +36,7 @@ public class BuildingStats
     public BuildingStat NextSupplyLevel => !IsSupplyLevelMax ? _stats.MaxSupply[_maxSupplyLevelIndex + 1] : null;
 
     public bool IsProductionLevelMax => _productionLevelIndex == _stats.ProductionPerGameHour.Count - 1;
-    public bool IsSupplyLevelMax => _productionLevelIndex == _stats.MaxSupply.Count - 1;
+    public bool IsSupplyLevelMax => _maxSupplyLevelIndex == _stats.MaxSupply.Count - 1;
 
     public BuildingStats(BuildingStatsSO stats)
     {

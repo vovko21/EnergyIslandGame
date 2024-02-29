@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +13,6 @@ public class OrderItemUI : MonoBehaviour
 
     private void Start()
     {
-        _text.text = _orderSO.Price + " " + _orderSO.Type.ToString();
+        _text.text = _orderSO.Price.ToString();
     }
 }

@@ -1,53 +1,89 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TaskManager : MonoBehaviour
 {
-    [SerializeField] private MoveByPoints _target;
+    [Header("All tasks setup")]
+    [SerializeField] private List<GameTask> _tasks;
 
-    private GameTask _currentTask;
-    private InGameDateTime _lastTime;
+    [Header("Tasks suffle settings")]
+    [SerializeField] private int _tasksPerSuffle;
+    [SerializeField] private List<GameTask> _activeTasks;
 
-    private void Start()
+    public List<GameTask> ActiveTasks => _activeTasks;
+
+    private void Awake()
     {
-        _lastTime = GameTimeManager.Instance.CurrentDateTime;
-
-        _target.OnFinished += OnTargetFinished;
-        GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
+        _activeTasks = ShuffleTasks();
     }
 
-    private void OnDisable()
+    public void Initialize(List<GameTask> tasks)
     {
-        _target.OnFinished -= OnTargetFinished;
-        GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
+        _tasks = tasks;
     }
 
-    private void OnDateTimeChanged(InGameDateTime dateTime)
+    public void AddProgress(string taskID, int newProgress)
     {
-        if (_lastTime.Hour != dateTime.Hour)
+        var task = Contains(taskID);
+        if (task != null)
         {
-            TriggerEvent();
-
-            _lastTime = dateTime;
+            task.AddProgress(newProgress);
         }
     }
 
-    public void TriggerEvent()
+    public void SetProgress(string taskID, int newProgress)
     {
-        _currentTask = GenerateTask();
-
-        _target.StartWay();
-
-        CameraController.Instance.FollowEvent();
+        var task = Contains(taskID);
+        if (task != null)
+        {
+            task.SetProgress(newProgress);
+        }
     }
 
-    private void OnTargetFinished()
+    private GameTask Contains(string searchedID)
     {
-        CameraController.Instance.FollowPlayer();
+        if (_activeTasks.Count == 0)
+        {
+            return null;
+        }
+
+        foreach (GameTask task in _activeTasks)
+        {
+            if (task.Id == searchedID)
+            {
+                return task;
+            }
+        }
+
+        return null;
     }
 
-    private GameTask GenerateTask()
+    private List<GameTask> ShuffleTasks()
     {
-        var targetProgress = UnityEngine.Random.Range(1, 2);
-        return new GameTask("1", "2", targetProgress);
+        int count = _tasks.Count;
+        System.Random rng = new System.Random();
+        while (count > 1)
+        {
+            count--;
+            int k = rng.Next(count + 1);
+            var value = _tasks[k];
+            _tasks[k] = _tasks[count];
+            _tasks[count] = value;
+        }
+
+        return _tasks.Take(_tasksPerSuffle).ToList();
+    }
+
+    public bool TryReshuffleTasks()
+    {
+        var task = _activeTasks.FirstOrDefault(x => x.IsCompleted == false);
+        if(task == null)
+        {
+            _activeTasks = ShuffleTasks();
+            return true;
+        }
+
+        return false;
     }
 }

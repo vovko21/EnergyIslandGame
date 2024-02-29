@@ -23,11 +23,10 @@ public class DayNightCycle : MonoBehaviour
     private void OnDateTimeChanged(InGameDateTime dateTime)
     {
         float time = (dateTime.Minute + dateTime.Hour * 60f) / (24f * 60f);
-        Debug.Log(time);
         _sun.intensity = _intensityCurve.Evaluate(time);
 
         RenderSettings.fogDensity = _fogDensity.Evaluate(time);
-        _sun.color = _directionalColorGradient.Evaluate(time);
+        //_sun.color = _directionalColorGradient.Evaluate(time);
 
     }
 }
