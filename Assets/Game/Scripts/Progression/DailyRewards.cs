@@ -9,13 +9,15 @@ public class DailyRewards : MonoBehaviour
         public ResourceType ResourceType;
         public int value;
     }
+
     [Header("Data")]
     [SerializeField] private List<Reward> _rewards;
-    [Header("UI")]
-    [SerializeField] private GameObject _rewardsParent;
 
-    private bool _canClaim = false;
+    //[Header("UI")]
+    //[SerializeField] private UserInterface _ui;
+
     private DateTime _lastClaimTime;
+    private bool _canClaim = false;
 
     private void Start()
     {
@@ -24,6 +26,6 @@ public class DailyRewards : MonoBehaviour
 
     private void InitializeRewards()
     {
-        throw new NotImplementedException();
+
     }
 }

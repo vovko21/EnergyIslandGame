@@ -3,11 +3,11 @@ using UnityEngine;
 public class SellArea : ProgressArea
 {
     [Header("Sell settings")]
-    [SerializeField] private ResourceStack _stack;
+    [SerializeField] private EnergyBank _energyBank;
 
     protected override void ContactWithPlayer(Player player)
     {
-        if(_stack.StuckValue > 0)
+        if(_energyBank.Energy > 0)
         {
             base.ContactWithPlayer(player);
         }
@@ -15,13 +15,9 @@ public class SellArea : ProgressArea
 
     protected override void OnProgressed()
     {
-        var value = _stack.StuckValue;
+        var summary = StockMarket.Instance.EnergyPrice * _energyBank.Energy;
 
-        var summary = StockMarket.Instance.EnergyPrice * value;
-
-        _stack.ClearStack();
-
-        Debug.Log("Added " + summary);
+        _energyBank.ClearEnergy();
 
         ProgressionManager.Instance.Wallet.AddDollars((int)summary);
     }
