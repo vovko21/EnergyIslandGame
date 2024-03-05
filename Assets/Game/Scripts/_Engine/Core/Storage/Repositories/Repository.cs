@@ -14,6 +14,8 @@ public abstract class Repository<T> where T : Model
 
     public T GetById(string id)
     {
+        if(id == null) return null;
+
         return Enteties.FirstOrDefault(e => e.id == id);
     }
 

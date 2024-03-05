@@ -127,13 +127,6 @@ public abstract class UnloadArea : InteractableArea
         {
             yield return new WaitForSeconds(RATE);
 
-            if (energyToStack == 0)
-            {
-                isFinished = true;
-                hands.ClearStack();
-                break;
-            }
-
             energyToStack -= _stackPerTick;
 
             int result = -1;
@@ -146,7 +139,7 @@ public abstract class UnloadArea : InteractableArea
                 result = hands.UpdateStack(_energyResourceType, energyToStack);
             }
 
-            if (result == -1)
+            if (result == -1 && energyToStack != 0)
             {
                 isFinished = true;
                 break;

@@ -3,9 +3,16 @@ using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
+public struct BuildData
+{
+    public string id;
+    public GameObject buildArea;
+}
+
+[System.Serializable]
 public struct BuildInteration
 {
-    public List<GameObject> buildAreas;
+    public List<GameObject> buildArea;
 }
 
 public class BuildingManager : SingletonMonobehaviour<BuildingManager>, IEventListener<BuildingUpdatedEvent>, IEventListener<GameEvent>
@@ -23,6 +30,7 @@ public class BuildingManager : SingletonMonobehaviour<BuildingManager>, IEventLi
     protected override void Awake()
     {
         base.Awake();
+
         _activeBuildings = new List<ProductionBuilding>();
     }
 
@@ -45,6 +53,28 @@ public class BuildingManager : SingletonMonobehaviour<BuildingManager>, IEventLi
         ActivateCurrentIteration();
     }
 
+    public void Initiallize()
+    {
+        var buildings = StorageService.Instance.GetActiveBuildings();
+
+        if (buildings == null) return;
+
+        foreach (var interation in _buildInterations)
+        {
+            foreach (var buildArea in interation.buildArea)
+            {
+                var building = buildArea.GetComponentInChildren<ProductionBuilding>(true);
+
+                var id = buildings.FirstOrDefault(e => e.id == building.Id);
+
+                if (id != null)
+                {
+                    buildArea.GetComponentInChildren<BuildArea>().Build();
+                }
+            }
+        }
+    }
+
     private void NextIteration()
     {
         if (_currentIterationIndex + 1 > _buildInterations.Count - 1)
@@ -57,12 +87,12 @@ public class BuildingManager : SingletonMonobehaviour<BuildingManager>, IEventLi
 
         ActivateCurrentIteration();
 
-        CameraController.Instance.FollowTransforms(CurrentIteration.buildAreas.Select(x => x.transform).ToList());
+        CameraController.Instance.FollowTransforms(CurrentIteration.buildArea.Select(x => x.transform).ToList());
     }
 
     private void ActivateCurrentIteration()
     {
-        var areas = CurrentIteration.buildAreas;
+        var areas = CurrentIteration.buildArea;
 
         foreach (var area in areas)
         {
@@ -79,7 +109,7 @@ public class BuildingManager : SingletonMonobehaviour<BuildingManager>, IEventLi
                 continue;
             }
 
-            foreach (var area in _buildInterations[i].buildAreas)
+            foreach (var area in _buildInterations[i].buildArea)
             {
                 area.SetActive(false);
             }
@@ -90,7 +120,7 @@ public class BuildingManager : SingletonMonobehaviour<BuildingManager>, IEventLi
     {
         if (eventType.upgraded == false)
         {
-            if (_buildedOnIteration + 1 == CurrentIteration.buildAreas.Count)
+            if (_buildedOnIteration + 1 == CurrentIteration.buildArea.Count)
             {
                 NextIteration();
                 _buildedOnIteration = 0;

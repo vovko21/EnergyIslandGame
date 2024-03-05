@@ -2,13 +2,17 @@ public class UnitOfWork
 {
     private DataContext _dataContext;
     private ResourcesRepository _resourcesRepository;
+    private ActiveBuildingsRepository _activeBuildingsRepository;
 
     public ResourcesRepository ResourcesRepository => _resourcesRepository;
+    public ActiveBuildingsRepository ActiveBuildingsRepository => _activeBuildingsRepository;
 
     public UnitOfWork(DataContext dataContext)
     {
         _dataContext = dataContext;
+
         _resourcesRepository = new ResourcesRepository(dataContext);
+        _activeBuildingsRepository = new ActiveBuildingsRepository(dataContext);
     }
 
     public async System.Threading.Tasks.Task LoadAsync()

@@ -24,7 +24,7 @@ public class SceneSetup : MonoBehaviour
         }
         else
         {
-            ProgressionManager.Instance.InitializeData();
+            InitializeAllGameData();
 
             _player.gameObject.SetActive(false);
 
@@ -65,5 +65,12 @@ public class SceneSetup : MonoBehaviour
         _ui.FadeOut();
 
         StorageService.Instance.SaveDataAsync();
+    }
+
+    private void InitializeAllGameData()
+    {
+        ProgressionManager.Instance.InitializeData();
+
+        BuildingManager.Instance.Initiallize();
     }
 }

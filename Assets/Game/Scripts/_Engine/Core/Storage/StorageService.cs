@@ -20,7 +20,6 @@ public class StorageService : SingletonMonobehaviour<StorageService>
     private DataContext _dataContext;
     private UnitOfWork _unitOfWork;
 
-    public IReadOnlyList<ResourceData> Resources => _dataContext.Data.Resources;
     public bool Initialized => _dataContext.Data.Initialized;
 
     protected override void Awake()
@@ -31,13 +30,13 @@ public class StorageService : SingletonMonobehaviour<StorageService>
         _unitOfWork = new UnitOfWork(_dataContext);
     }
 
-    public ReadOnlyResource AddOrUpdateResource(int value, ResourceType type)
+    public ReadOnlyResource AddOrUpdateResource(ResourceType type, int value)
     {
         var data = _unitOfWork.ResourcesRepository.GetById(type.ToString());
-        if(data == null)
+        if (data == null)
         {
             data = new ResourceData() { value = value, type = type };
-            _unitOfWork.ResourcesRepository.Add(data);     
+            _unitOfWork.ResourcesRepository.Add(data);
         }
         else
         {
@@ -45,7 +44,34 @@ public class StorageService : SingletonMonobehaviour<StorageService>
             _unitOfWork.ResourcesRepository.Modify(data);
         }
 
-        return new ReadOnlyResource(data.id, value, type);
+        return new ReadOnlyResource(data.id, data.value, data.type);
+    }
+
+    public void AddOrUpdateActiveBuilding(string id)
+    {
+        var data = _unitOfWork.ActiveBuildingsRepository.GetById(id);
+
+        if (data == null)
+        {
+            data = new BuildingData() { id = id };
+            _unitOfWork.ActiveBuildingsRepository.Add(data);
+        }
+        else
+        {
+            data = new BuildingData() { id = id };
+            _unitOfWork.ActiveBuildingsRepository.Modify(data);
+        }
+    }
+
+    public ReadOnlyResource GetResource(ResourceType type)
+    {
+        var resource = _unitOfWork.ResourcesRepository.GetById(type.ToString());
+        return new ReadOnlyResource(resource.id, resource.value, resource.type);
+    }
+
+    public List<BuildingData> GetActiveBuildings()
+    {
+        return _unitOfWork.ActiveBuildingsRepository.GetAll();
     }
 
     public bool DeleteResource(ResourceType type)
@@ -60,18 +86,8 @@ public class StorageService : SingletonMonobehaviour<StorageService>
 
     public async System.Threading.Tasks.Task SaveDataAsync()
     {
-        Debug.Log("Save");
-
         await _unitOfWork.SaveAsync();
-    }
 
-    private async void OnApplicationPause(bool pause)
-    {
-        if (pause)
-        {
-            AddOrUpdateResource(ProgressionManager.Instance.Wallet.Dollars, ResourceType.Dollars);
-
-            await SaveDataAsync();
-        }
+        Debug.Log("Saved");
     }
 }

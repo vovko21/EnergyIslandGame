@@ -43,8 +43,5 @@ public class FollowBySpline : MonoBehaviour
 
             yield return new WaitForFixedUpdate();
         }
-
-        StartCoroutine(Coroutine());
     }
-
 }

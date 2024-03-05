@@ -13,6 +13,11 @@ public class BuildArea : BuyArea
 
     protected override void Bought()
     {
+        Build();
+    }
+
+    public void Build()
+    {
         _building.SetActive(true);
 
         Destroy(this.gameObject);

@@ -28,6 +28,13 @@ public class ProgressAreaUI : InteractionAreaUI
         {
             StartCoroutine(ProgressCoroutineAnimation());
         }
+        else
+        {
+            StopAllCoroutines();
+            _progress01 = 0;
+            _currentPosition = _startPosition;
+            _progressBackground.transform.localPosition = CurrentPosition();
+        }
     }
 
     protected IEnumerator ProgressCoroutineAnimation()

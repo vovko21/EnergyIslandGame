@@ -70,6 +70,7 @@ public class BuildingStats
 public class ProductionBuilding : MonoBehaviour
 {
     [Header("Stats settings")]
+    [SerializeField] private string _id;
     [SerializeField] private BuildingStatsSO _stats;
 
     [Header("Gather settings")]
@@ -102,6 +103,7 @@ public class ProductionBuilding : MonoBehaviour
     protected InGameDateTime _nextHourTime;
     protected BuildingStats _currentStats;
 
+    public string Id => _id;
     public BuildingStats CurrentStats => _currentStats;
     public int Produced => _produced;
     public int MinGatherAmount => _minGatherAmount;

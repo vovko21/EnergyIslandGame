@@ -1,5 +1,3 @@
-using System.Linq;
-
 public class ProgressionManager : SingletonMonobehaviour<ProgressionManager>
 {
     private Wallet _wallet;
@@ -15,12 +13,12 @@ public class ProgressionManager : SingletonMonobehaviour<ProgressionManager>
 
     public void InitializeData()
     {
-        if(!StorageService.Instance.Initialized)
+        if (!StorageService.Instance.Initialized)
         {
             return;
         }
 
-        var dollars = StorageService.Instance.Resources.FirstOrDefault(x => x.id == ResourceType.Dollars.ToString());
+        var dollars = StorageService.Instance.GetResource(ResourceType.Dollars);
 
         _wallet.AddDollars(dollars.value);
     }

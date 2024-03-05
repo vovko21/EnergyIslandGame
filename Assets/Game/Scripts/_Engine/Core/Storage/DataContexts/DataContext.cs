@@ -17,7 +17,11 @@ public abstract class DataContext
         {
             return _data.Resources as List<T>;
         }
+        if (typeof(T) == typeof(BuildingData))
+        {
+            return _data.ActiveBuildings as List<T>;
+        }
 
-        return null;
+        throw new NotImplementedException();
     }
 }
