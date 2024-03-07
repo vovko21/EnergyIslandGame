@@ -7,12 +7,12 @@ public class OrderArea : InteractableArea
 
     private void OnEnable()
     {
-        _ui.BottomBar.OnBuyPress += OnBuyPress;
+        _ui.BottomBar.OnOrderBuyPress += OnBuyPress;
     }
 
     private void OnDisable()
     {
-        _ui.BottomBar.OnBuyPress -= OnBuyPress;
+        _ui.BottomBar.OnOrderBuyPress -= OnBuyPress;
     }
 
     protected override void ContactWithPlayer(Player player)

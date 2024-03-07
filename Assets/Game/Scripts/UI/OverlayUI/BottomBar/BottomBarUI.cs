@@ -14,8 +14,8 @@ public class BottomBarUI : MonoBehaviour
     [Header("Workers settings")]
     [SerializeField] private WorkersUI _workersUI;
 
-    public event Action<OrderResourceSO> OnBuyPress;
-    public BuildingUpgradesUI Upgrades => _buildingUpgrades;
+    public event Action<OrderResourceSO> OnOrderBuyPress;
+    public BuildingUpgradesUI BuildingUpgradesUI => _buildingUpgrades;
     public WorkersUI WorkersUI => _workersUI;
 
     private void OnEnable()
@@ -51,9 +51,9 @@ public class BottomBarUI : MonoBehaviour
         _orderContainer.SetActive(false);
     }
 
-    public void ShowUpgrades(BuildingStats buildingStats)
+    public void ShowUpgrades(string buildingId, BuildingStats buildingStats)
     {
-        _buildingUpgrades.Initialize(buildingStats);
+        _buildingUpgrades.Initialize(buildingId, buildingStats);
         _buildingUpgrades.gameObject.SetActive(true);
     }
 
@@ -77,7 +77,7 @@ public class BottomBarUI : MonoBehaviour
 
     public void OnBuyOrder(OrderItemUI item)
     {
-        OnBuyPress?.Invoke(item.OrderSO);
+        OnOrderBuyPress?.Invoke(item.OrderSO);
     }
 
     public void OnButtonClose_Upgrades()

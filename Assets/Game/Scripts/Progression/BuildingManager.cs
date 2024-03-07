@@ -118,7 +118,9 @@ public class BuildingManager : SingletonMonobehaviour<BuildingManager>, IEventLi
 
     public void OnEvent(BuildingUpdatedEvent eventType)
     {
-        if (eventType.upgraded == false)
+        var building = _activeBuildings.FirstOrDefault(x => x.Id == eventType.productionBuilding.Id);
+
+        if (building == null)
         {
             if (_buildedOnIteration + 1 == CurrentIteration.buildArea.Count)
             {

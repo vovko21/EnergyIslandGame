@@ -10,6 +10,7 @@ public class UserInterface : MonoBehaviour
     [Header("Panels")]
     [SerializeField] private CanvasGroup _loading;
     [SerializeField] private BottomBarUI _bottomBar;
+    [SerializeField] private TasksUI _tasksUI;
 
     [Header("Settings")]
     [SerializeField] private float _timeToFade;
@@ -21,6 +22,8 @@ public class UserInterface : MonoBehaviour
     private void Start()
     {
         _loading.gameObject.SetActive(true);
+
+        HideTasks();
 
         CameraController.Instance.OnFollowTargets += OnCameraFollowTargets;
     }
@@ -102,6 +105,13 @@ public class UserInterface : MonoBehaviour
         StartCoroutine(StartFadeOut());
     }
 
+    public void Show()
+    {
+        _uiContainer.SetActive(true);
+
+        IsUIHiden = false;
+    }
+
     public void Hide()
     {
         _uiContainer.SetActive(false);
@@ -109,10 +119,15 @@ public class UserInterface : MonoBehaviour
         IsUIHiden = true;
     }
 
-    public void Show()
+    public void ShowTasks()
     {
-        _uiContainer.SetActive(true);
+        _tasksUI.Initialize();
+        _tasksUI.gameObject.SetActive(true);
+    }
 
-        IsUIHiden = false;
+    public void HideTasks()
+    {
+        _tasksUI.Deinitialize();
+        _tasksUI.gameObject.SetActive(false);
     }
 }

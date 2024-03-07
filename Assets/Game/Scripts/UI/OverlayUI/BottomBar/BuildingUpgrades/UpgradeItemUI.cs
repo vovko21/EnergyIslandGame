@@ -9,15 +9,18 @@ public class UpgradeItemUI : MonoBehaviour
     [SerializeField] private ButtonUI _buyButton;
 
     private BuildingStat _buildingStat;
+    private string _buildingId;
 
     public BuildingStat BuildingStat => _buildingStat;
+    public string BuildingId => _buildingId;
     public Button BuyButton => _buyButton.Button;
 
-    public void Initialize(BuildingStat buildingStat)
+    public void Initialize(string buildingId, BuildingStat buildingStat)
     {
         _buildingStat = buildingStat;
+        _buildingId = buildingId;
 
-        if(_buildingStat == null)
+        if (_buildingStat == null)
         {
             _buyButton.SetInactive();
             _buyButton.SetText("MAX");

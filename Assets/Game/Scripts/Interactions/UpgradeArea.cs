@@ -7,19 +7,19 @@ public class UpgradeArea : InteractableArea
 
     private void OnEnable()
     {
-        _ui.BottomBar.Upgrades.OnUpgradeProductionPress += OnUpgradProduction;
-        _ui.BottomBar.Upgrades.OnUpgradeSupplyPress += OnUpgradSupply;
+        _ui.BottomBar.BuildingUpgradesUI.OnUpgradeProductionPress += OnUpgradProduction;
+        _ui.BottomBar.BuildingUpgradesUI.OnUpgradeSupplyPress += OnUpgradSupply;
     }
 
     private void OnDisable()
     {
-        _ui.BottomBar.Upgrades.OnUpgradeProductionPress -= OnUpgradProduction;
-        _ui.BottomBar.Upgrades.OnUpgradeSupplyPress -= OnUpgradSupply;
+        _ui.BottomBar.BuildingUpgradesUI.OnUpgradeProductionPress -= OnUpgradProduction;
+        _ui.BottomBar.BuildingUpgradesUI.OnUpgradeSupplyPress -= OnUpgradSupply;
     }
 
     protected override void ContactWithPlayer(Player player)
     {
-        _ui.BottomBar.ShowUpgrades(_productionBuilding.CurrentStats);
+        _ui.BottomBar.ShowUpgrades(_productionBuilding.Id, _productionBuilding.CurrentStats);
     }
 
     protected override void PlayerExit(Player player)
@@ -27,9 +27,13 @@ public class UpgradeArea : InteractableArea
         _ui.BottomBar.HideUpgrades();
     }
 
-    private void OnUpgradProduction(BuildingStat stat)
+    private void OnUpgradProduction(string buildingId, BuildingStat stat)
     {
         if (stat == null) return;
+        if(_productionBuilding.Id != buildingId)
+        {
+            return;
+        }
 
         var result = ProgressionManager.Instance.Wallet.TrySpend(stat.Price);
 
@@ -41,9 +45,13 @@ public class UpgradeArea : InteractableArea
         }
     }
 
-    private void OnUpgradSupply(BuildingStat stat)
+    private void OnUpgradSupply(string buildingId, BuildingStat stat)
     {
         if (stat == null) return;
+        if (_productionBuilding.Id != buildingId)
+        {
+            return;
+        }
 
         var result = ProgressionManager.Instance.Wallet.TrySpend(stat.Price);
 

@@ -1,8 +1,7 @@
 public enum ResourceType
 {
     Dollars = 0,
-    Energy = 1,
-    Diamonds = 2
+    Diamonds = 1
 }
 
 [System.Serializable]

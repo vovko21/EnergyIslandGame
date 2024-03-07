@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TaskManager : MonoBehaviour
+public class TaskManager : SingletonMonobehaviour<TaskManager>
 {
     [Header("All tasks setup")]
     [SerializeField] private List<GameTask> _tasks;
@@ -13,9 +13,11 @@ public class TaskManager : MonoBehaviour
 
     public List<GameTask> ActiveTasks => _activeTasks;
 
-    private void Awake()
+    protected override void Awake()
     {
-        _activeTasks = ShuffleTasks();
+        base.Awake();
+
+        ShuffleNewTasks();
     }
 
     public void Initialize(List<GameTask> tasks)
@@ -75,15 +77,18 @@ public class TaskManager : MonoBehaviour
         return _tasks.Take(_tasksPerSuffle).ToList();
     }
 
-    public bool TryReshuffleTasks()
+    public void ResetTasksProgress()
     {
-        var task = _activeTasks.FirstOrDefault(x => x.IsCompleted == false);
-        if(task == null)
+        foreach (var task in _tasks)
         {
-            _activeTasks = ShuffleTasks();
-            return true;
+            task.Reset();
         }
+    }
 
-        return false;
+    public void ShuffleNewTasks()
+    {
+        ResetTasksProgress();
+
+        _activeTasks = ShuffleTasks();
     }
 }

@@ -14,12 +14,18 @@ public class GameTask
     [SerializeField] private int _progressTarget;
     [SerializeField] private int _progressCurrent;
 
+    [Header("Reward")]
+    [SerializeField] private ResourceType _resourceType;
+    [SerializeField] private int _rewardValue;
+
     public string Id => _id;
     public string Name => _name;
     public string Description => _description;
     public bool IsCompleted => _isCompleted;
     public int ProgressTarget => _progressTarget;
     public int ProgressCurrent => _progressCurrent;
+    public ResourceType ResourceType => _resourceType;
+    public int RewardValue => _rewardValue;
 
     public GameTask(string name, string description, int progressTarget)
     {
@@ -59,5 +65,11 @@ public class GameTask
         Debug.Log(_name + " UNLOCKED");
 
         _isCompleted = true;
+    }
+
+    public void Reset()
+    {
+        _progressCurrent = 0;
+        _isCompleted = false;
     }
 }

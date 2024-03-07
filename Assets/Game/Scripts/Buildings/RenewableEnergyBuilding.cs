@@ -1,3 +1,8 @@
+public struct MaintenanceEvent
+{
+    public string buildingId;
+}
+
 public class RenewableEnergyBuilding : ProductionBuilding
 {
     protected override void Produce()
@@ -17,5 +22,7 @@ public class RenewableEnergyBuilding : ProductionBuilding
         _nextHourTime = GameTimeManager.Instance.CurrentDateTime;
         _nextHourTime.AdvanceMinutes(60);
         Status = BuildingStatus.Producing;
+
+        EventManager.TriggerEvent(new MaintenanceEvent() { buildingId = this.Id });
     }
 }
