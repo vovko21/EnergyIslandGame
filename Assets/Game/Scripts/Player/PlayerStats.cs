@@ -17,4 +17,9 @@ public class PlayerStats
     {
         _speedAddative += speed;
     }
+
+    public void ApplySpeedBuff()
+    {
+
+    }
 }

@@ -58,7 +58,7 @@ public abstract class BuyArea : InteractableArea
                 spendPerTick = _valueToSpend - _spended;
             }
 
-            var success = ProgressionManager.Instance.Wallet.TrySpend(spendPerTick);
+            var success = ProgressionManager.Instance.Wallet.TrySpendDollars(spendPerTick);
 
             if (!success)
             {

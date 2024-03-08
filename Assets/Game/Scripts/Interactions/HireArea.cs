@@ -36,7 +36,7 @@ public class HireArea : InteractableArea
 
     private void OnBuyCarrierPress()
     {
-        bool result = ProgressionManager.Instance.Wallet.TrySpend(_carrierStats.Price[0]);
+        bool result = ProgressionManager.Instance.Wallet.TrySpendDollars(_carrierStats.Price[0]);
 
         if (result) 
         {
@@ -46,7 +46,7 @@ public class HireArea : InteractableArea
 
     private void OnBuyServicePress()
     {
-        bool result = ProgressionManager.Instance.Wallet.TrySpend(_serviceStats.Price[0]);
+        bool result = ProgressionManager.Instance.Wallet.TrySpendDollars(_serviceStats.Price[0]);
 
         if (result)
         {

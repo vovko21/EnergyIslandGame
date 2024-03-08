@@ -27,7 +27,7 @@ public class OrderArea : InteractableArea
 
     private void OnBuyPress(OrderResourceSO orderSO)
     {
-        bool result = ProgressionManager.Instance.Wallet.TrySpend(orderSO.Price);
+        bool result = ProgressionManager.Instance.Wallet.TrySpendDollars(orderSO.Price);
 
         if (result)
         {

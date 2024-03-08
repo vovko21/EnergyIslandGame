@@ -35,7 +35,7 @@ public class UpgradeArea : InteractableArea
             return;
         }
 
-        var result = ProgressionManager.Instance.Wallet.TrySpend(stat.Price);
+        var result = ProgressionManager.Instance.Wallet.TrySpendDollars(stat.Price);
 
         if (result)
         {
@@ -53,7 +53,7 @@ public class UpgradeArea : InteractableArea
             return;
         }
 
-        var result = ProgressionManager.Instance.Wallet.TrySpend(stat.Price);
+        var result = ProgressionManager.Instance.Wallet.TrySpendDollars(stat.Price);
 
         if (result)
         {

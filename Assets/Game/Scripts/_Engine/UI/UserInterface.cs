@@ -6,11 +6,14 @@ public class UserInterface : MonoBehaviour
     [Header("Main")]
     [SerializeField] private VariableJoystick _vareiableJoystick;
     [SerializeField] private GameObject _uiContainer;
+    [SerializeField] private GameObject _midleSectionContainer;
 
     [Header("Panels")]
     [SerializeField] private CanvasGroup _loading;
     [SerializeField] private BottomBarUI _bottomBar;
     [SerializeField] private TasksUI _tasksUI;
+    [SerializeField] private DailyRewardsUI _dailyRewardsUI;
+    [SerializeField] private BoosterUI _boosterUI;
 
     [Header("Settings")]
     [SerializeField] private float _timeToFade;
@@ -18,12 +21,15 @@ public class UserInterface : MonoBehaviour
     public bool IsUIHiden { get; private set; }
     public bool IsJoystickHidden { get; private set; }
     public BottomBarUI BottomBar => _bottomBar;
+    public BoosterUI BoosterUI => _boosterUI;
 
     private void Start()
     {
         _loading.gameObject.SetActive(true);
 
         HideTasks();
+        HideDailyRewards();
+        HideBooster();
 
         CameraController.Instance.OnFollowTargets += OnCameraFollowTargets;
     }
@@ -121,13 +127,40 @@ public class UserInterface : MonoBehaviour
 
     public void ShowTasks()
     {
+        _midleSectionContainer.SetActive(false);
         _tasksUI.Initialize();
         _tasksUI.gameObject.SetActive(true);
     }
 
     public void HideTasks()
     {
+        _midleSectionContainer.SetActive(true);
         _tasksUI.Deinitialize();
         _tasksUI.gameObject.SetActive(false);
+    }
+
+    public void ShowDailyRewards()
+    {
+        _midleSectionContainer.SetActive(false);
+        _dailyRewardsUI.gameObject.SetActive(true);
+    }
+
+    public void HideDailyRewards()
+    {
+        _midleSectionContainer.SetActive(true);
+        _dailyRewardsUI.gameObject.SetActive(false);
+    }
+
+    public void ShowBooster(BoostSO boostSO)
+    {
+        _midleSectionContainer.SetActive(false);
+        _boosterUI.Initialize(boostSO);
+        _boosterUI.gameObject.SetActive(true);
+    }
+
+    public void HideBooster()
+    {
+        _midleSectionContainer.SetActive(true);
+        _boosterUI.gameObject.SetActive(false);
     }
 }

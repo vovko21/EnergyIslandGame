@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class DailyRewards : MonoBehaviour
+public class DailyRewardsUI : MonoBehaviour
 {
     public struct Reward
     {
@@ -13,8 +13,7 @@ public class DailyRewards : MonoBehaviour
     [Header("Data")]
     [SerializeField] private List<Reward> _rewards;
 
-    //[Header("UI")]
-    //[SerializeField] private UserInterface _ui;
+    private int _daysInRaw;
 
     private DateTime _lastClaimTime;
     private bool _canClaim = false;

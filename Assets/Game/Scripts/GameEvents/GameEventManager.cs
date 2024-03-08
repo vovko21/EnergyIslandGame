@@ -4,7 +4,8 @@ using UnityEngine;
 public enum GameEventType
 {
     None = 0,
-    BuildingBroken = 1
+    BuildingBroken = 1,
+    GoodDeal = 2
 }
 
 [System.Serializable]
