@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -6,30 +7,50 @@ public class FollowBySpline : MonoBehaviour
 {
     [SerializeField] private SplineContainer _splineContainer;
     [SerializeField] private float _speed;
+    [SerializeField] private int _stopPointIndex;
 
     private float _spllineLength;
+    private float _distancePercentage;
 
     private void Start()
     {
         _spllineLength = _splineContainer.CalculateLength();
-
-        StartWay();
     }
 
-    public void StartWay()
+    public void GoToShoer(Action onFinish = null)
     {
-        StartCoroutine(Coroutine());
+        _distancePercentage = 0;
+        StartCoroutine(Coroutine(0, 0.5f, onFinish));
     }
 
-    private IEnumerator Coroutine()
+    public void GoFromShoer(Action onFinish = null)
+    {
+        _distancePercentage = 0.5f;
+        StartCoroutine(Coroutine(0.5f, 1f, onFinish));
+    }
+
+    [ContextMenu("StartWay")]
+    public void StartWay(Action onFinish = null)
+    {
+        if(_distancePercentage == 0)
+        {
+            StartCoroutine(Coroutine(0, 0.5f, onFinish));
+        }
+        if(_distancePercentage >= 0.5f)
+        {
+            StartCoroutine(Coroutine(0.5f, 1f, onFinish));
+        }
+    }
+
+    private IEnumerator Coroutine(float startNormalized, float endNormalized, Action onFinish)
     {
         bool isFinished = false;
-        float distancePercentage = 0;
+        float distancePercentage = startNormalized;
         while (!isFinished)
         {
             distancePercentage += _speed * Time.fixedDeltaTime / _spllineLength;
 
-            if(distancePercentage > 1f)
+            if(distancePercentage >= endNormalized)
             {
                 isFinished = true;
             }
@@ -43,5 +64,13 @@ public class FollowBySpline : MonoBehaviour
 
             yield return new WaitForFixedUpdate();
         }
-    }
+
+        onFinish?.Invoke();
+        _distancePercentage = distancePercentage;
+
+        if(_distancePercentage >= 1)
+        {
+            _distancePercentage = 0;
+        }
+    } 
 }

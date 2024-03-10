@@ -40,14 +40,22 @@ public class GameEventManager : MonoBehaviour
 
     private void OnHourPassed()
     {
+        //float totalWeight = 0;
+        //foreach (GameEvent e in _events)
+        //{
+        //    totalWeight += e.chance;
+        //}
+
+        //var randomPick = Random.Range(0f, totalWeight);
+        var randomPick = Random.Range(0f, 1f);
         foreach (GameEvent e in _events)
         {
-            var random = Random.Range(0f, 1f);
-            if(e.chance >= random)
+            if (e.chance >= randomPick)
             {
                 ThrowEvent(e.type);
+                break;
             }
-        }
+        }     
     }
 
     private void ThrowEvent(GameEventType type)

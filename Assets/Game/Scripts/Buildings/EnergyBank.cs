@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnergyBank : MonoBehaviour
@@ -12,6 +13,8 @@ public class EnergyBank : MonoBehaviour
 
     public int Energy => _energy;
 
+    public event Action OnAdded;
+
     public void AddEnergy(int energy)
     {
         if (energy <= 0)
@@ -20,6 +23,8 @@ public class EnergyBank : MonoBehaviour
         }
 
         _energy += energy;
+
+        OnAdded?.Invoke();
     }
 
     public void ClearEnergy()

@@ -41,6 +41,13 @@ public class Timer
         {
             _remainingTime -= Time.deltaTime;
 
+            if (_remainingTime <= 0)
+            {
+                _remainingTime = 0;
+                TimeIsOver?.Invoke();
+                StopCountingTime();
+            }
+
             HasBeenUpdated?.Invoke(_remainingTime / _time);
 
             yield return null;
