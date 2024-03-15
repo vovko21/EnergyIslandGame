@@ -29,7 +29,7 @@ public class TaskRules : MonoBehaviour, IEventListener<BuildingUpdatedEvent>, IE
         //Upgraded
         if (eventType.upgraded == true)
         {
-            _taskManager.AddProgress("Upgraded Building", 1);
+            _taskManager.AddProgress("Upgrade Building", 1);
         }
     }
 

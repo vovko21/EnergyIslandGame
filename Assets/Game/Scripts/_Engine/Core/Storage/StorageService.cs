@@ -21,12 +21,13 @@ public class StorageService : SingletonMonobehaviour<StorageService>
     private UnitOfWork _unitOfWork;
 
     public bool Initialized => _dataContext.Data.Initialized;
+    public int InGameMinutesPassed => _dataContext.Data.InGameMinutesPassed;
 
     protected override void Awake()
     {
         base.Awake();
 
-        _dataContext = new AesEncryptorDataContext();
+        _dataContext = new JsonDataContext();
         _unitOfWork = new UnitOfWork(_dataContext);
     }
 
@@ -47,20 +48,25 @@ public class StorageService : SingletonMonobehaviour<StorageService>
         return new ReadOnlyResource(data.id, data.value, data.type);
     }
 
-    public void AddOrUpdateActiveBuilding(string id)
+    public void AddOrUpdateActiveBuilding(string id, int produced, int productionLevelIndex, int maxSupplyLevelIndex, BuildingStatus status)
     {
         var data = _unitOfWork.ActiveBuildingsRepository.GetById(id);
 
         if (data == null)
         {
-            data = new BuildingData() { id = id };
+            data = new BuildingData() { id = id, produced = produced, productionLevelIndex = productionLevelIndex, maxSupplyLevelIndex = maxSupplyLevelIndex, status = status };
             _unitOfWork.ActiveBuildingsRepository.Add(data);
         }
         else
         {
-            data = new BuildingData() { id = id };
+            data = new BuildingData() { id = id, produced = produced, productionLevelIndex = productionLevelIndex, maxSupplyLevelIndex = maxSupplyLevelIndex, status = status };
             _unitOfWork.ActiveBuildingsRepository.Modify(data);
         }
+    }
+
+    public void SetInGameMinutesPassed(int inGameMinutesPassed)
+    {
+        _dataContext.Data.InGameMinutesPassed = inGameMinutesPassed;
     }
 
     public ReadOnlyResource GetResource(ResourceType type)

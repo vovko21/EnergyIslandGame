@@ -18,6 +18,8 @@ public class GameTask
     [SerializeField] private ResourceType _resourceType;
     [SerializeField] private int _rewardValue;
 
+    public bool isTook = false;
+
     public string Id => _id;
     public string Name => _name;
     public string Description => _description;
@@ -71,5 +73,6 @@ public class GameTask
     {
         _progressCurrent = 0;
         _isCompleted = false;
+        isTook = false;
     }
 }

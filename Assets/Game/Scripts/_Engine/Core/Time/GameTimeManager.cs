@@ -32,6 +32,13 @@ public class GameTimeManager : SingletonMonobehaviour<GameTimeManager>
 
     private void Start()
     {
+        //OnDateTimeChanged?.Invoke(_currentDateTime);
+    }
+
+    public void Initialize(int minutesPassed)
+    {
+        _currentDateTime = new InGameDateTime(1, 0, 1, 0, 0);
+        _currentDateTime.AdvanceMinutes(minutesPassed);
         OnDateTimeChanged?.Invoke(_currentDateTime);
     }
 
@@ -87,6 +94,7 @@ public struct InGameDateTime
     public int Year => _year;
     public int TotalNumDays => _totalNumDays;
     public int TotalNumWeeks => _totalNumWeeks;
+    public int TotalNumMinutes => ((_totalNumDays - 1) * 24 * 60) + (_hour * 60) + _minutes;
     public int CurrentWeek => _totalNumWeeks % 16 == 0 ? 16 : _totalNumWeeks % 16;
     #endregion
 
@@ -122,15 +130,36 @@ public struct InGameDateTime
     #region TimeAdvancement
     public void AdvanceMinutes(int secondsToAdvanceBy)
     {
+        if (secondsToAdvanceBy < 0) return;
+
         if (_minutes + secondsToAdvanceBy >= 60)
         {
-            _minutes = (_minutes + secondsToAdvanceBy) % 60;
-            AdvanceHour();
+            int hours = 0;
+            int minutes = _minutes;
+
+            _minutes = (minutes + secondsToAdvanceBy) % 60;
+            hours = Mathf.FloorToInt((minutes + secondsToAdvanceBy) / 60f);
+
+            while (hours > 0)
+            {
+                AdvanceHour();
+                hours--;
+            }
         }
         else
         {
             _minutes += secondsToAdvanceBy;
         }
+
+        //if (_minutes + secondsToAdvanceBy >= 60)
+        //{
+        //    _minutes = (_minutes + secondsToAdvanceBy) % 60;
+        //    AdvanceHour();
+        //}
+        //else
+        //{
+        //    _minutes += secondsToAdvanceBy;
+        //}
     }
 
     private void AdvanceHour()

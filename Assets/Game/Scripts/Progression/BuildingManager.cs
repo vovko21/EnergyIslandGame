@@ -53,7 +53,7 @@ public class BuildingManager : SingletonMonobehaviour<BuildingManager>, IEventLi
         ActivateCurrentIteration();
     }
 
-    public void Initiallize()
+    public void Initialize()
     {
         var buildings = StorageService.Instance.GetActiveBuildings();
 
@@ -65,11 +65,12 @@ public class BuildingManager : SingletonMonobehaviour<BuildingManager>, IEventLi
             {
                 var building = buildArea.GetComponentInChildren<ProductionBuilding>(true);
 
-                var id = buildings.FirstOrDefault(e => e.id == building.Id);
+                var matchedBuilding = buildings.FirstOrDefault(e => e.id == building.Id);
 
-                if (id != null)
+                if (matchedBuilding != null)
                 {
                     buildArea.GetComponentInChildren<BuildArea>().Build();
+                    building.Initialize(matchedBuilding.produced, matchedBuilding.productionLevelIndex, matchedBuilding.maxSupplyLevelIndex, matchedBuilding.status);
                 }
             }
         }

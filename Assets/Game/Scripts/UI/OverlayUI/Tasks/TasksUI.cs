@@ -15,11 +15,6 @@ public class TasksUI : MonoBehaviour
 
     private List<TaskItemUI> _instantiatedItems = new List<TaskItemUI>();
 
-    private void Start()
-    {
-        TaskManager.Instance.ResetTasksProgress();
-    }
-
     private void OnEnable()
     {
         if (TimeManager.Instance == null) return;

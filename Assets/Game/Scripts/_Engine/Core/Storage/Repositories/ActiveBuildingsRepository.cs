@@ -19,6 +19,10 @@ public class ActiveBuildingsRepository : Repository<BuildingData>
         if (buildingToModify == null) return;
 
         buildingToModify.id = entity.id;
+        buildingToModify.produced = entity.produced;
+        buildingToModify.productionLevelIndex = entity.productionLevelIndex;
+        buildingToModify.maxSupplyLevelIndex = entity.maxSupplyLevelIndex;
+        buildingToModify.status = entity.status;
     }
 
     public override bool Delete(string id)

@@ -3,36 +3,21 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
-    [SerializeField] private int _saveCycleInGameMinutes = 360;
+    [SerializeField] private int _saveCycle = 5;
 
-    private InGameDateTime _saveDateTime;
-
-    private void OnEnable()
+    private void Start()
     {
-        _saveDateTime = GameTimeManager.Instance.CurrentDateTime;
-        _saveDateTime.AdvanceMinutes(_saveCycleInGameMinutes);
-        GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
+        InvokeRepeating(nameof(Save), _saveCycle, _saveCycle);
     }
 
-    private void OnDisable()
-    {
-        GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
-    }
-
-    private async void OnDateTimeChanged(InGameDateTime dateTime)
-    {
-        if (_saveDateTime == dateTime)
-        {
-            await Save();
-            _saveDateTime.AdvanceMinutes(_saveCycleInGameMinutes);
-        }
-    }
-
+    // Save Methods
     private async Task Save()
     {
         SaveResources();
 
         SaveBuildings();
+
+        SaveGameDateTime();
 
         await StorageService.Instance.SaveDataAsync();
     }
@@ -48,7 +33,12 @@ public class SaveManager : MonoBehaviour
 
         foreach (var building in BuildingManager.Instance.ActiveBuildings)
         {
-            StorageService.Instance.AddOrUpdateActiveBuilding(building.Id);
+            StorageService.Instance.AddOrUpdateActiveBuilding(building.Id, building.Produced, building.CurrentStats.ProductionLevelIndex, building.CurrentStats.MaxSupplyLevelIndex, building.Status);
         }
+    }
+
+    private void SaveGameDateTime()
+    {
+        StorageService.Instance.SetInGameMinutesPassed(GameTimeManager.Instance.CurrentDateTime.TotalNumMinutes);
     }
 }

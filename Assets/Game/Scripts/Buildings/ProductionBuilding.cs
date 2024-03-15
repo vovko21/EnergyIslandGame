@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public struct BuildingUpdatedEvent
 {
@@ -37,10 +38,20 @@ public class BuildingStats
 
     public bool IsProductionLevelMax => _productionLevelIndex == _stats.ProductionPerGameHour.Count - 1;
     public bool IsSupplyLevelMax => _maxSupplyLevelIndex == _stats.MaxSupply.Count - 1;
+    public int ProductionLevelIndex => _productionLevelIndex;
+    public int MaxSupplyLevelIndex => _maxSupplyLevelIndex;
 
     public BuildingStats(BuildingStatsSO stats)
     {
         _stats = stats;
+    }
+
+    public BuildingStats(BuildingStatsSO stats, int productionLevelIndex, int maxSupplyLevelIndex)
+    {
+        _stats = stats;
+
+        _productionLevelIndex = productionLevelIndex;
+        _maxSupplyLevelIndex = maxSupplyLevelIndex;
     }
 
     public void ApplyCoefficient(float coefficient)
@@ -92,13 +103,6 @@ public class ProductionBuilding : MonoBehaviour
 #endif
     #endregion  
     private BuildingStatus _status;
-    #region ReadOnly
-#if UNITY_EDITOR
-    [ReadOnly]
-    [SerializeField]
-#endif
-    #endregion  
-    protected int _currentLevelIndex;
 
     protected InGameDateTime _nextHourTime;
     protected BuildingStats _currentStats;
@@ -127,11 +131,6 @@ public class ProductionBuilding : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        if(GameTimeManager.Instance == null)
-        {
-            return;
-        }
-
         _nextHourTime = GameTimeManager.Instance.CurrentDateTime;
         _nextHourTime.AdvanceMinutes(60);
         GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
@@ -142,6 +141,18 @@ public class ProductionBuilding : MonoBehaviour
     protected virtual void OnDisable()
     {
         GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
+    }
+
+    public void Initialize(int produced, int productionLevelIndex, int maxSupplyLevelIndex, BuildingStatus status)
+    {
+        _nextHourTime = GameTimeManager.Instance.CurrentDateTime;
+        _nextHourTime.AdvanceMinutes(60);
+
+        _currentStats = new BuildingStats(_stats, productionLevelIndex, maxSupplyLevelIndex);
+
+        Status = status;
+
+        _produced = produced;
     }
 
     private void OnDateTimeChanged(InGameDateTime dateTime)
