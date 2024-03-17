@@ -36,6 +36,19 @@ public class GameTask
         _progressTarget = progressTarget;
     }
 
+    public GameTask(GameTaskData gameTaskData)
+    {
+        _id = gameTaskData.id; 
+        _name = gameTaskData.name; 
+        _description = gameTaskData.description;
+        _isCompleted = gameTaskData.isCompleted;
+        _progressTarget = gameTaskData.progressTarget;
+        _progressCurrent = gameTaskData.progressCurrent;
+        _resourceType = gameTaskData.resourceType;
+        _rewardValue = gameTaskData.rewardValue;
+        isTook = gameTaskData.isTook;
+    }
+
     public virtual void AddProgress(int newProgress)
     {
         _progressCurrent += newProgress;

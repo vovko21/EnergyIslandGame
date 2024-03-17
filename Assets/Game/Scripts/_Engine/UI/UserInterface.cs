@@ -14,6 +14,7 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private TasksUI _tasksUI;
     [SerializeField] private DailyRewardsUI _dailyRewardsUI;
     [SerializeField] private BoosterUI _boosterUI;
+    [SerializeField] private SettingsUI _settingsUI;
 
     [Header("Settings")]
     [SerializeField] private float _timeToFade;
@@ -30,6 +31,7 @@ public class UserInterface : MonoBehaviour
         HideTasks();
         HideDailyRewards();
         HideBooster();
+        HideSettings();
 
         CameraController.Instance.OnFollowTargets += OnCameraFollowTargets;
     }
@@ -162,5 +164,16 @@ public class UserInterface : MonoBehaviour
     {
         _midleSectionContainer.SetActive(true);
         _boosterUI.gameObject.SetActive(false);
+    }
+
+    public void ShowSettings()
+    {
+        _settingsUI.Initialize();
+        _settingsUI.gameObject.SetActive(true);
+    }
+
+    public void HideSettings()
+    {
+        _settingsUI.gameObject.SetActive(false);
     }
 }

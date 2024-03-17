@@ -19,6 +19,8 @@ public class SaveManager : MonoBehaviour
 
         SaveGameDateTime();
 
+        SaveActiveTasks();
+
         await StorageService.Instance.SaveDataAsync();
     }
 
@@ -40,5 +42,16 @@ public class SaveManager : MonoBehaviour
     private void SaveGameDateTime()
     {
         StorageService.Instance.SetInGameMinutesPassed(GameTimeManager.Instance.CurrentDateTime.TotalNumMinutes);
+    }
+
+    private void SaveActiveTasks()
+    {
+        StorageService.Instance.DeleteAllTasks();
+
+        foreach (var task in TaskManager.Instance.ActiveTasks)
+        {
+            Debug.Log("at");
+            StorageService.Instance.AddOrUpdateActiveTask(task);
+        }
     }
 }

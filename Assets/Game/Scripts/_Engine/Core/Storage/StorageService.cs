@@ -64,6 +64,44 @@ public class StorageService : SingletonMonobehaviour<StorageService>
         }
     }
 
+    public void AddOrUpdateActiveTask(GameTask gameTask)
+    {
+        var data = _unitOfWork.ActiveTasks.GetById(gameTask.Id);
+
+        if (data == null)
+        {
+            data = new GameTaskData()
+            {
+                id = gameTask.Id,
+                isCompleted = gameTask.IsCompleted,
+                name = gameTask.Name,
+                description = gameTask.Description,
+                progressCurrent = gameTask.ProgressCurrent,
+                progressTarget = gameTask.ProgressTarget,
+                resourceType = gameTask.ResourceType,
+                rewardValue = gameTask.RewardValue,
+                isTook = gameTask.isTook
+            };
+            _unitOfWork.ActiveTasks.Add(data);
+        }
+        else
+        {
+            data = new GameTaskData()
+            {
+                id = gameTask.Id,
+                isCompleted = gameTask.IsCompleted,
+                name = gameTask.Name,
+                description = gameTask.Description,
+                progressCurrent = gameTask.ProgressCurrent,
+                progressTarget = gameTask.ProgressTarget,
+                resourceType = gameTask.ResourceType,
+                rewardValue = gameTask.RewardValue,
+                isTook = gameTask.isTook
+            };
+            _unitOfWork.ActiveTasks.Modify(data);
+        }
+    }
+
     public void SetInGameMinutesPassed(int inGameMinutesPassed)
     {
         _dataContext.Data.InGameMinutesPassed = inGameMinutesPassed;
@@ -72,6 +110,10 @@ public class StorageService : SingletonMonobehaviour<StorageService>
     public ReadOnlyResource GetResource(ResourceType type)
     {
         var resource = _unitOfWork.ResourcesRepository.GetById(type.ToString());
+        if (resource == null)
+        {
+            return new ReadOnlyResource("", 0, 0);
+        }
         return new ReadOnlyResource(resource.id, resource.value, resource.type);
     }
 
@@ -80,9 +122,26 @@ public class StorageService : SingletonMonobehaviour<StorageService>
         return _unitOfWork.ActiveBuildingsRepository.GetAll();
     }
 
+    public List<GameTaskData> GetActiveTasks()
+    {
+        return _unitOfWork.ActiveTasks.GetAll();
+    }
+
     public bool DeleteResource(ResourceType type)
     {
         return _unitOfWork.ResourcesRepository.Delete(type.ToString());
+    }
+
+    public void DeleteAllTasks()
+    {
+        var allTaks = _unitOfWork.ActiveTasks.GetAll();
+
+        if (allTaks == null || allTaks.Count == 0) return;
+
+        foreach (var task in allTaks)
+        {
+            _unitOfWork.ActiveTasks.Delete(task.id);
+        }
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()

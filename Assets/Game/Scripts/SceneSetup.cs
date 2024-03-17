@@ -73,9 +73,12 @@ public class SceneSetup : MonoBehaviour
         GameTimeManager.Instance.Initialize(StorageService.Instance.InGameMinutesPassed);
 
         //Loading progression data
-        ProgressionManager.Instance.InitializeData();
+        ProgressionManager.Instance.Initialize();
 
         //Loading buildings data
         BuildingManager.Instance.Initialize();
+
+        //Loading active tasks
+        TaskManager.Instance.Initialize();
     }
 }

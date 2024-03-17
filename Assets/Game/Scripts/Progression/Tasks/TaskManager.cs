@@ -20,9 +20,15 @@ public class TaskManager : SingletonMonobehaviour<TaskManager>
         ShuffleNewTasks();
     }
 
-    public void Initialize(List<GameTask> tasks)
+    public void Initialize()
     {
-        _tasks = tasks;
+        var activeTasks = StorageService.Instance.GetActiveTasks();
+
+        _activeTasks.Clear();
+        foreach (var task in activeTasks) 
+        {
+            _activeTasks.Add(new GameTask(task));
+        }
     }
 
     public void AddProgress(string taskID, int newProgress)

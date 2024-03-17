@@ -13,7 +13,7 @@ public class ProgressionManager : SingletonMonobehaviour<ProgressionManager>
         _wallet = new Wallet();
     }
 
-    public void InitializeData()
+    public void Initialize()
     {
         if (!StorageService.Instance.Initialized)
         {
@@ -21,8 +21,10 @@ public class ProgressionManager : SingletonMonobehaviour<ProgressionManager>
         }
 
         var dollars = StorageService.Instance.GetResource(ResourceType.Dollars);
+        var diamonds = StorageService.Instance.GetResource(ResourceType.Diamonds);
 
         _wallet.AddDollars(dollars.value);
+        _wallet.AddDiamands(diamonds.value);
     }
 
     public string GetFormatedValue(int value)

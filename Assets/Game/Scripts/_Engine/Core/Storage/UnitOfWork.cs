@@ -3,9 +3,11 @@ public class UnitOfWork
     private DataContext _dataContext;
     private ResourcesRepository _resourcesRepository;
     private ActiveBuildingsRepository _activeBuildingsRepository;
+    private GameTasksRepository _activeTasks;
 
     public ResourcesRepository ResourcesRepository => _resourcesRepository;
     public ActiveBuildingsRepository ActiveBuildingsRepository => _activeBuildingsRepository;
+    public GameTasksRepository ActiveTasks => _activeTasks;
 
     public UnitOfWork(DataContext dataContext)
     {
@@ -13,6 +15,7 @@ public class UnitOfWork
 
         _resourcesRepository = new ResourcesRepository(dataContext);
         _activeBuildingsRepository = new ActiveBuildingsRepository(dataContext);
+        _activeTasks = new GameTasksRepository(dataContext);
     }
 
     public async System.Threading.Tasks.Task LoadAsync()

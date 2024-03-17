@@ -21,6 +21,10 @@ public abstract class DataContext
         {
             return _data.ActiveBuildings as List<T>;
         }
+        if(typeof(T) == typeof(GameTaskData))
+        {
+            return _data.ActiveTasks as List<T>;
+        }
 
         throw new NotImplementedException();
     }

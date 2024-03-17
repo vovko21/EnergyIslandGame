@@ -131,6 +131,12 @@ public class ProductionBuilding : MonoBehaviour
 
     protected virtual void OnEnable()
     {
+        if(GameTimeManager.Instance == null)
+        {
+            Debug.LogWarning("GameTimeManager is null");
+            return;
+        }
+
         _nextHourTime = GameTimeManager.Instance.CurrentDateTime;
         _nextHourTime.AdvanceMinutes(60);
         GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
