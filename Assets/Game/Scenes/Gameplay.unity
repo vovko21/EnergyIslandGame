@@ -6323,6 +6323,16 @@ PrefabInstance:
       propertyPath: _id
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3722842061704673908, guid: 0769962ab8295ca43b5a0e7bac5859fe,
+        type: 3}
+      propertyPath: _spendPerTick
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722842061704673908, guid: 0769962ab8295ca43b5a0e7bac5859fe,
+        type: 3}
+      propertyPath: _valueToSpend
+      value: 120
+      objectReference: {fileID: 0}
     - target: {fileID: 4223983102424858170, guid: 0769962ab8295ca43b5a0e7bac5859fe,
         type: 3}
       propertyPath: m_CastShadows
@@ -30468,6 +30478,16 @@ PrefabInstance:
       propertyPath: _ui
       value: 
       objectReference: {fileID: 1237301164}
+    - target: {fileID: 1870986231200402442, guid: 042dcd7f4ac0d5d49b8e12c830c483c0,
+        type: 3}
+      propertyPath: _spendPerTick
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1870986231200402442, guid: 042dcd7f4ac0d5d49b8e12c830c483c0,
+        type: 3}
+      propertyPath: _valueToSpend
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 3790566194092678540, guid: 042dcd7f4ac0d5d49b8e12c830c483c0,
         type: 3}
       propertyPath: m_Name
@@ -46728,9 +46748,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _events:
   - type: 1
-    chance: 0.1
+    chance: 0.05
   - type: 2
-    chance: 0.5
+    chance: 0.05
 --- !u!1001 &1097717980
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48038,11 +48058,11 @@ MonoBehaviour:
   _buildInterations:
   - buildArea:
     - {fileID: 7602018406243087354}
+  - buildArea:
     - {fileID: 205335510}
-  - buildArea:
     - {fileID: 460928340}
-    - {fileID: 109109038}
   - buildArea:
+    - {fileID: 109109038}
     - {fileID: 560782957}
     - {fileID: 679876893}
   - buildArea:
@@ -48050,6 +48070,7 @@ MonoBehaviour:
     - {fileID: 858036059}
   - buildArea:
     - {fileID: 6566446083632194621}
+  - buildArea:
     - {fileID: 614300782}
 --- !u!4 &1122091923
 Transform:
@@ -57337,6 +57358,16 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c81661bdbe5b17a4abd4ee659b19ab2b, type: 2}
+    - target: {fileID: 3693060846029938691, guid: 3bfa60da10da68f47b41c18b5f688866,
+        type: 3}
+      propertyPath: _spendPerTick
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3693060846029938691, guid: 3bfa60da10da68f47b41c18b5f688866,
+        type: 3}
+      propertyPath: _valueToSpend
+      value: 1500
+      objectReference: {fileID: 0}
     - target: {fileID: 5938455277064235871, guid: 3bfa60da10da68f47b41c18b5f688866,
         type: 3}
       propertyPath: m_IsActive
@@ -71597,8 +71628,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46e9882e9ae4a3a40bc7b5d242a9be5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _valueToSpend: 20
-  _spendPerTick: 1
+  _valueToSpend: 10000
+  _spendPerTick: 250
   _building: {fileID: 227418908}
   _productionBuilding: {fileID: 654602751}
 --- !u!65 &1682695567
@@ -82362,7 +82393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ui: {fileID: 1237301164}
   _boat: {fileID: 381368821}
-  _startMoney: 300
+  _startMoney: 100000
   _player: {fileID: 517044559}
   _spawnPoint: {fileID: 207770813}
   _gameEventManager: {fileID: 1097140790}
@@ -83010,6 +83041,16 @@ PrefabInstance:
         type: 3}
       propertyPath: _id
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722842061704673908, guid: 0769962ab8295ca43b5a0e7bac5859fe,
+        type: 3}
+      propertyPath: _spendPerTick
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722842061704673908, guid: 0769962ab8295ca43b5a0e7bac5859fe,
+        type: 3}
+      propertyPath: _valueToSpend
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 4223983102424858170, guid: 0769962ab8295ca43b5a0e7bac5859fe,
         type: 3}
@@ -86474,6 +86515,16 @@ PrefabInstance:
       propertyPath: _ui
       value: 
       objectReference: {fileID: 1237301164}
+    - target: {fileID: 1870986231200402442, guid: 042dcd7f4ac0d5d49b8e12c830c483c0,
+        type: 3}
+      propertyPath: _spendPerTick
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1870986231200402442, guid: 042dcd7f4ac0d5d49b8e12c830c483c0,
+        type: 3}
+      propertyPath: _valueToSpend
+      value: 650
+      objectReference: {fileID: 0}
     - target: {fileID: 2470941158808854435, guid: 042dcd7f4ac0d5d49b8e12c830c483c0,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -94415,6 +94466,16 @@ PrefabInstance:
       propertyPath: _ui
       value: 
       objectReference: {fileID: 1237301164}
+    - target: {fileID: 1870986231200402442, guid: 042dcd7f4ac0d5d49b8e12c830c483c0,
+        type: 3}
+      propertyPath: _spendPerTick
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1870986231200402442, guid: 042dcd7f4ac0d5d49b8e12c830c483c0,
+        type: 3}
+      propertyPath: _valueToSpend
+      value: 420
+      objectReference: {fileID: 0}
     - target: {fileID: 3790566194092678540, guid: 042dcd7f4ac0d5d49b8e12c830c483c0,
         type: 3}
       propertyPath: m_Name
@@ -94469,6 +94530,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7497771087550618003, guid: 042dcd7f4ac0d5d49b8e12c830c483c0,
+        type: 3}
+      propertyPath: _id
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8614375722467917275, guid: 042dcd7f4ac0d5d49b8e12c830c483c0,
         type: 3}
@@ -94700,8 +94766,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46e9882e9ae4a3a40bc7b5d242a9be5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _valueToSpend: 20
-  _spendPerTick: 1
+  _valueToSpend: 4000
+  _spendPerTick: 200
   _building: {fileID: 7781926850596658757}
   _productionBuilding: {fileID: 7523336584389950611}
 --- !u!1001 &787658450957580958
@@ -97978,6 +98044,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 448413633}
     m_Modifications:
+    - target: {fileID: 3693060846029938691, guid: 3bfa60da10da68f47b41c18b5f688866,
+        type: 3}
+      propertyPath: _spendPerTick
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 3693060846029938691, guid: 3bfa60da10da68f47b41c18b5f688866,
+        type: 3}
+      propertyPath: _valueToSpend
+      value: 800
+      objectReference: {fileID: 0}
     - target: {fileID: 6552995924266090969, guid: 3bfa60da10da68f47b41c18b5f688866,
         type: 3}
       propertyPath: _ui

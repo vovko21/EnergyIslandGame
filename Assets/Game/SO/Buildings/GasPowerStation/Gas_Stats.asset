@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: Gas_Stats
   m_EditorClassIdentifier: 
   <ProductionPerGameHour>k__BackingField:
-  - <Price>k__BackingField: 100
-    <Value>k__BackingField: 0
-  - <Price>k__BackingField: 120
-    <Value>k__BackingField: 1250
-  - <Price>k__BackingField: 200
-    <Value>k__BackingField: 2500
+  - <Price>k__BackingField: 0
+    <Value>k__BackingField: 100
+  - <Price>k__BackingField: 2200
+    <Value>k__BackingField: 150
+  - <Price>k__BackingField: 3100
+    <Value>k__BackingField: 200
   <MaxSupply>k__BackingField:
   - <Price>k__BackingField: 0
+    <Value>k__BackingField: 500
+  - <Price>k__BackingField: 1100
     <Value>k__BackingField: 700
-  - <Price>k__BackingField: 1100
+  - <Price>k__BackingField: 2000
     <Value>k__BackingField: 900
-  - <Price>k__BackingField: 1100
-    <Value>k__BackingField: 1200
   <MaintainingTime>k__BackingField: 3
   <Consumption>k__BackingField: 20

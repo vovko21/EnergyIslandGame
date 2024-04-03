@@ -21,12 +21,10 @@ MonoBehaviour:
     <Value>k__BackingField: 30
   <MaxSupply>k__BackingField:
   - <Price>k__BackingField: 0
-    <Value>k__BackingField: 100
+    <Value>k__BackingField: 50
   - <Price>k__BackingField: 150
-    <Value>k__BackingField: 200
-  - <Price>k__BackingField: 700
-    <Value>k__BackingField: 300
-  - <Price>k__BackingField: 1000
-    <Value>k__BackingField: 300
+    <Value>k__BackingField: 80
+  - <Price>k__BackingField: 400
+    <Value>k__BackingField: 100
   <MaintainingTime>k__BackingField: 2
   <Consumption>k__BackingField: 0

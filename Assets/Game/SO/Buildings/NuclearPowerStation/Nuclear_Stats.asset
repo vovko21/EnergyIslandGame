@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ProductionPerGameHour>k__BackingField:
   - <Price>k__BackingField: 0
-    <Value>k__BackingField: 1000
-  - <Price>k__BackingField: 150000
-    <Value>k__BackingField: 1500
-  - <Price>k__BackingField: 200000
-    <Value>k__BackingField: 2000
+    <Value>k__BackingField: 250
+  - <Price>k__BackingField: 5000
+    <Value>k__BackingField: 400
+  - <Price>k__BackingField: 10000
+    <Value>k__BackingField: 600
   <MaxSupply>k__BackingField:
   - <Price>k__BackingField: 0
-    <Value>k__BackingField: 50000
-  - <Price>k__BackingField: 100000
-    <Value>k__BackingField: 70000
-  - <Price>k__BackingField: 20000
-    <Value>k__BackingField: 100000
+    <Value>k__BackingField: 2500
+  - <Price>k__BackingField: 3000
+    <Value>k__BackingField: 5000
+  - <Price>k__BackingField: 5000
+    <Value>k__BackingField: 7000
   <MaintainingTime>k__BackingField: 5
-  <Consumption>k__BackingField: 100
+  <Consumption>k__BackingField: 30
