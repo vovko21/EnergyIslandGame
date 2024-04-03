@@ -12,6 +12,9 @@ public class HireArea : InteractableArea
     [SerializeField] private GameObject _carrier;
     [SerializeField] private GameObject _service;
 
+    private bool _carrierBuyed;
+    private bool _serviceBuyed;
+
     private void OnEnable()
     {
         _ui.BottomBar.WorkersUI.OnUpgradeCarrierPress += OnBuyCarrierPress;
@@ -41,6 +44,8 @@ public class HireArea : InteractableArea
         if (result) 
         {
             _carrier.SetActive(true);
+
+            _carrierBuyed = true;
         }
     }
 
@@ -51,6 +56,8 @@ public class HireArea : InteractableArea
         if (result)
         {
             _service.SetActive(true);
+
+            _serviceBuyed = true;
         }
     }
 }

@@ -23,11 +23,11 @@ public class ResourcesUI : MonoBehaviour
 
     private void OnDollarsChanged(int value)
     {
-        _dolarsText.text = ProgressionManager.Instance.GetFormatedValue(value);
+        _dolarsText.text = ProgressionManager.Instance.GetFormatedValue(ProgressionManager.Instance.Wallet.Dollars);
     }
 
     private void OnDiamandsChanged(int value)
     {
-        _diamandsText.text = ProgressionManager.Instance.GetFormatedValue(value);
+        _diamandsText.text = ProgressionManager.Instance.GetFormatedValue(ProgressionManager.Instance.Wallet.Diamands);
     }
 }

@@ -64,9 +64,12 @@ public class GameTimeManager : SingletonMonobehaviour<GameTimeManager>
 
         OnDateTimeChanged?.Invoke(_currentDateTime);
     }
+
+    public float InGameMinutesToRealSeconds(int gameMinutes)
+    {
+        return ((float)gameMinutes / (float)_minutesPerTick) * _timeBetweenTicks;
+    }
 }
-
-
 
 [System.Serializable]
 public struct InGameDateTime
@@ -334,6 +337,53 @@ public struct InGameDateTime
     {
         return !(a.Year == b.Year && a.Date == b.Date && a.Hour == b.Hour && a.Minute == b.Minute);
     }
+
+    //public override bool Equals(object obj)
+    //{
+    //    return obj is InGameDateTime time &&
+    //           _day == time._day &&
+    //           _date == time._date &&
+    //           _year == time._year &&
+    //           _hour == time._hour &&
+    //           _minutes == time._minutes &&
+    //           _season == time._season &&
+    //           _totalNumDays == time._totalNumDays &&
+    //           _totalNumWeeks == time._totalNumWeeks &&
+    //           Day == time.Day &&
+    //           Date == time.Date &&
+    //           Hour == time.Hour &&
+    //           Minute == time.Minute &&
+    //           Season == time.Season &&
+    //           Year == time.Year &&
+    //           TotalNumDays == time.TotalNumDays &&
+    //           TotalNumWeeks == time.TotalNumWeeks &&
+    //           TotalNumMinutes == time.TotalNumMinutes &&
+    //           CurrentWeek == time.CurrentWeek;
+    //}
+
+    //public override int GetHashCode()
+    //{
+    //    HashCode hash = new HashCode();
+    //    hash.Add(_day);
+    //    hash.Add(_date);
+    //    hash.Add(_year);
+    //    hash.Add(_hour);
+    //    hash.Add(_minutes);
+    //    hash.Add(_season);
+    //    hash.Add(_totalNumDays);
+    //    hash.Add(_totalNumWeeks);
+    //    hash.Add(Day);
+    //    hash.Add(Date);
+    //    hash.Add(Hour);
+    //    hash.Add(Minute);
+    //    hash.Add(Season);
+    //    hash.Add(Year);
+    //    hash.Add(TotalNumDays);
+    //    hash.Add(TotalNumWeeks);
+    //    hash.Add(TotalNumMinutes);
+    //    hash.Add(CurrentWeek);
+    //    return hash.ToHashCode();
+    //}
     #endregion
 }
 

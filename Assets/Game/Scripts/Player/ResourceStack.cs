@@ -7,6 +7,8 @@ public class ResourceStack : MonoBehaviour
     [Header("Object Settings")]
     [SerializeField] private GameObject _prefab;
     [SerializeField] private int _valuePerObject;
+    [SerializeField] private bool _assignLayer = false;
+    [SerializeField] private string _layerName;
 
     [Header("Stack Settings")]
     [SerializeField] private Grid _grid;
@@ -111,7 +113,13 @@ public class ResourceStack : MonoBehaviour
                     }
 
                     var position = _grid.GetCellCenterWorld(new Vector3Int(x, y, z));
-                    _resources.Add(Instantiate(_prefab, position, _prefab.transform.rotation, this.transform));
+                    var objectInstantiated = Instantiate(_prefab, position, _prefab.transform.rotation, this.transform);
+                    if(_assignLayer)
+                    {
+                        objectInstantiated.layer = LayerMask.NameToLayer(_layerName);
+                        objectInstantiated.GetComponentInChildren<MeshFilter>().gameObject.layer = LayerMask.NameToLayer(_layerName);
+                    }
+                    _resources.Add(objectInstantiated);
 
                     objectCountToSpawn--;
                 }

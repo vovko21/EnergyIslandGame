@@ -27,6 +27,7 @@ public class BuildingStatusUI : MonoBehaviour
     protected virtual void OnEnable()
     {
         _building.OnStatusChanged += OnBuildingStatusChanged;
+        _building.OnInitialized += OnBuildingInitialized;
         _interactArea.OnFixingChanged += OnFixingChanged;
 
         var camera = Camera.main;
@@ -37,6 +38,7 @@ public class BuildingStatusUI : MonoBehaviour
     protected virtual void OnDisable()
     {
         _building.OnStatusChanged -= OnBuildingStatusChanged;
+        _building.OnInitialized -= OnBuildingInitialized;
         _interactArea.OnFixingChanged -= OnFixingChanged;
     }
 
@@ -48,6 +50,11 @@ public class BuildingStatusUI : MonoBehaviour
         _maxStatus.SetActive(false);
 
         OnBuildingStatusChanged(_building.Status);
+    }
+
+    private void OnBuildingInitialized(ProductionBuilding building)
+    {
+        OnBuildingStatusChanged(building.Status);
     }
 
     protected virtual void OnBuildingStatusChanged(BuildingStatus status)

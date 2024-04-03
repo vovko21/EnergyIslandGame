@@ -1,4 +1,6 @@
+using DG.Tweening;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class UserInterface : MonoBehaviour
@@ -10,18 +12,21 @@ public class UserInterface : MonoBehaviour
 
     [Header("Panels")]
     [SerializeField] private CanvasGroup _loading;
-    [SerializeField] private BottomBarUI _bottomBar;
+    [SerializeField] private BottomBarUI _bottomUI;
     [SerializeField] private TasksUI _tasksUI;
     [SerializeField] private DailyRewardsUI _dailyRewardsUI;
     [SerializeField] private BoosterUI _boosterUI;
     [SerializeField] private SettingsUI _settingsUI;
+    [SerializeField] private CanvasGroup _hintBar;
 
     [Header("Settings")]
     [SerializeField] private float _timeToFade;
+    [SerializeField] private TextMeshProUGUI _hintText;
 
     public bool IsUIHiden { get; private set; }
     public bool IsJoystickHidden { get; private set; }
-    public BottomBarUI BottomBar => _bottomBar;
+    public bool IsSettingsOpen { get; private set; }
+    public BottomBarUI BottomBar => _bottomUI;
     public BoosterUI BoosterUI => _boosterUI;
 
     private void Start()
@@ -32,6 +37,7 @@ public class UserInterface : MonoBehaviour
         HideDailyRewards();
         HideBooster();
         HideSettings();
+        HideHint();
 
         CameraController.Instance.OnFollowTargets += OnCameraFollowTargets;
     }
@@ -102,6 +108,12 @@ public class UserInterface : MonoBehaviour
         _vareiableJoystick.ResetInput();
         UIEvents.JoystickInput = Vector2.zero;
     }
+    
+    private void PopUp(Transform transform)
+    {
+        transform.localScale = new Vector3(0.5f, 0.5f);
+        transform.DOScale(new Vector3(1f, 1f), 0.1f).SetEase(Ease.OutElastic);
+    }
 
     public void FadeIn()
     {
@@ -132,6 +144,7 @@ public class UserInterface : MonoBehaviour
         _midleSectionContainer.SetActive(false);
         _tasksUI.Initialize();
         _tasksUI.gameObject.SetActive(true);
+        PopUp(_tasksUI.transform);
     }
 
     public void HideTasks()
@@ -144,7 +157,9 @@ public class UserInterface : MonoBehaviour
     public void ShowDailyRewards()
     {
         _midleSectionContainer.SetActive(false);
+        _dailyRewardsUI.Initialize();
         _dailyRewardsUI.gameObject.SetActive(true);
+        PopUp(_dailyRewardsUI.transform);
     }
 
     public void HideDailyRewards()
@@ -158,6 +173,7 @@ public class UserInterface : MonoBehaviour
         _midleSectionContainer.SetActive(false);
         _boosterUI.Initialize(boostSO);
         _boosterUI.gameObject.SetActive(true);
+        PopUp(_boosterUI.transform);
     }
 
     public void HideBooster()
@@ -168,12 +184,34 @@ public class UserInterface : MonoBehaviour
 
     public void ShowSettings()
     {
+        if (IsSettingsOpen)
+        {
+            HideSettings();
+            return;
+        }
+
         _settingsUI.Initialize();
         _settingsUI.gameObject.SetActive(true);
+        IsSettingsOpen = true;
+
+        PopUp(_settingsUI.transform);
     }
 
     public void HideSettings()
     {
         _settingsUI.gameObject.SetActive(false);
+        IsSettingsOpen = false;
+    }
+
+    public void ShowHint(string message)
+    {
+        _hintBar.gameObject.SetActive(true);
+        _hintText.text = message;
+        PopUp(_hintBar.transform);
+    }
+
+    public void HideHint()
+    {
+        _hintBar.gameObject.SetActive(false);
     }
 }

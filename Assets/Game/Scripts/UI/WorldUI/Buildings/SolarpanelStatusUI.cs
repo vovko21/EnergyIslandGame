@@ -5,13 +5,6 @@ public class SolarpanelStatusUI : RenewableBuildingStatusUI
     [Header("Night status")]
     [SerializeField] private GameObject _nightStatus;
 
-    protected override void Start()
-    {
-        base.Start();
-
-        _nightStatus.SetActive(false);
-    }
-
     protected override void OnBuildingStatusChanged(BuildingStatus status)
     {
         base.OnBuildingStatusChanged(status);

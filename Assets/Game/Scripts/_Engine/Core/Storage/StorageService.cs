@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,9 @@ public class StorageService : SingletonMonobehaviour<StorageService>
 
     public bool Initialized => _dataContext.Data.Initialized;
     public int InGameMinutesPassed => _dataContext.Data.InGameMinutesPassed;
+    public int DaysBonusClaimedInRow => _dataContext.Data.DaysBonusClaimedInRow;
+    public DateTime? LastClaimBonusTime => StringToDateTime(_dataContext.Data.LastClaimBonusTime);
+    public DateTime? NextTasksTIme => StringToDateTime(_dataContext.Data.NextTasksTime);
 
     protected override void Awake()
     {
@@ -107,6 +111,27 @@ public class StorageService : SingletonMonobehaviour<StorageService>
         _dataContext.Data.InGameMinutesPassed = inGameMinutesPassed;
     }
 
+    public void SetDaysClaimed(int daysBonusClaimedInRow)
+    {
+        _dataContext.Data.DaysBonusClaimedInRow = daysBonusClaimedInRow;
+    }
+
+    public void SetLastClaimedBonusTime(DateTime? dateTime)
+    {
+        if(dateTime.HasValue)
+        {
+            _dataContext.Data.LastClaimBonusTime = dateTime.Value.ToString();
+        }
+    }
+
+    public void SetNextTasksTime(DateTime? dateTime)
+    {
+        if (dateTime.HasValue)
+        {
+            _dataContext.Data.NextTasksTime = dateTime.Value.ToString();
+        }
+    }
+
     public ReadOnlyResource GetResource(ResourceType type)
     {
         var resource = _unitOfWork.ResourcesRepository.GetById(type.ToString());
@@ -142,6 +167,18 @@ public class StorageService : SingletonMonobehaviour<StorageService>
         {
             _unitOfWork.ActiveTasks.Delete(task.id);
         }
+    }
+
+    private DateTime? StringToDateTime(string dateTime)
+    {
+        DateTime parsed = new DateTime();
+
+        if (!DateTime.TryParse(dateTime, out parsed))
+        {
+            return null;
+        }
+
+        return parsed;
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()

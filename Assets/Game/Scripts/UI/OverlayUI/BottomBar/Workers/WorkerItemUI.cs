@@ -13,6 +13,8 @@ public class WorkerItemUI : MonoBehaviour
 
     public void Initialize(int price)
     {
+        _price = price;
+
         if (price <= 0)
         {
             _buyButton.SetInactive();

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : SingletonMonobehaviour<AudioManager>
 {
     [Header("Main settings")]
     [SerializeField] private AudioMixer _audioMixer;

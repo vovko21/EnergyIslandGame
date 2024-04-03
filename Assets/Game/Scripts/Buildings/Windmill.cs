@@ -5,20 +5,20 @@ public class Windmill : RenewableEnergyBuilding
     [Header("Wind setting")]
     [SerializeField] private float _windThreashold;
 
-    protected override void OnHourPassed()
+    protected override void OnDateTimeChanged(InGameDateTime dateTime)
     {
         if (WeatherSystem.Instance.WindSpeedKmh < _windThreashold)
         {
-            Status = BuildingStatus.NotProducing;
+            if (Status != BuildingStatus.NotProducing)
+            {
+                Status = BuildingStatus.NotProducing;
+            }
         }
-        else
+        else if(Status == BuildingStatus.NotProducing)
         {
             Status = BuildingStatus.Producing;
         }
 
-        if (Status == BuildingStatus.Producing)
-        {
-            Produce();
-        }
+        base.OnDateTimeChanged(dateTime);
     }
 }

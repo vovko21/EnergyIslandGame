@@ -12,6 +12,14 @@ public class SceneSetup : MonoBehaviour
     [SerializeField] private Transform _player;
     [SerializeField] private Transform _spawnPoint;
 
+    [Header("Systems Setup")]
+    [SerializeField] private GameEventManager _gameEventManager;
+    [SerializeField] private HintsManager _hintsManager;
+    [SerializeField] private BuildingEffects _buildingEffects;
+    [SerializeField] private UIEffects _uiEffects;
+    [SerializeField] private DailyRewardsUI _dailyRewardsUI;
+    [SerializeField] private TasksUI _tasksUI;
+
     private async void Start()
     {
         await StorageService.Instance.LoadDataAsync();
@@ -24,7 +32,7 @@ public class SceneSetup : MonoBehaviour
         }
         else
         {
-            InitializeAllGameData();
+            InitializeAllLoadedGameData();
 
             _player.gameObject.SetActive(false);
 
@@ -36,6 +44,13 @@ public class SceneSetup : MonoBehaviour
 
             _ui.FadeOut();
         }
+
+        //Start listen events
+        _gameEventManager.Initialize();
+
+        _buildingEffects.StartListen();
+
+        _uiEffects.StartListen();
     }
 
     private IEnumerator FirstLoadCutscene()
@@ -64,10 +79,12 @@ public class SceneSetup : MonoBehaviour
 
         _ui.FadeOut();
 
-        StorageService.Instance.SaveDataAsync();
+        yield return new WaitForSeconds(1);
+
+        _hintsManager.StartFirstGameHints();
     }
 
-    private void InitializeAllGameData()
+    private void InitializeAllLoadedGameData()
     {
         //Time must be loaded first !!!
         GameTimeManager.Instance.Initialize(StorageService.Instance.InGameMinutesPassed);
@@ -80,5 +97,11 @@ public class SceneSetup : MonoBehaviour
 
         //Loading active tasks
         TaskManager.Instance.Initialize();
+
+        //Loading Daily bonus progress
+        _dailyRewardsUI.Initialize(StorageService.Instance.DaysBonusClaimedInRow, StorageService.Instance.LastClaimBonusTime);
+
+        //Loading Taksks time progress
+        _tasksUI.Initialize(StorageService.Instance.NextTasksTIme);
     }
 }

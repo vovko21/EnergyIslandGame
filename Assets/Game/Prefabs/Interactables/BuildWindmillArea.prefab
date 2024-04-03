@@ -661,6 +661,7 @@ GameObject:
   - component: {fileID: 4949382588254929818}
   - component: {fileID: 2381288701246994824}
   - component: {fileID: 7602387975302379275}
+  - component: {fileID: 3720872514704185985}
   - component: {fileID: 4611723280818146776}
   m_Layer: 0
   m_Name: Windmill
@@ -735,7 +736,6 @@ MonoBehaviour:
   _getherPoint: {fileID: 4504651739909451420}
   _produced: 0
   _status: 0
-  _currentLevelIndex: 0
   _windThreashold: 0
 --- !u!114 &7602387975302379275
 MonoBehaviour:
@@ -752,6 +752,20 @@ MonoBehaviour:
   _building: {fileID: 2381288701246994824}
   _audioSource: {fileID: 4611723280818146776}
   _productionClip: {fileID: 8300000, guid: 36d903a3238686b46bc4c2fb283de475, type: 3}
+--- !u!114 &3720872514704185985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4974425106700997609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4ac3cea1c43d5c4d908c4c3a2a8332f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _productionBuilding: {fileID: 2381288701246994824}
+  _animator: {fileID: 357940211895025987}
 --- !u!82 &4611723280818146776
 AudioSource:
   m_ObjectHideFlags: 0

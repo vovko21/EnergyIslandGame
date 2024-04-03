@@ -5,13 +5,6 @@ public class WindmillStatusUI : RenewableBuildingStatusUI
     [Header("Wind status")]
     [SerializeField] private GameObject _windStatus;
 
-    protected override void Start()
-    {
-        base.Start();
-
-        _windStatus.SetActive(false);
-    }
-
     protected override void OnBuildingStatusChanged(BuildingStatus status)
     {
         base.OnBuildingStatusChanged(status);

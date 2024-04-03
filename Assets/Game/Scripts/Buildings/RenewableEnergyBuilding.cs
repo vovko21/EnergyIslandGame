@@ -9,6 +9,8 @@ public class RenewableEnergyBuilding : ProductionBuilding
     {
         base.Produce();
 
+        if (Status == BuildingStatus.MaxedOut) return;
+
         Status = BuildingStatus.Maintenance;
     }
 

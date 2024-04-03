@@ -22,11 +22,16 @@ public class GameEventManager : MonoBehaviour
 
     protected InGameDateTime _nextTime;
 
-    private void Start()
+    public void Initialize()
     {
         _nextTime = GameTimeManager.Instance.CurrentDateTime;
         _nextTime.AdvanceMinutes(60);
         GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
+    }
+
+    private void OnDestroy()
+    {
+        GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
     }
 
     private void OnDateTimeChanged(InGameDateTime dateTime)
@@ -40,22 +45,27 @@ public class GameEventManager : MonoBehaviour
 
     private void OnHourPassed()
     {
-        //float totalWeight = 0;
-        //foreach (GameEvent e in _events)
-        //{
-        //    totalWeight += e.chance;
-        //}
-
-        //var randomPick = Random.Range(0f, totalWeight);
         var randomPick = Random.Range(0f, 1f);
+        List<GameEvent> matches = new List<GameEvent>();   
         foreach (GameEvent e in _events)
         {
             if (e.chance >= randomPick)
             {
-                ThrowEvent(e.type);
-                break;
+                matches.Add(e);
             }
-        }     
+        }
+
+        GameEvent minChanceEvent = new GameEvent();
+        minChanceEvent.chance = 1.1f;
+        foreach (GameEvent e in matches)
+        {
+            if(minChanceEvent.chance > e.chance)
+            {
+                minChanceEvent = e;
+            }
+        }
+
+        ThrowEvent(minChanceEvent.type);
     }
 
     private void ThrowEvent(GameEventType type)

@@ -20,7 +20,7 @@ public class Wallet
 
         _dollars -= dollars;
 
-        OnDollarsChanged?.Invoke(_dollars);
+        OnDollarsChanged?.Invoke(-dollars);
 
         return true;
     }
@@ -34,7 +34,7 @@ public class Wallet
 
         _diamands -= diamands;
 
-        OnDiamandsChanged?.Invoke(_diamands);
+        OnDiamandsChanged?.Invoke(-diamands);
 
         return true;
     }
@@ -48,7 +48,7 @@ public class Wallet
 
         _dollars += dollars;
 
-        OnDollarsChanged?.Invoke(_dollars);
+        OnDollarsChanged?.Invoke(dollars);
     }
 
     public void AddDiamands(int diamands)
@@ -60,6 +60,6 @@ public class Wallet
 
         _diamands += diamands;
 
-        OnDiamandsChanged?.Invoke(_dollars);
+        OnDiamandsChanged?.Invoke(diamands);
     }
 }

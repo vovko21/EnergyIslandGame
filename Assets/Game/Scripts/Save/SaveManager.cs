@@ -3,15 +3,20 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
+    [Header("Refferences")]
+    [SerializeField] private DailyRewardsUI _dailyRewardsUI;
+    [SerializeField] private TasksUI _tasksUI;
+
+    [Header("Save settings")]
     [SerializeField] private int _saveCycle = 5;
 
     private void Start()
     {
-        InvokeRepeating(nameof(Save), _saveCycle, _saveCycle);
+        InvokeRepeating(nameof(SaveAll), _saveCycle, _saveCycle);
     }
 
     // Save Methods
-    private async Task Save()
+    private async Task SaveAll()
     {
         SaveResources();
 
@@ -19,7 +24,9 @@ public class SaveManager : MonoBehaviour
 
         SaveGameDateTime();
 
-        SaveActiveTasks();
+        SaveDailyBonuses();
+
+        SaveTasks();
 
         await StorageService.Instance.SaveDataAsync();
     }
@@ -44,13 +51,23 @@ public class SaveManager : MonoBehaviour
         StorageService.Instance.SetInGameMinutesPassed(GameTimeManager.Instance.CurrentDateTime.TotalNumMinutes);
     }
 
-    private void SaveActiveTasks()
+    private void SaveDailyBonuses()
     {
+        StorageService.Instance.SetDaysClaimed(_dailyRewardsUI.DaysInRow);
+
+        StorageService.Instance.SetLastClaimedBonusTime(_dailyRewardsUI.LastClaimTime);
+    }
+
+    private void SaveTasks()
+    {
+        //Save next time to reshuffle tasks
+        StorageService.Instance.SetNextTasksTime(_tasksUI.NextDateTime);
+
+        //Save active tasks
         StorageService.Instance.DeleteAllTasks();
 
         foreach (var task in TaskManager.Instance.ActiveTasks)
         {
-            Debug.Log("at");
             StorageService.Instance.AddOrUpdateActiveTask(task);
         }
     }

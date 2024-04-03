@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,6 +15,10 @@ public class TasksUI : MonoBehaviour
     [SerializeField] private TaskItemUI _itemPrefab;
 
     private List<TaskItemUI> _instantiatedItems = new List<TaskItemUI>();
+    private IEnumerator _timerCoroutine;
+    private DateTime? _nextDateTime;
+
+    public DateTime? NextDateTime => _nextDateTime;
 
     private void OnEnable()
     {
@@ -21,7 +26,17 @@ public class TasksUI : MonoBehaviour
 
         if (TimeManager.Instance.IsServerTimeSuccess)
         {
-            StartCoroutine(StartCoutTime());
+            if (_timerCoroutine == null)
+            {
+                _timerCoroutine = StartCoutTime();
+                StartCoroutine(_timerCoroutine);
+            }
+            else
+            {
+                StopCoroutine(_timerCoroutine);
+                _timerCoroutine = StartCoutTime();
+                StartCoroutine(_timerCoroutine);
+            }
         }
     }
 
@@ -42,6 +57,11 @@ public class TasksUI : MonoBehaviour
         }
     }
 
+    public void Initialize(DateTime? nextDateTime)
+    {
+        _nextDateTime = nextDateTime;    
+    }
+
     public void Deinitialize()
     {
         foreach (var item in _instantiatedItems)
@@ -54,20 +74,34 @@ public class TasksUI : MonoBehaviour
 
     private IEnumerator StartCoutTime()
     {
-        var tomorrow = TimeManager.Instance.Today.AddDays(1);
+        if (_nextDateTime == null)
+        {
+            _nextDateTime = NextTimeFrom(TimeManager.Instance.LocalDateTime);
+        }
 
         while (true)
         {
-            var dateTimeDifference = tomorrow - TimeManager.Instance.LocalDateTime;
-            _timeText.text = dateTimeDifference.ToString("hh\\:mm");
+            var dateTimeDifference = _nextDateTime.Value - TimeManager.Instance.LocalDateTime;
+            if (dateTimeDifference.Ticks >= 0)
+            {
+                //_timeText.text = dateTimeDifference.ToString("hh\\:mm\\:ss");
+                _timeText.text = dateTimeDifference.ToString("hh\\:mm");
+            }
             if (dateTimeDifference.Ticks <= 0)
             {
                 TaskManager.Instance.ShuffleNewTasks();
+
                 Deinitialize();
                 Initialize();
-                tomorrow = TimeManager.Instance.Today.AddDays(1);
+
+                _nextDateTime = NextTimeFrom(TimeManager.Instance.LocalDateTime);
             }
             yield return new WaitForSeconds(1f);
         }
+    }
+
+    private DateTime NextTimeFrom(DateTime dateTime)
+    {
+        return dateTime.AddDays(1);
     }
 }

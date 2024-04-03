@@ -9,6 +9,8 @@ public class GatherArea : InteractableArea
         _productionBuilding.OnStatusChanged += OnStatusChanged;
 
         this.gameObject.SetActive(false);
+
+        OnStatusChanged(BuildingStatus.Producing);
     }
 
     protected override void ContactWithPlayer(Player player)

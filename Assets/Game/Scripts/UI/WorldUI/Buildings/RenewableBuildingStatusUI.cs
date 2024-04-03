@@ -5,8 +5,8 @@ using UnityEngine.UI;
 public class RenewableBuildingStatusUI : BuildingStatusUI
 {
     [Header("Maintenance status")]
-    [SerializeField] protected GameObject _maintenanceStatus;
-    [SerializeField] protected Image _maintenanceFillImage;
+    [SerializeField] private GameObject _maintenanceStatus;
+    [SerializeField] private Image _maintenanceFillImage;
 
     protected override void OnEnable()
     {
@@ -20,13 +20,6 @@ public class RenewableBuildingStatusUI : BuildingStatusUI
         base.OnDisable();
 
         _interactArea.OnMaintenceChanged -= OnMaintenceChanged;
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-
-        _maintenanceStatus.SetActive(false);
     }
 
     protected override void OnBuildingStatusChanged(BuildingStatus status)

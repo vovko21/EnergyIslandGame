@@ -1,25 +1,19 @@
 public class Solarpanel : RenewableEnergyBuilding
 {
-    protected override void OnHourPassed()
+    protected override void OnDateTimeChanged(InGameDateTime dateTime)
     {
-        if (_produced >= CurrentStats.MaxSupply)
+        if (dateTime.IsNight())
         {
-            Status = BuildingStatus.MaxedOut;
-            return;
+            if (Status != BuildingStatus.NotProducing)
+            {
+                Status = BuildingStatus.NotProducing;
+            }
         }
-
-        if (_nextHourTime.IsNight())
-        {
-            Status = BuildingStatus.NotProducing;
-        }
-        else
+        else if (Status == BuildingStatus.NotProducing)
         {
             Status = BuildingStatus.Producing;
         }
 
-        if (Status == BuildingStatus.Producing)
-        {
-            Produce();
-        }
+        base.OnDateTimeChanged(dateTime);
     }
 }

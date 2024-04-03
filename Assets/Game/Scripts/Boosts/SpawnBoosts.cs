@@ -8,13 +8,18 @@ public class SpawnBoosts : MonoBehaviour
 
     protected InGameDateTime _nextTime;
 
-    private void Start()
+    private void OnEnable()
     {
         DeactiveAll();
 
         _nextTime = GameTimeManager.Instance.CurrentDateTime;
         _nextTime.AdvanceMinutes(_spawnIntervalMinutes);
         GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
     }
 
     private void OnDateTimeChanged(InGameDateTime dateTime)

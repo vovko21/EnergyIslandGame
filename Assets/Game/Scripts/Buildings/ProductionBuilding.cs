@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public struct BuildingUpdatedEvent
 {
@@ -123,6 +122,7 @@ public class ProductionBuilding : MonoBehaviour
     }
 
     public event Action<BuildingStatus> OnStatusChanged;
+    public event Action<ProductionBuilding> OnInitialized;
 
     private void Awake()
     {
@@ -131,12 +131,6 @@ public class ProductionBuilding : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        if(GameTimeManager.Instance == null)
-        {
-            Debug.LogWarning("GameTimeManager is null");
-            return;
-        }
-
         _nextHourTime = GameTimeManager.Instance.CurrentDateTime;
         _nextHourTime.AdvanceMinutes(60);
         GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
@@ -159,9 +153,16 @@ public class ProductionBuilding : MonoBehaviour
         Status = status;
 
         _produced = produced;
+
+        if(_produced >= CurrentStats.MaxSupply && Status != BuildingStatus.Broken)
+        {
+            Status = BuildingStatus.MaxedOut; 
+        }
+
+        OnInitialized?.Invoke(this);
     }
 
-    private void OnDateTimeChanged(InGameDateTime dateTime)
+    protected virtual void OnDateTimeChanged(InGameDateTime dateTime)
     {
         if (_nextHourTime == dateTime)
         {
@@ -173,12 +174,6 @@ public class ProductionBuilding : MonoBehaviour
 
     protected virtual void OnHourPassed()
     {
-        if (_produced >= CurrentStats.MaxSupply)
-        {
-            Status = BuildingStatus.MaxedOut;
-            return;
-        }
-
         if (Status == BuildingStatus.Producing)
         {
             Produce();
@@ -189,7 +184,16 @@ public class ProductionBuilding : MonoBehaviour
     {
         if (_produced >= CurrentStats.MaxSupply) return;
 
-        _produced += CurrentStats.ProductionPerGameHour;
+        if(_produced + CurrentStats.ProductionPerGameHour >= CurrentStats.MaxSupply)
+        {
+            _produced = CurrentStats.MaxSupply;
+
+            Status = BuildingStatus.MaxedOut;
+        }
+        else
+        {
+            _produced += CurrentStats.ProductionPerGameHour;
+        }
     }
 
     public virtual void Gather(int overflow)
@@ -203,6 +207,11 @@ public class ProductionBuilding : MonoBehaviour
             else
             {
                 _produced = overflow;
+            }
+
+            if(Status == BuildingStatus.MaxedOut)
+            {
+                Status = BuildingStatus.Producing;
             }
         }
     }

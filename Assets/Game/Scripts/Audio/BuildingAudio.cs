@@ -21,21 +21,13 @@ public class BuildingAudio : MonoBehaviour
 
     private void OnStatusChanged(BuildingStatus status)
     {
-        switch (status)
+        if(status == BuildingStatus.Producing)
         {
-            case BuildingStatus.None:
-                break;
-            case BuildingStatus.Producing:
-                PlayClipSound(_productionClip);
-                break;
-            case BuildingStatus.NotProducing:
-                break;
-            case BuildingStatus.Maintenance:
-                break;
-            case BuildingStatus.MaxedOut:
-                break;
-            case BuildingStatus.Broken:
-                break;
+            PlayClipSound(_productionClip);
+        }
+        else
+        {
+            StopCurrentClip();
         }
     }
 
@@ -44,5 +36,11 @@ public class BuildingAudio : MonoBehaviour
         if(_audioSource.isPlaying) _audioSource.Stop();
         _audioSource.clip = clip;
         _audioSource.Play();
+    }
+
+
+    private void StopCurrentClip()
+    {
+        if (_audioSource.isPlaying) _audioSource.Stop();
     }
 }
