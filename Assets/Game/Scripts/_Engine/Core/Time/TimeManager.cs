@@ -16,7 +16,6 @@ public class TimeManager : SingletonMonobehaviour<TimeManager>
     private DateTime _utcDateTime;
 
     public DateTime LocalDateTime => _localDateTime.AddSeconds(Time.realtimeSinceStartup);
-    public DateTime Today => new DateTime(LocalDateTime.Year, LocalDateTime.Month, LocalDateTime.Day);
     public DateTime UTCDateTime => _utcDateTime.AddSeconds(Time.realtimeSinceStartup);
     public bool IsServerTimeSuccess { get; private set; }
 

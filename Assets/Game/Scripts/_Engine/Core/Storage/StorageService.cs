@@ -25,7 +25,7 @@ public class StorageService : SingletonMonobehaviour<StorageService>
     public int InGameMinutesPassed => _dataContext.Data.InGameMinutesPassed;
     public int DaysBonusClaimedInRow => _dataContext.Data.DaysBonusClaimedInRow;
     public DateTime? LastClaimBonusTime => StringToDateTime(_dataContext.Data.LastClaimBonusTime);
-    public DateTime? NextTasksTIme => StringToDateTime(_dataContext.Data.NextTasksTime);
+    public DateTime? NextTasksTime => StringToDateTime(_dataContext.Data.NextTasksTime);
 
     protected override void Awake()
     {

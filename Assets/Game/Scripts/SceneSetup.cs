@@ -102,6 +102,6 @@ public class SceneSetup : MonoBehaviour
         _dailyRewardsUI.Initialize(StorageService.Instance.DaysBonusClaimedInRow, StorageService.Instance.LastClaimBonusTime);
 
         //Loading Taksks time progress
-        _tasksUI.Initialize(StorageService.Instance.NextTasksTIme);
+        _tasksUI.Initialize(StorageService.Instance.NextTasksTime);
     }
 }

@@ -141,6 +141,15 @@ public class DailyRewardsUI : MonoBehaviour
 
     private void OnButtonTake2xClicked()
     {
+        AdsManager.Instance.RewardedAds.ShowAd();
+
+        AdsManager.Instance.RewardedAds.OnAdComplete += RewardedAds_OnAdComplete; 
+    }
+
+    private void RewardedAds_OnAdComplete()
+    {
+        AdsManager.Instance.RewardedAds.OnAdComplete -= RewardedAds_OnAdComplete;
+
         if (TimeManager.Instance.IsServerTimeSuccess)
         {
             Claim(isDoubled: true);
@@ -170,7 +179,6 @@ public class DailyRewardsUI : MonoBehaviour
         _calendarDayText.text = _daysInRow.ToString();
 
         //Unlock next
-
         if (!IsMaxCollected())
         {
             _instantiatedRewards[_daysInRow].Unlock();
