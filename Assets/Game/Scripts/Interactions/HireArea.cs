@@ -12,8 +12,11 @@ public class HireArea : InteractableArea
     [SerializeField] private GameObject _carrier;
     [SerializeField] private GameObject _service;
 
-    private bool _carrierBuyed;
-    private bool _serviceBuyed;
+    private bool _carrierHired;
+    private bool _serviceHired;
+
+    public bool IsCarrierHired => _carrierHired;
+    public bool IsServiceHired => _serviceHired;
 
     private void OnEnable()
     {
@@ -25,6 +28,28 @@ public class HireArea : InteractableArea
     {
         _ui.BottomBar.WorkersUI.OnUpgradeCarrierPress -= OnBuyCarrierPress;
         _ui.BottomBar.WorkersUI.OnUpgradeCarrierPress -= OnBuyServicePress;
+    }
+
+    public void Initialilze(bool carrierHired, bool serviceHired)
+    {
+        _carrierHired = carrierHired;
+        _serviceHired = serviceHired;
+
+        if (_carrierHired)
+        {
+            _carrier.SetActive(true);
+
+            _carrierHired = true;
+        }
+
+        if(_serviceHired)
+        {
+            _service.SetActive(true);
+
+            _serviceHired = true;
+        }
+
+        AllHiredCheck();
     }
 
     protected override void ContactWithPlayer(Player player)
@@ -39,25 +64,43 @@ public class HireArea : InteractableArea
 
     private void OnBuyCarrierPress()
     {
+        if (_carrierHired) return;
+        
         bool result = ProgressionManager.Instance.Wallet.TrySpendDollars(_carrierStats.Price[0]);
 
         if (result) 
         {
             _carrier.SetActive(true);
 
-            _carrierBuyed = true;
+            _carrierHired = true;
         }
+
+        AllHiredCheck();
     }
 
     private void OnBuyServicePress()
     {
+        if (_serviceHired) return;
+
         bool result = ProgressionManager.Instance.Wallet.TrySpendDollars(_serviceStats.Price[0]);
 
         if (result)
         {
             _service.SetActive(true);
 
-            _serviceBuyed = true;
+            _serviceHired = true;
+        }
+
+        AllHiredCheck();
+    }
+
+    private void AllHiredCheck()
+    {
+        if(_carrierHired & _serviceHired)
+        {
+            this.gameObject.SetActive(false);
+
+            _ui.BottomBar.HideWorkers();
         }
     }
 }

@@ -14,6 +14,9 @@ public class GoodDealEvent : MonoBehaviour, IEventListener<GameEvent>
     private bool _isActive;
     private Timer _timer;
 
+    public int EnergyDeffaultCount => _energyDeffaultCount;
+    public EnergyBank EnergyBank => _energyBank;
+
     private void Awake()
     {
         _timer = new Timer(this);

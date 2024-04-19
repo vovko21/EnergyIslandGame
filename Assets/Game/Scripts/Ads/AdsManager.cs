@@ -13,7 +13,10 @@ public class AdsManager : SingletonMonobehaviour<AdsManager>, IUnityAdsInitializ
     [SerializeField] private RewardedAds _rewardedAds;
 
     private string _gameId;
+    private bool _noAds;
 
+    public bool IsTesting => _isTesting;
+    public bool NoAds => _noAds;
     public InterstitialAds InterstitialAds  => _interstitialAds;
     public RewardedAds RewardedAds => _rewardedAds;
 
@@ -35,10 +38,13 @@ public class AdsManager : SingletonMonobehaviour<AdsManager>, IUnityAdsInitializ
         }
     }
 
+    public void SetNoAds(bool noAds)
+    {
+        _noAds = noAds;
+    }
 
     public void OnInitializationComplete()
     {
-        //throw new System.NotImplementedException();
         Debug.Log("Ads initialized...");
 
         _interstitialAds.LoadAd();
@@ -47,6 +53,5 @@ public class AdsManager : SingletonMonobehaviour<AdsManager>, IUnityAdsInitializ
 
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
     {
-        //throw new System.NotImplementedException();
     }
 }

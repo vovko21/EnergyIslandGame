@@ -18,6 +18,8 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private BoosterUI _boosterUI;
     [SerializeField] private SettingsUI _settingsUI;
     [SerializeField] private CanvasGroup _hintBar;
+    [SerializeField] private AdTimerUI _adTimerUI;
+    [SerializeField] private NoAdsUI _noAdsUI;
 
     [Header("Settings")]
     [SerializeField] private float _timeToFade;
@@ -28,6 +30,7 @@ public class UserInterface : MonoBehaviour
     public bool IsSettingsOpen { get; private set; }
     public BottomBarUI BottomBar => _bottomUI;
     public BoosterUI BoosterUI => _boosterUI;
+    public AdTimerUI AdTimerUI => _adTimerUI;
 
     private void Start()
     {
@@ -38,6 +41,8 @@ public class UserInterface : MonoBehaviour
         HideBooster();
         HideSettings();
         HideHint();
+        HideAdTimer();
+        HideNoAds();
 
         CameraController.Instance.OnFollowTargets += OnCameraFollowTargets;
     }
@@ -213,5 +218,31 @@ public class UserInterface : MonoBehaviour
     public void HideHint()
     {
         _hintBar.gameObject.SetActive(false);
+    }
+
+    public void ShowAdTimer()
+    {
+        _adTimerUI.gameObject.SetActive(true);
+        _adTimerUI.Initialize();
+    }
+
+    public void HideAdTimer()
+    {
+        _adTimerUI.Deinitialize();
+        _adTimerUI.gameObject.SetActive(false);
+    }
+
+    public void ShowNoAds()
+    {
+        if (!_noAdsUI.gameObject.activeSelf)
+        {
+            _noAdsUI.gameObject.SetActive(true);
+            PopUp(_noAdsUI.transform);
+        }
+    }
+
+    public void HideNoAds()
+    {
+        _noAdsUI.gameObject.SetActive(false);
     }
 }

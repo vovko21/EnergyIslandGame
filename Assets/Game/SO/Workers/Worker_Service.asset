@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0def1ee66dfc3874388e33d0ba9001a4, type: 3}
   m_Name: Worker_Service
   m_EditorClassIdentifier: 
-  <Price>k__BackingField: 1400000064000000
+  <Price>k__BackingField: f4010000

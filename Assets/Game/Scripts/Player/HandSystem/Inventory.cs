@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,9 @@ public class Inventory : MonoBehaviour
 
     public HandItem CurrentItem => _currentItem;
     public bool IsItemInHand => _currentItem != null;
+
+    public event Action<HandItem> OnItemTaken;
+    public event Action OnItemHiden;
 
     private void Start()
     {
@@ -28,6 +32,8 @@ public class Inventory : MonoBehaviour
                 _currentItem = item;
                 _currentItem.Activate();
 
+                OnItemTaken?.Invoke(_currentItem);
+
                 return true;
             }
         }
@@ -42,5 +48,7 @@ public class Inventory : MonoBehaviour
         {
             item.Deactivate();
         }
+
+        OnItemHiden?.Invoke();
     }
 }

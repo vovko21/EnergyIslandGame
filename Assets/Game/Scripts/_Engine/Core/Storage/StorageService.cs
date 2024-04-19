@@ -24,6 +24,8 @@ public class StorageService : SingletonMonobehaviour<StorageService>
     public bool Initialized => _dataContext.Data.Initialized;
     public int InGameMinutesPassed => _dataContext.Data.InGameMinutesPassed;
     public int DaysBonusClaimedInRow => _dataContext.Data.DaysBonusClaimedInRow;
+    public bool CarrierWorkerHired => _dataContext.Data.CarrierWorkerHired;
+    public bool ServiceWorkerHired => _dataContext.Data.ServiceWorkerHired;
     public DateTime? LastClaimBonusTime => StringToDateTime(_dataContext.Data.LastClaimBonusTime);
     public DateTime? NextTasksTime => StringToDateTime(_dataContext.Data.NextTasksTime);
 
@@ -31,7 +33,7 @@ public class StorageService : SingletonMonobehaviour<StorageService>
     {
         base.Awake();
 
-        _dataContext = new JsonDataContext();
+        _dataContext = new AesEncryptorDataContext();
         _unitOfWork = new UnitOfWork(_dataContext);
     }
 
@@ -52,18 +54,18 @@ public class StorageService : SingletonMonobehaviour<StorageService>
         return new ReadOnlyResource(data.id, data.value, data.type);
     }
 
-    public void AddOrUpdateActiveBuilding(string id, int produced, int productionLevelIndex, int maxSupplyLevelIndex, BuildingStatus status)
+    public void AddOrUpdateActiveBuilding(string id, int produced, int productionLevelIndex, int maxSupplyLevelIndex, BuildingStatus status, EnergyResource energyResource)
     {
         var data = _unitOfWork.ActiveBuildingsRepository.GetById(id);
 
         if (data == null)
         {
-            data = new BuildingData() { id = id, produced = produced, productionLevelIndex = productionLevelIndex, maxSupplyLevelIndex = maxSupplyLevelIndex, status = status };
+            data = new BuildingData() { id = id, produced = produced, productionLevelIndex = productionLevelIndex, maxSupplyLevelIndex = maxSupplyLevelIndex, status = status, energyResource = energyResource };
             _unitOfWork.ActiveBuildingsRepository.Add(data);
         }
         else
         {
-            data = new BuildingData() { id = id, produced = produced, productionLevelIndex = productionLevelIndex, maxSupplyLevelIndex = maxSupplyLevelIndex, status = status };
+            data = new BuildingData() { id = id, produced = produced, productionLevelIndex = productionLevelIndex, maxSupplyLevelIndex = maxSupplyLevelIndex, status = status, energyResource = energyResource };
             _unitOfWork.ActiveBuildingsRepository.Modify(data);
         }
     }
@@ -130,6 +132,16 @@ public class StorageService : SingletonMonobehaviour<StorageService>
         {
             _dataContext.Data.NextTasksTime = dateTime.Value.ToString();
         }
+    }
+
+    public void SetCarrierWorker(bool hired)
+    {
+        _dataContext.Data.CarrierWorkerHired = hired;
+    }
+
+    public void SetServiceWorker(bool hired)
+    {
+        _dataContext.Data.ServiceWorkerHired = hired;
     }
 
     public ReadOnlyResource GetResource(ResourceType type)

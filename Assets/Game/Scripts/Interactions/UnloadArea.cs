@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.Networking.UnityWebRequest;
 
 public abstract class UnloadArea : InteractableArea
 {
@@ -29,11 +28,14 @@ public abstract class UnloadArea : InteractableArea
     {
         if (worker is CarrierWorker)
         {
+            Debug.Log("worker in");
             if (_workerCoroutine == null)
             {
                 _workerCoroutine = StartStack(((CarrierWorker)worker).CarrySystem);
 
                 StartCoroutine(_workerCoroutine);
+
+                Debug.Log("stack");
             }
         }
     }
@@ -49,10 +51,62 @@ public abstract class UnloadArea : InteractableArea
     protected override void WorkerExit(Worker worker)
     {
         if (_workerCoroutine == null) return;
-
+        Debug.Log("worker exit");
         StopCoroutine(_workerCoroutine);
         _workerCoroutine = null;
     }
+
+    //private IEnumerator StartStack(CarrySystem carrySystem)
+    //{
+    //    bool isFinished = false;
+
+    //    var energyToStack = carrySystem.StuckValue;
+
+    //    if (energyToStack <= 0)
+    //    {
+    //        isFinished = true;
+    //    }
+
+    //    while (!isFinished)
+    //    {
+    //        yield return new WaitForSeconds(RATE);
+
+    //        energyToStack -= _stackPerTick;
+
+    //        if(energyToStack == 0)
+    //        {
+    //            isFinished = true;
+    //            carrySystem.ClearStack();
+    //            break;
+    //        }
+
+    //        int result = -1;
+    //        if (_unloadCurrent == true)
+    //        {
+    //            result = carrySystem.UpdateStack(carrySystem.CurrentObject.type, energyToStack);
+    //        }
+    //        else
+    //        {
+    //            result = carrySystem.UpdateStack(_energyResourceType, energyToStack);
+    //        }
+
+    //        if (result == -1)
+    //        {
+    //            isFinished = true;
+    //            break;
+    //        }
+    //        else
+    //        {
+    //            UnloadTick(_stackPerTick);
+
+    //            if (energyToStack <= 0)
+    //            {
+    //                isFinished = true;
+    //                carrySystem.ClearStack();
+    //            }
+    //        }
+    //    }
+    //}
 
     private IEnumerator StartStack(CarrySystem carrySystem)
     {
@@ -71,13 +125,6 @@ public abstract class UnloadArea : InteractableArea
 
             energyToStack -= _stackPerTick;
 
-            if(energyToStack == 0)
-            {
-                isFinished = true;
-                carrySystem.ClearStack();
-                break;
-            }
-
             int result = -1;
             if (_unloadCurrent == true)
             {
@@ -88,7 +135,7 @@ public abstract class UnloadArea : InteractableArea
                 result = carrySystem.UpdateStack(_energyResourceType, energyToStack);
             }
 
-            if (result == -1)
+            if (result == -1 && energyToStack != 0)
             {
                 isFinished = true;
                 break;

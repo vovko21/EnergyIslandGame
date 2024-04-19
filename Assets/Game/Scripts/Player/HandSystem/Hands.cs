@@ -11,6 +11,7 @@ public class Hands : MonoBehaviour
     public HandItem CurrentItem => _inventory.CurrentItem;
     public CarryObject CurrentObject => _carrySystem.CurrentObject;
     public int StuckValue => _carrySystem.StuckValue;
+    public Inventory Inventory => _inventory;   
 
     public event Action<CarrySystem> OnStackChanged;
 

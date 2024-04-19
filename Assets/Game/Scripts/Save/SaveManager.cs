@@ -6,6 +6,7 @@ public class SaveManager : MonoBehaviour
     [Header("Refferences")]
     [SerializeField] private DailyRewardsUI _dailyRewardsUI;
     [SerializeField] private TasksUI _tasksUI;
+    [SerializeField] private HireArea _hireArea;
 
     [Header("Save settings")]
     [SerializeField] private int _saveCycle = 5;
@@ -28,6 +29,8 @@ public class SaveManager : MonoBehaviour
 
         SaveTasks();
 
+        SaveWorkers();
+
         await StorageService.Instance.SaveDataAsync();
     }
 
@@ -42,7 +45,14 @@ public class SaveManager : MonoBehaviour
 
         foreach (var building in BuildingManager.Instance.ActiveBuildings)
         {
-            StorageService.Instance.AddOrUpdateActiveBuilding(building.Id, building.Produced, building.CurrentStats.ProductionLevelIndex, building.CurrentStats.MaxSupplyLevelIndex, building.Status);
+            if (building is TraditionalEnergyBuilding)
+            {
+                StorageService.Instance.AddOrUpdateActiveBuilding(building.Id, building.Produced, building.CurrentStats.ProductionLevelIndex, building.CurrentStats.MaxSupplyLevelIndex, building.Status, ((TraditionalEnergyBuilding)building).EnergyResource);
+            }
+            else
+            {
+                StorageService.Instance.AddOrUpdateActiveBuilding(building.Id, building.Produced, building.CurrentStats.ProductionLevelIndex, building.CurrentStats.MaxSupplyLevelIndex, building.Status, new EnergyResource(0, 0));
+            }
         }
     }
 
@@ -70,5 +80,11 @@ public class SaveManager : MonoBehaviour
         {
             StorageService.Instance.AddOrUpdateActiveTask(task);
         }
+    }
+
+    private void SaveWorkers()
+    {
+        StorageService.Instance.SetCarrierWorker(_hireArea.IsCarrierHired);
+        StorageService.Instance.SetServiceWorker(_hireArea.IsServiceHired);
     }
 }

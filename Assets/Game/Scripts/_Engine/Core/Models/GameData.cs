@@ -8,6 +8,9 @@ public class GameData
     public List<BuildingData> ActiveBuildings = new List<BuildingData>();
     public List<GameTaskData> ActiveTasks = new List<GameTaskData>();
 
+    public bool ServiceWorkerHired = false;
+    public bool CarrierWorkerHired = false;
+
     public string LastClaimBonusTime;
     public string NextTasksTime;
     public int DaysBonusClaimedInRow = 0;

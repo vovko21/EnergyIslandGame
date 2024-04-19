@@ -70,7 +70,13 @@ public class BuildingManager : SingletonMonobehaviour<BuildingManager>, IEventLi
                 if (matchedBuilding != null)
                 {
                     buildArea.GetComponentInChildren<BuildArea>().Build();
+
                     building.Initialize(matchedBuilding.produced, matchedBuilding.productionLevelIndex, matchedBuilding.maxSupplyLevelIndex, matchedBuilding.status);
+                    
+                    if(building is TraditionalEnergyBuilding)
+                    {
+                        ((TraditionalEnergyBuilding)building).AddResource(matchedBuilding.energyResource);
+                    }
                 }
             }
         }

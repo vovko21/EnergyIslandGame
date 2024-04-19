@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -39,9 +38,9 @@ public class TaskItemUI : MonoBehaviour
         _progressBar.SetMaxValue(gameTask.ProgressTarget);
         _progressBar.SetValue(gameTask.ProgressCurrent);
 
-        SetRewards(gameTask.ResourceType, gameTask.RewardValue);   
+        SetRewards(gameTask.ResourceType, gameTask.RewardValue);
 
-        if(gameTask.IsCompleted)
+        if (gameTask.IsCompleted)
         {
             _button.SetActive();
         }

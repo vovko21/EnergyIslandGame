@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CarrierWorker : Worker
 {
+    [SerializeField] private Transform _waitPosition;
+
     [Header("Sell Setup")]
     [SerializeField] private Transform _sellPosition;
 
@@ -33,7 +35,7 @@ public class CarrierWorker : Worker
     private void Start()
     {
         //STATES
-        var waitState = new WaitState(this);
+        var waitState = new WaitState(this, _waitPosition);
         _takeProducedState = new TakeProducedState();
         var sellState = new SellState(this, _sellPosition);
 

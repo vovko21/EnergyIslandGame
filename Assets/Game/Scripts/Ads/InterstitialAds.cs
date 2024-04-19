@@ -17,12 +17,13 @@ public class InterstitialAds : AdsBase, IUnityAdsLoadListener, IUnityAdsShowList
     #region LoadCallbacks
     public void OnUnityAdsAdLoaded(string placementId)
     {
-        Debug.Log("InterstitialAds loaded");
+        Debug.Log("InterstitialAds loaded"); 
+        _isLoaded = true;
     }
 
     public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
     {
-
+        _isLoaded = false;
     }
     #endregion
 

@@ -44,7 +44,7 @@ public class DailyRewardsUI : MonoBehaviour
 
         if (TimeManager.Instance.IsServerTimeSuccess)
         {
-            if(_timerCoroutine == null)
+            if (_timerCoroutine == null)
             {
                 _timerCoroutine = StartCoutTime();
                 StartCoroutine(_timerCoroutine);
@@ -55,6 +55,12 @@ public class DailyRewardsUI : MonoBehaviour
                 _timerCoroutine = StartCoutTime();
                 StartCoroutine(_timerCoroutine);
             }
+        }
+
+        if (CanBeClaimed())
+        {
+            _takeRewardButton.SetActive();
+            _takeReward2xButton.SetActive();
         }
         else
         {
@@ -99,15 +105,25 @@ public class DailyRewardsUI : MonoBehaviour
         }
 
         //Unlock next
-        if(!IsMaxCollected())
+        if (!IsMaxCollected())
         {
             _instantiatedRewards[_daysInRow].Unlock();
+        }
+
+        //Rewarded button state
+        if (!AdsManager.Instance.RewardedAds.IsLoaded)
+        {
+            _takeReward2xButton.SetInactive();
+        }
+        else
+        {
+            _takeReward2xButton.SetActive();
         }
     }
 
     public void Initialize(int daysInRow, DateTime? lastClaimTime)
     {
-        if(daysInRow > _rewards.Count)
+        if (daysInRow > _rewards.Count)
         {
             _daysInRow = _rewards.Count;
         }
@@ -141,14 +157,28 @@ public class DailyRewardsUI : MonoBehaviour
 
     private void OnButtonTake2xClicked()
     {
-        AdsManager.Instance.RewardedAds.ShowAd();
+        if(!AdsManager.Instance.NoAds)
+        {
+            if (!AdsManager.Instance.RewardedAds.IsLoaded) return;
 
-        AdsManager.Instance.RewardedAds.OnAdComplete += RewardedAds_OnAdComplete; 
+            AdsManager.Instance.RewardedAds.OnAdComplete += RewardedAds_OnAdComplete;
+
+            AdsManager.Instance.RewardedAds.ShowAd();
+        }
+        else
+        {
+            if (TimeManager.Instance.IsServerTimeSuccess)
+            {
+                Claim(isDoubled: true);
+            }
+        }
     }
 
     private void RewardedAds_OnAdComplete()
     {
         AdsManager.Instance.RewardedAds.OnAdComplete -= RewardedAds_OnAdComplete;
+
+        Debug.Log("<color=green>Rewarded Ad complete</color>");
 
         if (TimeManager.Instance.IsServerTimeSuccess)
         {
@@ -205,12 +235,12 @@ public class DailyRewardsUI : MonoBehaviour
     {
         if (!TimeManager.Instance.IsServerTimeSuccess) return false;
 
-        if(_lastClaimTime.HasValue)
+        if (_lastClaimTime.HasValue)
         {
             if (NextTimeFrom(_lastClaimTime.Value) > TimeManager.Instance.LocalDateTime) return false;
         }
 
-        if(IsMaxCollected()) return false;
+        if (IsMaxCollected()) return false;
 
         return true;
     }
@@ -252,7 +282,7 @@ public class DailyRewardsUI : MonoBehaviour
 
     private DateTime NextTimeFrom(DateTime dateTime)
     {
-        return dateTime.AddSeconds(360);
+        return dateTime.AddDays(1);
     }
 
     private bool IsMaxCollected()

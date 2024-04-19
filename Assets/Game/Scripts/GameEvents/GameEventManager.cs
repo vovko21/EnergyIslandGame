@@ -22,28 +22,30 @@ public class GameEventManager : MonoBehaviour
 
     protected InGameDateTime _nextTime;
 
-    public void Initialize()
+    public void StartListen()
     {
-        _nextTime = GameTimeManager.Instance.CurrentDateTime;
-        _nextTime.AdvanceMinutes(60);
-        GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
+        //_nextTime = GameTimeManager.Instance.CurrentDateTime;
+        //_nextTime.AdvanceMinutes(60);
+        //GameTimeManager.Instance.OnDateTimeChanged += OnDateTimeChanged;
+
+        InvokeRepeating(nameof(TryThrowRandomEvent), 10f, 10f);
     }
 
     private void OnDestroy()
     {
-        GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
+        //GameTimeManager.Instance.OnDateTimeChanged -= OnDateTimeChanged;
     }
 
     private void OnDateTimeChanged(InGameDateTime dateTime)
     {
         if (_nextTime == dateTime)
         {
-            OnHourPassed();
+            TryThrowRandomEvent();
             _nextTime.AdvanceMinutes(60);
         }
     }
 
-    private void OnHourPassed()
+    private void TryThrowRandomEvent()
     {
         var randomPick = Random.Range(0f, 1f);
         List<GameEvent> matches = new List<GameEvent>();   

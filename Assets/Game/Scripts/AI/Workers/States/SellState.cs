@@ -57,5 +57,4 @@ public class SellState : IState
     {
         return Color.green;
     }
-
 }

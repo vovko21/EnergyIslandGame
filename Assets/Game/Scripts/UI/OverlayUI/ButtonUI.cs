@@ -11,6 +11,7 @@ public class ButtonUI : MonoBehaviour
 
     public void SetText(string text)
     {
+        if (_buttonText == null) return;
         _buttonText.text = text;
     }
 

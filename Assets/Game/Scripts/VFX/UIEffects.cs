@@ -24,6 +24,8 @@ public class UIEffects : MonoBehaviour
     private List<GameObject> _dollars = new List<GameObject>();
     private List<GameObject> _diamands = new List<GameObject>();
 
+    private bool _isCoroutineActive = false;
+
     public void StartListen()
     {
         ProgressionManager.Instance.Wallet.OnDollarsChanged += Wallet_OnDollarsChanged;
@@ -32,7 +34,7 @@ public class UIEffects : MonoBehaviour
 
     private void Wallet_OnDollarsChanged(int amount)
     {
-        if(amount > 0)
+        if(amount > 0 && !_isCoroutineActive)
         {
             StartCoroutine(CollectEffectCouroutine(amount, _dollars, _dollarsPrefab, _endDollarsPosition));
         }
@@ -40,7 +42,7 @@ public class UIEffects : MonoBehaviour
 
     private void Wallet_OnDiamandsChanged(int amount)
     {
-        if (amount > 0)
+        if (amount > 0 && !_isCoroutineActive)
         {
             StartCoroutine(CollectEffectCouroutine(amount, _diamands, _diamandsPrefab, _endDiamondsPosition));
         }
@@ -48,6 +50,8 @@ public class UIEffects : MonoBehaviour
 
     private IEnumerator CollectEffectCouroutine(int amount, List<GameObject> prefabsList, GameObject prefab, Transform endPosition)
     {
+        _isCoroutineActive = true;
+
         if (prefabsList.Count != 0) prefabsList.Clear();
 
         var prefabsCount = CalculatePrefabCount(amount);
@@ -84,6 +88,8 @@ public class UIEffects : MonoBehaviour
         }
 
         prefabsList.Clear();
+
+        _isCoroutineActive = false;
     }
 
     private int CalculatePrefabCount(int amount)

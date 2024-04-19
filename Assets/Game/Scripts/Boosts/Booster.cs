@@ -1,12 +1,18 @@
+using System;
 using UnityEngine;
 
 public class Booster : InteractableArea
 {
+    [Header("Refferences")]
     [SerializeField] private Player _player;
     [SerializeField] private UserInterface _ui;
     [SerializeField] private BoostSO _boostSO;
+    [Header("Settings")]
+    [SerializeField] private float _time;
+    [SerializeField] private float _speedBoost;
 
     public BoostSO BoostSO => _boostSO;
+    public event Action OnUsed;
 
     private void OnEnable()
     {
@@ -32,20 +38,37 @@ public class Booster : InteractableArea
 
     private void OnWatch()
     {
-        //WATCH ADS
-        Debug.Log("DKKJHDKJHSKhdkj");
+        if (!AdsManager.Instance.NoAds)
+        {
+            if (!AdsManager.Instance.RewardedAds.IsLoaded) return;
+
+            AdsManager.Instance.RewardedAds.OnAdComplete += RewardedAds_OnAdComplete;
+
+            AdsManager.Instance.RewardedAds.ShowAd();
+
+            _ui.HideBooster();
+        }
+    }
+
+    private void RewardedAds_OnAdComplete()
+    {
         UseBoost();
     }
 
     private void OnDiamondsSpend()
     {
-        //bost
-        //ProgressionManager.Instance.Wallet.TrySpendDiamands();
-        UseBoost();
+        var success = ProgressionManager.Instance.Wallet.TrySpendDiamands(_boostSO.Diamands);
+
+        if(success)
+        {
+            UseBoost();
+        }
     }
 
     private void UseBoost()
     {
-        _player.Stats.AddSpeed(_boostSO.Speed);
+        _player.Stats.ApplySpeedBuff(_speedBoost, _time, this);
+
+        OnUsed?.Invoke();
     }
 }

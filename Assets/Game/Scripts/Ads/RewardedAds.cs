@@ -21,11 +21,12 @@ public class RewardedAds : AdsBase, IUnityAdsLoadListener, IUnityAdsShowListener
     public void OnUnityAdsAdLoaded(string placementId)
     {
         Debug.Log("Rewarded Ads loaded");
+        _isLoaded = true;
     }
 
     public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
     {
-
+        _isLoaded = false;
     }
     #endregion
 
@@ -44,7 +45,7 @@ public class RewardedAds : AdsBase, IUnityAdsLoadListener, IUnityAdsShowListener
 
     public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
     {
-        if (placementId == _adUnitId && showCompletionState.Equals(UnityAdsCompletionState.COMPLETED))
+        if (_adUnitId.Equals(_adUnitId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
             OnAdComplete?.Invoke();
         }

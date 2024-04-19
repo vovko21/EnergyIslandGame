@@ -23,6 +23,7 @@ public class ActiveBuildingsRepository : Repository<BuildingData>
         buildingToModify.productionLevelIndex = entity.productionLevelIndex;
         buildingToModify.maxSupplyLevelIndex = entity.maxSupplyLevelIndex;
         buildingToModify.status = entity.status;
+        buildingToModify.energyResource = entity.energyResource;
     }
 
     public override bool Delete(string id)

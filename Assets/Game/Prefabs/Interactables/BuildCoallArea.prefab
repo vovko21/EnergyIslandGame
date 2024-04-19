@@ -430,8 +430,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46e9882e9ae4a3a40bc7b5d242a9be5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _valueToSpend: 20
-  _spendPerTick: 1
+  _valueToSpend: 800
+  _spendPerTick: 80
   _building: {fileID: 5938455277064235871}
   _productionBuilding: {fileID: 6799315668021204475}
 --- !u!1 &4164856065310223140
@@ -792,6 +792,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7400487122749986257}
     m_Modifications:
+    - target: {fileID: 690241967580876777, guid: 6c04ffea4338ea04380629f5e27fe48b,
+        type: 3}
+      propertyPath: m_text
+      value: LOAD COAL
+      objectReference: {fileID: 0}
     - target: {fileID: 1126766258393701491, guid: 6c04ffea4338ea04380629f5e27fe48b,
         type: 3}
       propertyPath: _id

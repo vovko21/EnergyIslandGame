@@ -27,6 +27,8 @@ public class TraditionalEnergyBuilding : ProductionBuilding
     [Header("Resource price")]
     [SerializeField] private EnergyResource _energyResource;
 
+    public EnergyResource EnergyResource => _energyResource;
+
     protected override void OnEnable()
     {
         base.OnEnable();
